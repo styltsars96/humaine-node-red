@@ -1,0 +1,10 @@
+services:
+  node-red:
+    image: nodered/node-red
+    container_name: haic-node-red
+    ports:
+      - "1880:1880"
+    volumes:
+      - ./node-red:/data
+    environment:
+      TZ: "Europe/Athens"
