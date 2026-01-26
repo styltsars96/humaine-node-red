@@ -1,17 +1,22 @@
 # Node-RED integration with HAIC and KubeFlow
 
+## Quick setup for development using Dev Containers
+
+Just open this project with vscode and "Rebuild and Reopen in Container". This will automatically install all required dependencies and set up the development environment.
+**Note**: The devcontainer setup is not complete until the container **is restarted after the first launch**, so that Node-RED is properly set up and recognizes all the installed nodes.
+
+## Manual setup and reconfiguration steps for development environment
+
 - Check following subsections, follow the instructions!
 <!-- - The `.env` file based on the example from the `backend` directory, has to be both in the `backend` and the project root directory!
   - Required for the `dev.docker-compose.yml` to work properly! -->
 - Copy the `example.*` files in the `node-red` directory within the same place without the `example.` prefix!
   - Make sure to **comment out the functionGlobalContext section from settings.js**, then do the steps in the subsections using the compose file, and then uncomment it back and restart the Node-RED container!
 
-PROPER PREPARATION AND PACKAGING OF THE HumAIne NODE-RED CONTAINER TO BE ADDED LATER, based on the development notes!
-
 For the integration, the OpenAPI files that are used to generate the API clients are kept in the repository as reference, in the `node-red/openapi_integration` directory.
 THERE ARE TWO APPROACHES FOR API INTEGRATION, BASED ON OPENAPI SPECS, TO BE EVALUATED DURING IMPLEMENTATION, AND THE BEST ONE TO BE USED IN THE FINAL VERSION!
 
-## To initialize Node-RED and run it properly
+### Initialize Node-RED and run it properly manually
 
 Steps to initialize the Node-RED container and run it properly, for development, in the current state:
 
@@ -31,8 +36,6 @@ Steps to initialize the Node-RED container and run it properly, for development,
     npm pack
     ```
 
-    NOTE: If the Swagger codegen approach is not used, the client code for HAIC and KubeFlow will be generated using the openapi-typescript-codegen npm package, and the steps for that are to be followed, and the corresponding steps here will be removed!
-
 3. Use bash into the container and do the following to install dependencies of Node-RED
 
     ```bash
@@ -42,7 +45,7 @@ Steps to initialize the Node-RED container and run it properly, for development,
 
 4. Restart the Node-RED container, after making sure that the `example.*` files are copied to the same directory without the `example.` prefix!
 
-## Generate Client Code from OpenAPI Specifications using Swagger Codegen
+### Generate Client Code from OpenAPI Specifications using Swagger Codegen
 
 1. Use an external tool, swagger-codegen CLI (or the web version included in swagger editor), to generate the client code for the APIs of HAIC and KubeFlow. This step is not part of the Node-RED container creation. Instead the generated client code is included in the repository. This step is only to be used in development. The type of output selected for swagger codegen is `typescript-axios`. The generated client code is included in the `human_ai_benchmark_suite` and `kubeflow_pipelines_api` directories.
 

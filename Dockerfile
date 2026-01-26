@@ -1,10 +1,11 @@
-FROM nodered/node-red
+FROM nodered/node-red:4.1.3-20
 
 WORKDIR /data
 
 
 # Copy all files that are required
 COPY package.json .
+COPY package-lock.json .
 COPY example.settings.js ./settings.js
 COPY flows.json .
 COPY node-red-contrib-custom-icons/ ./node-red-contrib-custom-icons/
@@ -42,8 +43,8 @@ RUN npm pack
 # Return to main data directory
 WORKDIR /data
 
-# Install all dependencies including custom packages
-RUN npm install
+# Install all dependencies including custom packages, but without dev dependencies
+RUN npm install --production
 
 # Set ownership and user
 USER root

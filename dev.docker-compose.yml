@@ -1,6 +1,6 @@
 services:
   dev-humaine-node-red:
-    image: nodered/node-red
+    image: nodered/node-red:4.1.3-20
     container_name: dev-humaine-node-red
     ports:
       - "1880:1880"

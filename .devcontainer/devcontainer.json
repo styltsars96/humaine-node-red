@@ -1,0 +1,33 @@
+{
+    "name": "HumAIne Node-Red",
+    "dockerComposeFile": "../dev.docker-compose.yml",
+    "service": "dev-humaine-node-red",
+    "workspaceFolder": "/data",
+    "remoteUser": "node-red",
+    "onCreateCommand": ".devcontainer/devcontainer_setup.sh",
+    "postCreateCommand": "echo 'Setup complete'",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "saoudrizwan.claude-dev",
+                "Gydunhn.typescript-essentials",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "usernamehw.errorlens",
+                "eamodio.gitlens",
+                "formulahendry.vscode-node-red",
+                "streetsidesoftware.code-spell-checker",
+                "timonwong.shellcheck",
+                "mkhl.shfmt",
+                "DavidAnson.vscode-markdownlint",
+                "redhat.vscode-yaml",
+                "christian-kohler.npm-intellisense",
+                "mhutchie.git-graph",
+                "ms-azuretools.vscode-containers"
+            ],
+            "settings": {
+                "chat.disableAIFeatures": true
+            }
+        }
+    }
+}

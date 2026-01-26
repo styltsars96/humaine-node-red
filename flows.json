@@ -79,8 +79,8 @@
         "category": "HumAIne HAIC Benchmark Suite",
         "in": [
             {
-                "x": 60,
-                "y": 60,
+                "x": 100,
+                "y": 40,
                 "wires": [
                     {
                         "id": "f382319ee574b271"
@@ -90,7 +90,7 @@
         ],
         "out": [
             {
-                "x": 460,
+                "x": 620,
                 "y": 40,
                 "wires": [
                     {
@@ -100,7 +100,7 @@
                 ]
             },
             {
-                "x": 390,
+                "x": 570,
                 "y": 100,
                 "wires": [
                     {
@@ -562,8 +562,8 @@
         "category": "HumAIne HAIC Benchmark Suite",
         "in": [
             {
-                "x": 60,
-                "y": 60,
+                "x": 120,
+                "y": 40,
                 "wires": [
                     {
                         "id": "8b23153116a8e27f"
@@ -573,7 +573,7 @@
         ],
         "out": [
             {
-                "x": 540,
+                "x": 640,
                 "y": 40,
                 "wires": [
                     {
@@ -583,8 +583,8 @@
                 ]
             },
             {
-                "x": 510,
-                "y": 100,
+                "x": 610,
+                "y": 120,
                 "wires": [
                     {
                         "id": "cfbf9857f9fb93cb",
@@ -1254,8 +1254,8 @@
                 "module": "human_ai_benchmark_suite"
             }
         ],
-        "x": 180,
-        "y": 60,
+        "x": 340,
+        "y": 40,
         "wires": [
             [
                 "e9e39ea536989380"
@@ -1275,8 +1275,8 @@
         "initialize": "",
         "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nconst useGlobally = context.get(\"useGlobally\");\n\nif (useGlobally) {\n    global.set(\"HaicApiClientConfiguration\", undefined);\n} else {\n    flow.set(\"$parent.HaicApiClientConfiguration\", undefined);\n}",
         "libs": [],
-        "x": 240,
-        "y": 180,
+        "x": 340,
+        "y": 140,
         "wires": [
             [
                 "022fdfee8da92096"
@@ -1296,8 +1296,8 @@
         "initialize": "",
         "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nconst useGlobally = context.get(\"useGlobally\");\n\nif (useGlobally) {\n    global.set(\"HaicApiClientUtils\", undefined);\n} else {\n    flow.set(\"$parent.HaicApiClientUtils\", undefined);\n}",
         "libs": [],
-        "x": 220,
-        "y": 260,
+        "x": 320,
+        "y": 220,
         "wires": [
             [
                 "5718cb282cf1b5a0"
@@ -1321,8 +1321,8 @@
                 "module": "human_ai_benchmark_suite"
             }
         ],
-        "x": 230,
-        "y": 360,
+        "x": 330,
+        "y": 300,
         "wires": []
     },
     {
@@ -1856,7 +1856,7 @@
                 "module": "human_ai_benchmark_suite"
             }
         ],
-        "x": 310,
+        "x": 430,
         "y": 60,
         "wires": [
             [],
@@ -1906,7 +1906,7 @@
             }
         ],
         "additionalProperties": "true",
-        "x": 150,
+        "x": 270,
         "y": 60,
         "wires": [
             [
@@ -1921,7 +1921,7 @@
         "name": "",
         "scope": null,
         "uncaught": false,
-        "x": 160,
+        "x": 240,
         "y": 140,
         "wires": [
             []
@@ -2764,7 +2764,7 @@
                 "type": "num"
             }
         ],
-        "x": 370,
+        "x": 350,
         "y": 440,
         "wires": [
             [
