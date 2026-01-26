@@ -29,22 +29,21 @@ export const LogsApiAxiosParamCreator = function (configuration?: Configuration)
          * 
          * @summary Get Download Url
          * @param {any} configId 
-         * @param {any} logName 
+         * @param {any} objectKey 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet: async (configId: any, logName: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getDownloadUrlApiV1LogsDownloadConfigIdGet: async (configId: any, objectKey: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'configId' is not null or undefined
             if (configId === null || configId === undefined) {
-                throw new RequiredError('configId','Required parameter configId was null or undefined when calling getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet.');
+                throw new RequiredError('configId','Required parameter configId was null or undefined when calling getDownloadUrlApiV1LogsDownloadConfigIdGet.');
             }
-            // verify required parameter 'logName' is not null or undefined
-            if (logName === null || logName === undefined) {
-                throw new RequiredError('logName','Required parameter logName was null or undefined when calling getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet.');
+            // verify required parameter 'objectKey' is not null or undefined
+            if (objectKey === null || objectKey === undefined) {
+                throw new RequiredError('objectKey','Required parameter objectKey was null or undefined when calling getDownloadUrlApiV1LogsDownloadConfigIdGet.');
             }
-            const localVarPath = `/api/v1/logs/download/{config_id}/{log_name}`
-                .replace(`{${"config_id"}}`, encodeURIComponent(String(configId)))
-                .replace(`{${"log_name"}}`, encodeURIComponent(String(logName)));
+            const localVarPath = `/api/v1/logs/download/{config_id}`
+                .replace(`{${"config_id"}}`, encodeURIComponent(String(configId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -54,6 +53,10 @@ export const LogsApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
+
+            if (objectKey !== undefined) {
+                localVarQueryParameter['object_key'] = objectKey;
+            }
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -73,15 +76,15 @@ export const LogsApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @summary Get Logs
+         * @summary List Logs
          * @param {any} configId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getLogsApiV1LogsConfigIdGet: async (configId: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        listLogsApiV1LogsConfigIdGet: async (configId: any, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'configId' is not null or undefined
             if (configId === null || configId === undefined) {
-                throw new RequiredError('configId','Required parameter configId was null or undefined when calling getLogsApiV1LogsConfigIdGet.');
+                throw new RequiredError('configId','Required parameter configId was null or undefined when calling listLogsApiV1LogsConfigIdGet.');
             }
             const localVarPath = `/api/v1/logs/{config_id}`
                 .replace(`{${"config_id"}}`, encodeURIComponent(String(configId)));
@@ -112,7 +115,7 @@ export const LogsApiAxiosParamCreator = function (configuration?: Configuration)
             };
         },
         /**
-         * Accepts JSON directly (no file), computes derived KPIs, stores both JSON and *.derived.json in MinIO, updates EvaluationConfig.minio_path, and returns the derived block.
+         * External services send one session log here. We append it to the aggregated log file in MinIO (config.minio_path). If it's the first log, we create that file. We also create a LogEntry row and return derived KPIs for this session.
          * @summary Register Log
          * @param {LogSchema} body 
          * @param {any} configurationId Evaluation configuration id
@@ -278,12 +281,12 @@ export const LogsApiFp = function(configuration?: Configuration) {
          * 
          * @summary Get Download Url
          * @param {any} configId 
-         * @param {any} logName 
+         * @param {any} objectKey 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet(configId: any, logName: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
-            const localVarAxiosArgs = await LogsApiAxiosParamCreator(configuration).getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet(configId, logName, options);
+        async getDownloadUrlApiV1LogsDownloadConfigIdGet(configId: any, objectKey: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
+            const localVarAxiosArgs = await LogsApiAxiosParamCreator(configuration).getDownloadUrlApiV1LogsDownloadConfigIdGet(configId, objectKey, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -291,20 +294,20 @@ export const LogsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Get Logs
+         * @summary List Logs
          * @param {any} configId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLogsApiV1LogsConfigIdGet(configId: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
-            const localVarAxiosArgs = await LogsApiAxiosParamCreator(configuration).getLogsApiV1LogsConfigIdGet(configId, options);
+        async listLogsApiV1LogsConfigIdGet(configId: any, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
+            const localVarAxiosArgs = await LogsApiAxiosParamCreator(configuration).listLogsApiV1LogsConfigIdGet(configId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
             };
         },
         /**
-         * Accepts JSON directly (no file), computes derived KPIs, stores both JSON and *.derived.json in MinIO, updates EvaluationConfig.minio_path, and returns the derived block.
+         * External services send one session log here. We append it to the aggregated log file in MinIO (config.minio_path). If it's the first log, we create that file. We also create a LogEntry row and return derived KPIs for this session.
          * @summary Register Log
          * @param {LogSchema} body 
          * @param {any} configurationId Evaluation configuration id
@@ -361,25 +364,25 @@ export const LogsApiFactory = function (configuration?: Configuration, basePath?
          * 
          * @summary Get Download Url
          * @param {any} configId 
-         * @param {any} logName 
+         * @param {any} objectKey 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet(configId: any, logName: any, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
-            return LogsApiFp(configuration).getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet(configId, logName, options).then((request) => request(axios, basePath));
+        async getDownloadUrlApiV1LogsDownloadConfigIdGet(configId: any, objectKey: any, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
+            return LogsApiFp(configuration).getDownloadUrlApiV1LogsDownloadConfigIdGet(configId, objectKey, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @summary Get Logs
+         * @summary List Logs
          * @param {any} configId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getLogsApiV1LogsConfigIdGet(configId: any, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
-            return LogsApiFp(configuration).getLogsApiV1LogsConfigIdGet(configId, options).then((request) => request(axios, basePath));
+        async listLogsApiV1LogsConfigIdGet(configId: any, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
+            return LogsApiFp(configuration).listLogsApiV1LogsConfigIdGet(configId, options).then((request) => request(axios, basePath));
         },
         /**
-         * Accepts JSON directly (no file), computes derived KPIs, stores both JSON and *.derived.json in MinIO, updates EvaluationConfig.minio_path, and returns the derived block.
+         * External services send one session log here. We append it to the aggregated log file in MinIO (config.minio_path). If it's the first log, we create that file. We also create a LogEntry row and return derived KPIs for this session.
          * @summary Register Log
          * @param {LogSchema} body 
          * @param {any} configurationId Evaluation configuration id
@@ -425,27 +428,27 @@ export class LogsApi extends BaseAPI {
      * 
      * @summary Get Download Url
      * @param {any} configId 
-     * @param {any} logName 
+     * @param {any} objectKey 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LogsApi
      */
-    public async getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet(configId: any, logName: any, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
-        return LogsApiFp(this.configuration).getDownloadUrlApiV1LogsDownloadConfigIdLogNameGet(configId, logName, options).then((request) => request(this.axios, this.basePath));
+    public async getDownloadUrlApiV1LogsDownloadConfigIdGet(configId: any, objectKey: any, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
+        return LogsApiFp(this.configuration).getDownloadUrlApiV1LogsDownloadConfigIdGet(configId, objectKey, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @summary Get Logs
+     * @summary List Logs
      * @param {any} configId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof LogsApi
      */
-    public async getLogsApiV1LogsConfigIdGet(configId: any, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
-        return LogsApiFp(this.configuration).getLogsApiV1LogsConfigIdGet(configId, options).then((request) => request(this.axios, this.basePath));
+    public async listLogsApiV1LogsConfigIdGet(configId: any, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
+        return LogsApiFp(this.configuration).listLogsApiV1LogsConfigIdGet(configId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
-     * Accepts JSON directly (no file), computes derived KPIs, stores both JSON and *.derived.json in MinIO, updates EvaluationConfig.minio_path, and returns the derived block.
+     * External services send one session log here. We append it to the aggregated log file in MinIO (config.minio_path). If it's the first log, we create that file. We also create a LogEntry row and return derived KPIs for this session.
      * @summary Register Log
      * @param {LogSchema} body 
      * @param {any} configurationId Evaluation configuration id

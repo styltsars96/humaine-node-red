@@ -4,5 +4,8 @@ services:
     container_name: humaine-node-red
     ports:
       - "1880:1880"
+    volumes:
+      - ./flows.json:/data/flows.json
+      - ./settings.js:/data/settings.js
     environment:
       TZ: "Europe/Athens"

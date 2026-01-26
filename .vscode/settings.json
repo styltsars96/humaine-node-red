@@ -9,7 +9,9 @@
     "cSpell.words": [
         "codegen",
         "haic",
-        "kubeflow"
+        "humaine",
+        "kubeflow",
+        "nodered"
     ],
     "ruff.enable": false,
     "python.analysis.extraPaths": [

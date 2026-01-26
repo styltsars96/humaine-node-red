@@ -184,3 +184,6 @@ flows_cred.json
 *.backup
 settings.js
 .config.runtime.json
+
+# Local work
+*.temp.*

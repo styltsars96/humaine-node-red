@@ -1,0 +1,10 @@
+services:
+  dev-humaine-node-red:
+    image: nodered/node-red
+    container_name: dev-humaine-node-red
+    ports:
+      - "1880:1880"
+    volumes:
+      - .:/data
+    environment:
+      TZ: "Europe/Athens"
