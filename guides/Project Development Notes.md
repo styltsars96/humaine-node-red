@@ -110,3 +110,17 @@ npm pack
 cd /data/
 npm install /data/node-red-contrib-custom-icons/node-red-contrib-custom-icons-1.0.0.tgz
 ```
+
+## Create the scaffolding for a new Node-RED node written in TypeScript quickly
+
+Create the new node easily **within the devcontainer** environment by just running:
+
+```bash
+cd /data/
+./scripts/dev/new_node-red_node.sh <node_name> <node_type 'blank' or 'config'>
+```
+
+Also make sure to consult the existing example in node-red-node-typescript-starter. This way you can see how to properly structure your new node in TypeScript.
+
+TODO: How to test nodes individually without needing the Node-RED editor? (using `__tests__` as example)
+TODO: How to properly package the node and see it in Node-RED? Maybe do it also via script to install the new version

@@ -1,13 +1,13 @@
 import { NodeInitializer, NodeAPI } from "node-red";
 import {
-  AIEnvironmentConfigNode,
-  AIEnvironmentConfigNodeDef,
+  AiEnvironmentConfigNode,
+  AiEnvironmentConfigNodeDef,
 } from "./modules/types";
 
-const nodeInit: NodeInitializer = (RED: NodeAPI) => {
-  function AIConfigNodeConstructor(
-    this: AIEnvironmentConfigNode,
-    config: AIEnvironmentConfigNodeDef,
+const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
+  function AiEnvironmentConfigNodeConstructor(
+    this: AiEnvironmentConfigNode,
+    config: AiEnvironmentConfigNodeDef,
   ) {
     RED.nodes.createNode(this, config);
     const node = this;
@@ -16,9 +16,9 @@ const nodeInit: NodeInitializer = (RED: NodeAPI) => {
       try {
         // TODO: CHANGE COMPLETELY, this is only a scaffold
         // Get API credentials from environment
-        const apiKey = RED.settings.get("API_KEY") || process.env.API_KEY;
+        const apiKey = RED.settings.get("TEST_API_KEY") || process.env.API_KEY;
         const baseUrl =
-          RED.settings.get("API_BASE_URL") || "https://api.example.com";
+          RED.settings.get("TEST_API_BASE_URL") || "https://api.example.com";
 
         // Make authenticated request to get AI configuration
         const response = await fetch(`${baseUrl}/ai/config`, {
@@ -40,8 +40,10 @@ const nodeInit: NodeInitializer = (RED: NodeAPI) => {
       }
     });
   }
-
-  RED.nodes.registerType("ai-environment-config-node", AIConfigNodeConstructor);
+  RED.nodes.registerType(
+    "ai-environment-config",
+    AiEnvironmentConfigNodeConstructor,
+  );
 };
 
 export = nodeInit;

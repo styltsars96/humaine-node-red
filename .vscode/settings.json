@@ -2,10 +2,22 @@
     "cSpell.words": [
         "asynciterable",
         "codegen",
+        "dotenv",
         "envman",
+        "eslintcache",
         "haic",
         "humaine",
+        "jscoverage",
+        "jspm",
         "kubeflow",
-        "nodered"
+        "nodered",
+        "Nuxt",
+        "pids",
+        "stylelintcache",
+        "Sveltekit",
+        "Vite",
+        "vitepress",
+        "vuepress",
+        "wscript"
     ],
 }

@@ -185,5 +185,11 @@ flows_cred.json
 settings.js
 .config.runtime.json
 
+# Local Node-RED TypeScript custom node scaffolding project
+node-red-node-typescript-starter/*
+node-red-node-typescript-starter/
+
 # Local work
 *.temp.*
+*.tar.xz
+*.tar.gz

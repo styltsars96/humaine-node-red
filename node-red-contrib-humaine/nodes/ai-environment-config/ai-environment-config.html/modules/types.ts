@@ -1,7 +1,5 @@
 import { EditorNodeProperties } from "node-red";
-// import { TransformTextOptions } from "../../shared/types";
+import { AiEnvironmentConfigOptions } from "../../shared/types";
 
-// TODO: Node properties go here
-export interface AIEnvironmentConfigNodeProperties extends EditorNodeProperties {}
-//   extends EditorNodeProperties,
-//     TransformTextOptions {}
+export interface AiEnvironmentConfigEditorNodeProperties
+  extends EditorNodeProperties, AiEnvironmentConfigOptions {}
