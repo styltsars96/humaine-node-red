@@ -20,7 +20,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "node-red": "^4.1.3",
-    "human_ai_benchmark_suite": "file:human_ai_benchmark_suite/human_ai_benchmark_suite-1.0.0.tgz"
+    "human_ai_benchmark_suite": "file:../human_ai_benchmark_suite/human_ai_benchmark_suite-1.0.0.tgz"
   },
   "devDependencies": {
         "@types/node": "^25.0.10",

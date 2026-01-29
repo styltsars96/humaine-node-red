@@ -19,7 +19,8 @@
         "node-red-contrib-mp-function": "~1.1.1",
         "node-red-contrib-object-validation": "^1.0.8",
         "node-red-contrib-python-function": "0.0.5",
-        "node-red-contrib-ts": "^1.2.6"
+        "node-red-contrib-ts": "^1.2.6",
+        "node-red-contrib-humaine": "file:node-red-contrib-humaine/node-red-contrib-humaine-1.0.0.tgz"
     },
     "devDependencies": {
         "@types/node": "^25.0.10",
