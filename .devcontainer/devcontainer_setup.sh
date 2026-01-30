@@ -35,6 +35,8 @@ wget "https://github.com/koalaman/shellcheck/releases/download/v0.11.0/shellchec
 tar -xf "shellcheck-v0.11.0.linux.x86_64.tar.xz"
 cp shellcheck-v0.11.0/shellcheck /usr/src/node-red/.local/bin/
 echo 'alias shellcheck="/usr/src/node-red/.local/bin/shellcheck"'
+# openapi-typescript-codegen
+npm install -D openapi-typescript-codegen
 
 # Have all new executables in path
 # shellcheck disable=SC2016

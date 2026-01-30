@@ -45,9 +45,23 @@ Steps to initialize the Node-RED container and run it properly, for development,
 
 4. Restart the Node-RED container, after making sure that the `example.*` files are copied to the same directory without the `example.` prefix!
 
-### Generate Client Code from OpenAPI Specifications using Swagger Codegen
+### Generate Client Code from OpenAPI Specifications (used in the new NR nodes written in TypeScript)
 
-1. Use an external tool, swagger-codegen CLI (or the web version included in swagger editor), to generate the client code for the APIs of HAIC and KubeFlow. This step is not part of the Node-RED container creation. Instead the generated client code is included in the repository. This step is only to be used in development. The type of output selected for swagger codegen is `typescript-axios`. The generated client code is included in the `human_ai_benchmark_suite` and `kubeflow_pipelines_api` directories.
+Make sure the development environment is properly set up.
+Make sure the files in the [`openapi_integration`](../openapi_integration/) directory are up to date with the version of the API to be used.
+Then run the following command from the root directory of the project (`/data/` when in dev container):
+
+```bash
+./scripts/dev/regenerate_ts_api_clients.sh
+```
+
+The files for the client code within teh custom node directory will be updated based on the changes in the openapi yaml files.
+For each client TS library created, `core`, `models`, and `services` are generated to be used directly as an API client. The `schemas` are generated based on `models` by ts-to-zod!
+The `models` have all the definitions of the API, while in order to perform validation with zod for any of the outputs of the API, we need to use the zod `schemas`.
+
+### Generate Client Code from OpenAPI Specifications using Swagger Codegen (used for old NR Subflow-based nodes)
+
+1. Use an external tool, [swagger-codegen CLI](https://github.com/swagger-api/swagger-codegen/releases) (get the latest v3.x.x version), to generate the client code for the APIs of HAIC and KubeFlow. This step is not part of the Node-RED container creation. Instead the generated client code is included in the repository. This step is only to be used in development. The type of output selected for swagger codegen is `typescript-axios`. The generated client code is included in the `human_ai_benchmark_suite` and `kubeflow_pipelines_api` directories.
 
     - In order to generate the client code, use the following command in the  directory where the codegen itself is installed:
 
@@ -71,9 +85,10 @@ Steps to initialize the Node-RED container and run it properly, for development,
     npm install
     npm run build
     npm pack
+    cd /data/node-red-contrib-humaine
     cd /data
     npm install /data/human_ai_benchmark_suite/human_ai_benchmark_suite-1.0.0.tgz
-    # Repeat the same for KubeFlow
+    # Repeat similar procedure for KubeFlow
     cd /data/kubeflow_pipelines_api
     npm install
     npm run build
@@ -86,7 +101,7 @@ Steps to initialize the Node-RED container and run it properly, for development,
 
 ## Notes for Node-RED usage of TypeScript
 
-IF TYPESCRIPT IS TO BE USED IN THE FINAL NODE-RED INTEGRATIONS FOR HumAIne, HERE ARE SOME OPTIONS TO CONSIDER:
+Here are the usage options:
 
 1. Using `node-red-contrib-typescript-node`
 This library allows you to write Node-RED nodes using TypeScript. It provides a wrapper around Node-RED's core functionality, enabling you to extend the `Node` class and use TypeScript type definitions. However, it is still in its early stages, so caution is advised when using it.
@@ -118,6 +133,31 @@ Create the new node easily **within the devcontainer** environment by just runni
 ```bash
 cd /data/
 ./scripts/dev/new_node-red_node.sh <node_name> <node_type 'blank' or 'config'>
+```
+
+Then, **in order to include the new node in the editor, it is required the the following seciton is updated accordingly in the `package.json` file**:
+
+```json
+  "node-red": {
+    "nodes": {
+      "transform-text": "./dist/nodes/transform-text/transform-text.js",
+      "test-node-humaine": "./dist/nodes/test-node-humaine/test-node-humaine.js",
+      "test-node-humaine-config": "./dist/nodes/test-node-humaine-config/test-node-humaine-config.js",
+      "ai-environment-config-node": "./dist/nodes/ai-environment-config-node/ai-environment-config-node.js",
+      "ai-environment-config": "./dist/nodes/ai-environment-config/ai-environment-config.js",
+      "haic-config": "./dist/nodes/haic-config/haic-config.js"
+    }
+  },
+```
+
+And in order to use it, remove the previous package, and do the following:
+
+```bash
+cd node-red-contrib-humaine
+npm install
+npm pack
+cd ..
+npm install file:node-red-contrib-humaine/node-red-contrib-humaine-1.0.0.tgz 
 ```
 
 Also make sure to consult the existing example in node-red-node-typescript-starter. This way you can see how to properly structure your new node in TypeScript.

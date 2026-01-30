@@ -1,0 +1,47 @@
+/* generated using openapi-typescript-codegen -- do not edit */
+/* istanbul ignore file */
+/* tslint:disable */
+/* eslint-disable */
+export type TAMSUSResponses = {
+    /**
+     * I think that I would like to use this system frequently.
+     */
+    sus_q1: number;
+    /**
+     * I found the system unnecessarily complex.
+     */
+    sus_q2: number;
+    /**
+     * I thought the system was easy to use.
+     */
+    sus_q3: number;
+    /**
+     * I think that I would need the support of a technical person to be able to use this system.
+     */
+    sus_q4: number;
+    /**
+     * I found the various functions in this system were well integrated.
+     */
+    sus_q5: number;
+    /**
+     * I thought there was too much inconsistency in this system.
+     */
+    sus_q6: number;
+    /**
+     * I would imagine that most people would learn to use this system very quickly.
+     */
+    sus_q7: number;
+    /**
+     * I found the system to be very difficult to use.
+     */
+    sus_q8: number;
+    /**
+     * I felt very confident using the system.
+     */
+    sus_q9: number;
+    /**
+     * I needed to learn many things before I could get going with this system.
+     */
+    sus_q10: number;
+};
+

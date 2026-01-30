@@ -1,8 +1,14 @@
 import { NodeInitializer, NodeAPI } from "node-red";
+import { z } from "zod";
+import { EnvironmentCatalogService } from "haic_client";
+import { envMetaSchema } from "haic_client/schemas/EnvMeta";
+import { getRequestBody } from "../../haic_client/core/request";
 import {
   AiEnvironmentConfigNode,
   AiEnvironmentConfigNodeDef,
 } from "./modules/types";
+
+const envsMetaListSchema = z.array(envMetaSchema);
 
 const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
   function AiEnvironmentConfigNodeConstructor(
@@ -13,31 +19,27 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
     const node = this;
 
     node.on("input", async function (msg) {
+      let response;
       try {
-        // TODO: CHANGE COMPLETELY, this is only a scaffold
-        // Get API credentials from environment
-        const apiKey = RED.settings.get("TEST_API_KEY") || process.env.API_KEY;
-        const baseUrl =
-          RED.settings.get("TEST_API_BASE_URL") || "https://api.example.com";
-
-        // Make authenticated request to get AI configuration
-        const response = await fetch(`${baseUrl}/ai/config`, {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            "Content-Type": "application/json",
-          },
-        });
-
-        const configData = await response.json();
-
-        // Store parameters in flow context
-        node.context().flow.set("aiParameters", configData);
-
-        msg.payload = configData;
-        node.send(msg);
+        response = await EnvironmentCatalogService.listEnvsApiV1EnvsGet();
       } catch (error: any) {
         node.error("Failed to fetch AI configuration: " + error.message);
       }
+
+      try {
+        envsMetaListSchema.parse(response);
+        msg.payload = response;
+      } catch (error: any) {
+        node.error(
+          `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(response, null, 4)}`,
+        );
+      }
+
+      node.send(msg);
+    });
+
+    node.on("close", function () {
+      // tidy up
     });
   }
   RED.nodes.registerType(

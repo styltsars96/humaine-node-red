@@ -20,11 +20,20 @@
   "dependencies": {
     "axios": "^0.21.1",
     "node-red": "^4.1.3",
-    "human_ai_benchmark_suite": "file:../human_ai_benchmark_suite/human_ai_benchmark_suite-1.0.0.tgz"
+    "zod": "^4.3.6"
   },
   "devDependencies": {
-        "@types/node": "^25.0.10",
-        "@types/node-red": "^1.3.5",
-        "typescript": "^5.9.3"
-  }
+    "@types/node": "^25.0.10",
+    "@types/node-red": "^1.3.5",
+    "ts-to-zod": "^5.1.0",
+    "typescript": "^5.9.3"
+  },
+  "node-red": {
+        "version": ">=3.0.0",
+        "nodes": {
+            "haic-config": "./dist/nodes/haic-config/haic-config.js",
+            "ai-environment-config": "./dist/nodes/ai-environment-config/ai-environment-config.js"
+        },
+        "icons": "icons"
+    }
 }
