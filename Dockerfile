@@ -1,3 +1,4 @@
+# TODO: Separate build and runtime, use a different base which only has the node-modules!
 FROM nodered/node-red:4.1.3-20
 
 WORKDIR /data
@@ -35,7 +36,9 @@ RUN npm run build
 RUN npm pack
 
 # TODO: Install build and pack node-red-contrib-humaine
-# WORKDIR /data/node-red-contrib-humaine
+WORKDIR /data/node-red-contrib-humaine
+RUN npm install yarn
+# TODO: Add the final version of the build process, with yarn this time
 # RUN npm install
 # RUN npm run build
 # RUN npm pack
@@ -45,6 +48,8 @@ WORKDIR /data
 
 # Install all dependencies including custom packages, but without dev dependencies
 RUN npm install --production
+
+# TODO: Copy from build phase to runtime phase? Start anew and copy node_modules and artifacts
 
 # Set ownership and user
 USER root

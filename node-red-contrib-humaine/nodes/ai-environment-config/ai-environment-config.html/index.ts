@@ -13,10 +13,10 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
     },
     inputs: 1,
     outputs: 1,
-    icon: "haic_icon_small.svg",
-    paletteLabel: "ai environment config",
+    icon: "haic.svg",
+    paletteLabel: "AI Environment Config",
     label: function () {
-      return this.name || "ai environment config";
+      return this.name || "AI Environment Config";
     },
   },
 );

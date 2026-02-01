@@ -40,7 +40,7 @@ npm install -D openapi-typescript-codegen
 
 # Have all new executables in path
 # shellcheck disable=SC2016
-echo 'export PATH=/usr/src/node-red/.local/bin/:$PATH' >>~/.bashrc
+echo 'export PATH=/usr/src/node-red/.local/bin/:/data/node_modules/.bin:$PATH' >>~/.bashrc
 
 cd /data/ || exit
 # node-red-node-typescript-starter to be able to quickly set up the scaffold for a typescript node-red node
@@ -52,3 +52,8 @@ rm package-lock.json
 yarn install
 
 echo "Devcontainer setup completed successfully"
+# shellcheck disable=SC1090
+source ~/.bashrc
+echo "Starting development Node-Red instance at 1881"
+pm2 start node-red --name "node-red-dev-instance" -- -p 1881 --userDir /data
+echo "Secondary dev node-red instance started! To view the logs of the node-red-dev-instance do 'pm2 logs node-red-dev-instance' and to restart 'pm2 restart node-red-dev-instance'!"

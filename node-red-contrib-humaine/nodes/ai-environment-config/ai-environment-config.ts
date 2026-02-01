@@ -1,8 +1,7 @@
 import { NodeInitializer, NodeAPI } from "node-red";
 import { z } from "zod";
-import { EnvironmentCatalogService } from "haic_client";
-import { envMetaSchema } from "haic_client/schemas/EnvMeta";
-import { getRequestBody } from "../../haic_client/core/request";
+import { EnvironmentCatalogService } from "../../haic_client";
+import { envMetaSchema } from "../../haic_client/schemas/EnvMeta";
 import {
   AiEnvironmentConfigNode,
   AiEnvironmentConfigNodeDef,
@@ -24,6 +23,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         response = await EnvironmentCatalogService.listEnvsApiV1EnvsGet();
       } catch (error: any) {
         node.error("Failed to fetch AI configuration: " + error.message);
+        return;
       }
 
       try {
@@ -33,6 +33,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         node.error(
           `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(response, null, 4)}`,
         );
+        return;
       }
 
       node.send(msg);

@@ -29,7 +29,7 @@
     "esModuleInterop": true,
     "preserveConstEnums": true,
     "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "declaration": true,
 
     "typeRoots": ["./types", "./node_modules/@types"]

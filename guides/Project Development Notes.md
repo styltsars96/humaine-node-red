@@ -135,7 +135,7 @@ cd /data/
 ./scripts/dev/new_node-red_node.sh <node_name> <node_type 'blank' or 'config'>
 ```
 
-Then, **in order to include the new node in the editor, it is required the the following seciton is updated accordingly in the `package.json` file**:
+Then, **in order to include the new node in the editor, it is required the the following section is updated accordingly in the `package.json` file**. Example:
 
 ```json
   "node-red": {
@@ -150,17 +150,31 @@ Then, **in order to include the new node in the editor, it is required the the f
   },
 ```
 
+## Use the new custom Node-RED node written in TypeScript
+
 And in order to use it, remove the previous package, and do the following:
 
 ```bash
 cd node-red-contrib-humaine
 npm install
+yarn build
 npm pack
 cd ..
-npm install file:node-red-contrib-humaine/node-red-contrib-humaine-1.0.0.tgz 
+npm install file:node-red-contrib-humaine/node-red-contrib-humaine-1.0.0.tgz # The specific version
 ```
 
-Also make sure to consult the existing example in node-red-node-typescript-starter. This way you can see how to properly structure your new node in TypeScript.
+### Build, install and use the custom nodes immediately in dev container
 
-TODO: How to test nodes individually without needing the Node-RED editor? (using `__tests__` as example)
-TODO: How to properly package the node and see it in Node-RED? Maybe do it also via script to install the new version
+In the dev container setup, there is a secondary instance of node-red running via pm2, available on port 1881.
+To immediately use the custom node, a.k.a. the `node-red-contrib-humaine` package, along with anything else that comes with it,
+in the Node-RED flow editor, just run from a bash shell within the dev container:
+
+```bash
+./scripts/dev/rebuild_humaine_nodes.sh
+```
+
+While the main instance of node-red is running on port 1880 will not have any changes unless the whole container is restarted,
+the secondary instance, named node-red-dev-instance in pm2, on port 1881, will have all changes available.
+Just make sure that changes to flows do not happen in both instances at the same time, use only one instance at a time!
+
+TODO: How to test nodes individually without needing the Node-RED editor? (using `__tests__` as example). Requires jest

@@ -1037,5 +1037,35 @@
                 "file": "/data/node_modules/node-red-contrib-ts/dist/typescript.js"
             }
         }
+    },
+    "node-red-contrib-humaine": {
+        "name": "node-red-contrib-humaine",
+        "version": "1.0.0",
+        "local": true,
+        "user": true,
+        "nodes": {
+            "haic-config": {
+                "name": "haic-config",
+                "types": [
+                    "haic-config"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/haic-config/haic-config.js"
+            },
+            "ai-environment-config": {
+                "name": "ai-environment-config",
+                "types": [
+                    "ai-environment-config"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/ai-environment-config/ai-environment-config.js"
+            }
+        }
     }
 }
