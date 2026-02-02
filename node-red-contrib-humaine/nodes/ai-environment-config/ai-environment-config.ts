@@ -1,6 +1,10 @@
 import { NodeInitializer, NodeAPI } from "node-red";
 import { z } from "zod";
-import { EnvironmentCatalogService, OpenAPI } from "../../haic_client";
+import {
+    EnvironmentCatalogService,
+    OpenAPI,
+    ApiError,
+} from "../../haic_client";
 import { envMetaSchema } from "../../haic_client/schemas/EnvMeta";
 import { isHaicConfigNode } from "../shared/helpers";
 import {
@@ -15,7 +19,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         this: AiEnvironmentConfigNode,
         config: AiEnvironmentConfigNodeDef,
     ) {
-        console.log("AiEnvironmentConfigNodeConstructor", config);
+        // console.log("AiEnvironmentConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
         // console.log("Node created", node);
@@ -33,9 +37,11 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 response =
                     await EnvironmentCatalogService.listEnvsApiV1EnvsGet();
             } catch (error: any) {
-                node.error(
-                    "Failed to fetch AI configuration: " + error.message,
-                );
+                if (error instanceof ApiError) {
+                    node.error(
+                        `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
+                    );
+                } else node.error("Failed to fetch AI configuration: " + error);
                 return;
             }
 

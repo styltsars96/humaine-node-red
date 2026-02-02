@@ -8,7 +8,7 @@ const nodeInit = function (RED: NodeAPI): void {
         this: HaicConfigNode,
         config: HaicConfigNodeDef,
     ): void {
-        console.log("HaicConfigNodeConstructor", config);
+        // console.log("HaicConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
         // console.log("Node created", node);
@@ -18,11 +18,12 @@ const nodeInit = function (RED: NodeAPI): void {
         // Set the OpenAPI configuration based on node settings
         if (config.baseUrl !== undefined && config.baseUrl !== "") {
             node.baseUrl = config.baseUrl;
-            OpenAPI.BASE = config.baseUrl;
         } else {
             node.baseUrl = "https://benchmark.humaine-horizon.eu/";
-            OpenAPI.BASE = "https://benchmark.humaine-horizon.eu/";
         }
+
+        node.baseUrl = node.baseUrl.replace(/\/$/, ""); // Remove trailing slash, if exists.
+        OpenAPI.BASE = node.baseUrl;
         if (config.token !== undefined && config.token !== "") {
             node.token = config.token;
             OpenAPI.TOKEN = config.token;
