@@ -13,11 +13,11 @@ cd /data/kubeflow_pipelines_api || exit
 npm install
 npm run build
 npm pack
-# TODO: Add node-red-contrib-humaine once done
-# cd /data/node-red-contrib-humaine  || exit
-# npm install
-# npm run build
-# npm pack
+cd /data/node-red-contrib-humaine || exit
+npm install
+yarn build
+npm pack
+rm -rf dist
 
 cd /data/ || exit
 npm install

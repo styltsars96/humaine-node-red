@@ -1,52 +1,65 @@
 import { NodeInitializer, NodeAPI } from "node-red";
 import { z } from "zod";
-import { EnvironmentCatalogService } from "../../haic_client";
+import { EnvironmentCatalogService, OpenAPI } from "../../haic_client";
 import { envMetaSchema } from "../../haic_client/schemas/EnvMeta";
+import { isHaicConfigNode } from "../shared/helpers";
 import {
-  AiEnvironmentConfigNode,
-  AiEnvironmentConfigNodeDef,
+    AiEnvironmentConfigNode,
+    AiEnvironmentConfigNodeDef,
 } from "./modules/types";
 
 const envsMetaListSchema = z.array(envMetaSchema);
 
 const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
-  function AiEnvironmentConfigNodeConstructor(
-    this: AiEnvironmentConfigNode,
-    config: AiEnvironmentConfigNodeDef,
-  ) {
-    RED.nodes.createNode(this, config);
-    const node = this;
+    function AiEnvironmentConfigNodeConstructor(
+        this: AiEnvironmentConfigNode,
+        config: AiEnvironmentConfigNodeDef,
+    ) {
+        console.log("AiEnvironmentConfigNodeConstructor", config);
+        RED.nodes.createNode(this, config);
+        const node = this;
+        console.log("Node created", node);
 
-    node.on("input", async function (msg) {
-      let response;
-      try {
-        response = await EnvironmentCatalogService.listEnvsApiV1EnvsGet();
-      } catch (error: any) {
-        node.error("Failed to fetch AI configuration: " + error.message);
-        return;
-      }
+        const haic_config_node = RED.nodes.getNode(config.haic_server);
+        if (!isHaicConfigNode(haic_config_node)) {
+            node.warn("HAIC Configuration not set!");
+            return;
+        }
+        Object.assign(OpenAPI, haic_config_node.OpenAPI);
 
-      try {
-        envsMetaListSchema.parse(response);
-        msg.payload = response;
-      } catch (error: any) {
-        node.error(
-          `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(response, null, 4)}`,
-        );
-        return;
-      }
+        node.on("input", async function (msg) {
+            let response;
+            try {
+                response =
+                    await EnvironmentCatalogService.listEnvsApiV1EnvsGet();
+            } catch (error: any) {
+                node.error(
+                    "Failed to fetch AI configuration: " + error.message,
+                );
+                return;
+            }
 
-      node.send(msg);
-    });
+            try {
+                envsMetaListSchema.parse(response);
+                msg.payload = response;
+            } catch (error: any) {
+                node.error(
+                    `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(response, null, 4)}`,
+                );
+                return;
+            }
 
-    node.on("close", function () {
-      // tidy up
-    });
-  }
-  RED.nodes.registerType(
-    "ai-environment-config",
-    AiEnvironmentConfigNodeConstructor,
-  );
+            node.send(msg);
+        });
+
+        node.on("close", function () {
+            // tidy up
+        });
+    }
+    RED.nodes.registerType(
+        "ai-environment-config",
+        AiEnvironmentConfigNodeConstructor,
+    );
 };
 
 export = nodeInit;

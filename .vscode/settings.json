@@ -1,6 +1,7 @@
 {
     "cSpell.words": [
         "asynciterable",
+        "axios",
         "codegen",
         "dotenv",
         "envman",

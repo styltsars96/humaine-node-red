@@ -1238,6 +1238,10 @@
         "wholemsg": "false"
     },
     {
+        "id": "13892724a379a5ca",
+        "type": "haic-config"
+    },
+    {
         "id": "f382319ee574b271",
         "type": "function",
         "z": "6d5f83638870930c",
@@ -4166,11 +4170,11 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 160,
-        "y": 140,
+        "x": 220,
+        "y": 160,
         "wires": [
             [
-                "85bd8849c2ec1722"
+                "2f91d54b81491145"
             ]
         ]
     },
@@ -4186,17 +4190,18 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
-        "y": 180,
+        "x": 620,
+        "y": 160,
         "wires": []
     },
     {
-        "id": "85bd8849c2ec1722",
+        "id": "2f91d54b81491145",
         "type": "ai-environment-config",
         "z": "529d431d13d83865",
         "name": "",
+        "haic_server": "13892724a379a5ca",
         "x": 420,
-        "y": 140,
+        "y": 160,
         "wires": [
             [
                 "977bf3321eb6cdf0"

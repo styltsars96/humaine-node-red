@@ -1,3 +1,3 @@
 export interface AiEnvironmentConfigOptions {
-  // node options
+    haic_server: string;
 }

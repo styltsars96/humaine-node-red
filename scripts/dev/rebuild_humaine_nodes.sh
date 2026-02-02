@@ -13,6 +13,7 @@ build_package() {
 	npm install
 	yarn build
 	npm pack
+	rm -rf dist
 	cd .. || exit
 	echo "Built $NODE_NAME!"
 }

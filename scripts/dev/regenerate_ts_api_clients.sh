@@ -7,7 +7,7 @@ if [ -d "$CUSTOM_NODE_HAIC_CLIENT_DIR" ]; then
 	rm -rf "$CUSTOM_NODE_HAIC_CLIENT_DIR"
 fi
 mkdir -p $CUSTOM_NODE_HAIC_CLIENT_DIR
-npx openapi-typescript-codegen --input /data/openapi_integration/HAIC_OpenAPI.yaml --output $CUSTOM_NODE_HAIC_CLIENT_DIR
+npx openapi-typescript-codegen --input /data/openapi_integration/HAIC_OpenAPI.yaml --output $CUSTOM_NODE_HAIC_CLIENT_DIR --exportSchemas true
 
 # TODO add whatever else is required to be generated!
 
