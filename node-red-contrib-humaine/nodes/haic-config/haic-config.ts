@@ -1,9 +1,9 @@
-import { NodeInitializer, NodeAPI } from "node-red";
+import { NodeAPI } from "node-red";
 import { HaicConfigNode, HaicConfigNodeDef } from "./modules/types";
 import { OpenAPI } from "../../haic_client/core/OpenAPI";
 import { getStringsRecord } from "../shared/helpers";
 
-const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
+const nodeInit = function (RED: NodeAPI): void {
     function HaicConfigNodeConstructor(
         this: HaicConfigNode,
         config: HaicConfigNodeDef,
@@ -11,12 +11,17 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         console.log("HaicConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
-        console.log("Node created", node);
+        // console.log("Node created", node);
+
+        node.name = config.name;
 
         // Set the OpenAPI configuration based on node settings
         if (config.baseUrl !== undefined && config.baseUrl !== "") {
             node.baseUrl = config.baseUrl;
             OpenAPI.BASE = config.baseUrl;
+        } else {
+            node.baseUrl = "https://benchmark.humaine-horizon.eu/";
+            OpenAPI.BASE = "https://benchmark.humaine-horizon.eu/";
         }
         if (config.token !== undefined && config.token !== "") {
             node.token = config.token;
@@ -54,7 +59,6 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
     RED.nodes.registerType("haic-config", HaicConfigNodeConstructor, {
         credentials: {
             token: { type: "password" },
-            username: { type: "text" },
             password: { type: "password" },
         },
     });

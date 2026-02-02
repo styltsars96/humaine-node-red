@@ -1239,7 +1239,12 @@
     },
     {
         "id": "13892724a379a5ca",
-        "type": "haic-config"
+        "type": "haic-config",
+        "name": "Main HAIC",
+        "baseUrl": "https://benchmark.humaine-horizon.eu/",
+        "username": "",
+        "withCredentials": false,
+        "headers": ""
     },
     {
         "id": "f382319ee574b271",
@@ -4198,9 +4203,9 @@
         "id": "2f91d54b81491145",
         "type": "ai-environment-config",
         "z": "529d431d13d83865",
-        "name": "",
+        "name": "test Env",
         "haic_server": "13892724a379a5ca",
-        "x": 420,
+        "x": 400,
         "y": 160,
         "wires": [
             [

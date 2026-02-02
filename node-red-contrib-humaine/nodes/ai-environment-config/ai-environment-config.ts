@@ -18,7 +18,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         console.log("AiEnvironmentConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
-        console.log("Node created", node);
+        // console.log("Node created", node);
 
         const haic_config_node = RED.nodes.getNode(config.haic_server);
         if (!isHaicConfigNode(haic_config_node)) {
