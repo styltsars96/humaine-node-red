@@ -2,6 +2,7 @@ import fs from "fs";
 import * as glob from "glob";
 import path from "path";
 import typescript from "@rollup/plugin-typescript";
+import { nodeResolve } from '@rollup/plugin-node-resolve'; 
 import packageJson from './package.json' with { type: 'json' };
 
 const allNodeTypes = Object.keys(packageJson["node-red"].nodes);
@@ -42,14 +43,18 @@ const htmlBundle = () => {
 
 const makePlugins = (nodeType) => [
   htmlWatch(),
+  nodeResolve({
+    rootDir: path.resolve(__dirname),
+  }),
   typescript({
     lib: ["es5", "es6", "es2020", "esnext.asynciterable", "dom"],
     include: [
+      `haic_client/**/*.ts`,
       `nodes/${nodeType}/${nodeType}.html/**/*.ts`,
       `nodes/${nodeType}/shared/**/*.ts`,
       "nodes/shared/**/*.ts",
     ],
-    target: "es5",
+    target: "es6",
     tsconfig: false,
     noEmitOnError: process.env.ROLLUP_WATCH ? false : true,
   }),

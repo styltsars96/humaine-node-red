@@ -1,14 +1,10 @@
 import { NodeInitializer, NodeAPI } from "node-red";
-import { z } from "zod";
 import { EnvironmentCatalogService, ApiError } from "../../haic_client";
-import { envMetaSchema } from "../../haic_client/schemas/EnvMeta";
 import { isHaicConfigNode } from "../shared/helpers";
 import {
     AiEnvironmentConfigNode,
     AiEnvironmentConfigNodeDef,
 } from "./modules/types";
-
-const envsMetaListSchema = z.array(envMetaSchema);
 
 const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
     function AiEnvironmentConfigNodeConstructor(
@@ -18,6 +14,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         // console.log("AiEnvironmentConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
+        node.aiEnvironmentId = config.aiEnvironmentId;
         // console.log("Node created", node);
 
         const haic_config_node = RED.nodes.getNode(config.haic_server);
@@ -27,27 +24,33 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         }
 
         node.on("input", async function (msg) {
-            let response;
+            let envId;
+            let envBlocks;
+            if (!node.aiEnvironmentId) {
+                node.error("No AI Environment ID found or Selected!!!");
+                return;
+            }
+
             try {
-                response = await EnvironmentCatalogService.listEnvsApiV1EnvsGet(
+                envId = await EnvironmentCatalogService.getEnvApiV1EnvsEnvIdGet(
+                    node.aiEnvironmentId,
                     haic_config_node.OpenAPI,
                 );
+                envBlocks =
+                    await EnvironmentCatalogService.getEnvBlocksApiV1EnvsEnvIdBlocksGet(
+                        node.aiEnvironmentId,
+                        haic_config_node.OpenAPI,
+                    );
+                msg.payload = {
+                    env: envId,
+                    blocks: envBlocks,
+                };
             } catch (error: any) {
                 if (error instanceof ApiError) {
                     node.error(
                         `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
                     );
                 } else node.error("Failed to fetch AI configuration: " + error);
-                return;
-            }
-
-            try {
-                envsMetaListSchema.parse(response);
-                msg.payload = response;
-            } catch (error: any) {
-                node.error(
-                    `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(response, null, 4)}`,
-                );
                 return;
             }
 

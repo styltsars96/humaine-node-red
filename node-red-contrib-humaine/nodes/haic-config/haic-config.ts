@@ -1,9 +1,9 @@
-import { NodeAPI } from "node-red";
+import { NodeAPI, NodeInitializer } from "node-red";
 import { HaicConfigNode, HaicConfigNodeDef } from "./modules/types";
 import { OpenAPI } from "../../haic_client/core/OpenAPI";
 import { getStringsRecord } from "../shared/helpers";
 
-const nodeInit = function (RED: NodeAPI): void {
+const nodeInit: NodeInitializer = function (RED: NodeAPI): void {
     function HaicConfigNodeConstructor(
         this: HaicConfigNode,
         config: HaicConfigNodeDef,
@@ -24,17 +24,8 @@ const nodeInit = function (RED: NodeAPI): void {
 
         node.baseUrl = node.baseUrl.replace(/\/$/, ""); // Remove trailing slash, if exists.
 
-        if (config.token !== undefined && config.token !== "") {
-            node.token = config.token;
-        }
-        if (
-            config.username !== undefined &&
-            config.username !== "" &&
-            config.password !== undefined &&
-            config.password !== ""
-        ) {
+        if (config.username !== undefined && config.username !== "") {
             node.username = config.username;
-            node.password = config.password;
         }
         if (config.withCredentials !== undefined) {
             node.withCredentials = config.withCredentials;
@@ -56,9 +47,9 @@ const nodeInit = function (RED: NodeAPI): void {
             VERSION: OpenAPI.VERSION,
             WITH_CREDENTIALS: node.withCredentials,
             CREDENTIALS: OpenAPI.CREDENTIALS,
-            TOKEN: node.token,
+            TOKEN: String(node.credentials.token),
             USERNAME: node.username,
-            PASSWORD: node.password,
+            PASSWORD: String(node.credentials.password),
             HEADERS: parsedHeaders,
             ENCODE_PATH: OpenAPI.ENCODE_PATH,
         };

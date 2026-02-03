@@ -1247,6 +1247,15 @@
         "headers": ""
     },
     {
+        "id": "5639b42bc4b6bb21",
+        "type": "haic-config",
+        "name": "Should fail",
+        "baseUrl": "https://lala.com/lala",
+        "username": "",
+        "withCredentials": false,
+        "headers": ""
+    },
+    {
         "id": "f382319ee574b271",
         "type": "function",
         "z": "6d5f83638870930c",

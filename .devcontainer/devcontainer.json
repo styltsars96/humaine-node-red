@@ -23,7 +23,8 @@
                 "redhat.vscode-yaml",
                 "christian-kohler.npm-intellisense",
                 "mhutchie.git-graph",
-                "ms-azuretools.vscode-containers"
+                "ms-azuretools.vscode-containers",
+                "hediet.browser-devtools"
             ],
             "settings": {
                 "chat.disableAIFeatures": true,
