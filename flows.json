@@ -1247,15 +1247,6 @@
         "headers": ""
     },
     {
-        "id": "5639b42bc4b6bb21",
-        "type": "haic-config",
-        "name": "Should fail",
-        "baseUrl": "https://lala.com/lala",
-        "username": "",
-        "withCredentials": false,
-        "headers": ""
-    },
-    {
         "id": "f382319ee574b271",
         "type": "function",
         "z": "6d5f83638870930c",
@@ -4188,7 +4179,8 @@
         "y": 160,
         "wires": [
             [
-                "2f91d54b81491145"
+                "2f91d54b81491145",
+                "d58e9555d46c03d5"
             ]
         ]
     },
@@ -4214,6 +4206,7 @@
         "z": "529d431d13d83865",
         "name": "test Env",
         "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "MFG_ENV",
         "x": 400,
         "y": 160,
         "wires": [
@@ -4221,6 +4214,37 @@
                 "977bf3321eb6cdf0"
             ]
         ]
+    },
+    {
+        "id": "d58e9555d46c03d5",
+        "type": "ai-environment-config",
+        "z": "529d431d13d83865",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "SE_ENV",
+        "x": 280,
+        "y": 480,
+        "wires": [
+            [
+                "de0a70c7eed5d6af"
+            ]
+        ]
+    },
+    {
+        "id": "de0a70c7eed5d6af",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "debug 7",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 480,
+        "wires": []
     },
     {
         "id": "1599caf449da9654",

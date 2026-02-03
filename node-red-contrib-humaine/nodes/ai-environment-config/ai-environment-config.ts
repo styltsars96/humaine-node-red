@@ -5,6 +5,7 @@ import {
     AiEnvironmentConfigNode,
     AiEnvironmentConfigNodeDef,
 } from "./modules/types";
+import { EnvsMetaList, EnvsMetaListSchema } from "./shared/types";
 
 const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
     function AiEnvironmentConfigNodeConstructor(
@@ -14,6 +15,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         // console.log("AiEnvironmentConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
+        const localId = node.id;
         node.aiEnvironmentId = config.aiEnvironmentId;
         // console.log("Node created", node);
 
@@ -23,11 +25,54 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             return;
         }
 
+        // Endpoint for the Editor side, to dynamically populate environments list.
+        RED.httpAdmin.get(
+            `/node-red-contrib-humaine/ai-environment-config/${localId}/envs_list`,
+            RED.auth.needsPermission("nodes.read"),
+            async function (req, res) {
+                let result;
+                let envMetaList: EnvsMetaList = [];
+                let errorMsg: string | undefined;
+                try {
+                    result =
+                        await EnvironmentCatalogService.listEnvsApiV1EnvsGet(
+                            haic_config_node.OpenAPI,
+                        );
+                } catch (error: any) {
+                    if (error instanceof ApiError) {
+                        console.error(
+                            `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
+                        );
+                    } else {
+                        errorMsg =
+                            "Failed to fetch AI configuration: " +
+                            error.message;
+                        node.error(errorMsg);
+                    }
+                }
+
+                if (!errorMsg)
+                    try {
+                        envMetaList = EnvsMetaListSchema.parse(result);
+                    } catch (error: any) {
+                        errorMsg = `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(result, null, 4)}`;
+                        node.error(errorMsg);
+                    }
+
+                res.json({
+                    envMetaList: envMetaList,
+                    errorMsg: errorMsg,
+                });
+            },
+        );
+
         node.on("input", async function (msg) {
             let envId;
             let envBlocks;
             if (!node.aiEnvironmentId) {
-                node.error("No AI Environment ID found or Selected!!!");
+                node.error(
+                    "No AI Environment ID is Selected!!! Select the AI Process Environment to work on first!",
+                );
                 return;
             }
 
@@ -56,11 +101,8 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
 
             node.send(msg);
         });
-
-        node.on("close", function () {
-            // tidy up
-        });
     }
+
     RED.nodes.registerType(
         "ai-environment-config",
         AiEnvironmentConfigNodeConstructor,

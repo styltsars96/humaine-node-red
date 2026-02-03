@@ -1,14 +1,14 @@
 import { EditorRED } from "node-red";
 import { AiEnvironmentConfigEditorNodeProperties } from "./modules/types";
-import { HaicConfigNode } from "../../haic-config/modules/types";
-import { ApiError, EnvironmentCatalogService } from "../../../haic_client";
-import { envMetaSchema } from "../../../haic_client/schemas/EnvMeta";
-import { z } from "zod";
+import { HaicConfigEditorNodeProperties } from "../../haic-config/haic-config.html/modules/types";
+import { EnvsMetaList } from "../shared/types";
 
 declare const RED: EditorRED;
 
-const envsMetaListSchema = z.array(envMetaSchema);
-type envsMetaList = z.infer<typeof envsMetaListSchema>;
+type EnvsData = {
+    envMetaList: EnvsMetaList;
+    errorMsg: string | undefined;
+};
 
 RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
     "ai-environment-config",
@@ -29,55 +29,40 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
         },
         oneditprepare: async function () {
             const node = this;
+            const localId = node.id;
 
             try {
                 const haic_server = node.haic_server;
-                let envMetaSchemaList: envsMetaList = []; // List to be populated from HAIC API
-                console.log(haic_server); // TEST
+                let envMetaList: EnvsMetaList = []; // List to be populated from HAIC API
+                let errorMsg = ""; // Error message to be displayed in the UI
 
                 if (!haic_server) {
                     console.warn(
-                        "HAIC server must be set before Config options are available",
+                        "HAIC server must be set before Config options are available!",
                     );
                 } else {
-                    let response;
                     const haic_config_node = RED.nodes.node(haic_server) as
-                        | HaicConfigNode
+                        | HaicConfigEditorNodeProperties
                         | undefined;
                     if (haic_config_node) {
-                        console.log(haic_config_node);
-                        console.log(haic_config_node.OpenAPI);
                         try {
-                            response =
-                                await EnvironmentCatalogService.listEnvsApiV1EnvsGet(
-                                    haic_config_node.OpenAPI,
-                                );
-                        } catch (error: any) {
-                            if (error instanceof ApiError) {
-                                console.error(
-                                    `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
-                                );
-                            } else
-                                console.error(
-                                    "Failed to fetch AI configuration: " +
-                                        error,
-                                );
-                            return;
-                        }
-
-                        try {
-                            envMetaSchemaList =
-                                envsMetaListSchema.parse(response);
-                        } catch (error: any) {
-                            console.error(
-                                `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(response, null, 4)}`,
+                            // Ask backend / runtime to get list of environments from HAIC API
+                            const envsData: EnvsData = await $.getJSON(
+                                `/node-red-contrib-humaine/ai-environment-config/${localId}/envs_list`,
                             );
-                            return;
+                            if (envsData.errorMsg) {
+                                errorMsg = envsData.errorMsg;
+                            } else {
+                                envMetaList = envsData.envMetaList;
+                            }
+                        } catch (error: any) {
+                            errorMsg = error.message;
+                            console.error(errorMsg);
                         }
                     } else {
-                        console.warn(
-                            "Could not get configuration node required for the AI Environment Config options",
-                        );
+                        errorMsg =
+                            "Could not get configuration node required for the AI Environment Config options";
+                        console.warn(errorMsg);
                     }
                 }
 
@@ -89,16 +74,17 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                 // Add default option
                 const defaultOption = document.createElement("option");
                 defaultOption.value = "";
-                if (envMetaSchemaList.length > 0) {
+                if (envMetaList.length > 0) {
                     defaultOption.text = "Select an option";
                 } else {
                     defaultOption.text =
-                        "SET UP HAIC Server Configuration Correctly First!";
+                        "SET UP HAIC Server Configuration Correctly First! " +
+                        errorMsg;
                 }
                 selectElement.appendChild(defaultOption);
 
                 // Populate with dynamic options
-                envMetaSchemaList.forEach((option) => {
+                envMetaList.forEach((option) => {
                     const optionElement = document.createElement("option");
                     optionElement.value = option.id;
                     optionElement.text = option.name || option.id;
