@@ -68,7 +68,11 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
 
                 const selectElement = document.getElementById(
                     "node-input-aiEnvironmentId",
-                );
+                ) as HTMLSelectElement;
+
+                // Store the currently selected value before clearing
+                const currentSelectedValue = node.aiEnvironmentId || "";
+
                 selectElement.innerHTML = "";
 
                 // Add default option
@@ -90,6 +94,18 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                     optionElement.text = option.name || option.id;
                     selectElement.appendChild(optionElement);
                 });
+
+                // Restore the previously selected value if it's still valid
+                if (
+                    currentSelectedValue &&
+                    envMetaList.some((env) => env.id === currentSelectedValue)
+                ) {
+                    selectElement.value = currentSelectedValue;
+                } else if (envMetaList.length === 0) {
+                    // If there are no options and we had a previous selection,
+                    // keep the error message option but don't auto-select anything
+                    selectElement.value = "";
+                }
             } catch (error) {
                 console.error(
                     "Error populating AI Environment Config options dropdown:",

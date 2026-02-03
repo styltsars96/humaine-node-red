@@ -4206,7 +4206,7 @@
         "z": "529d431d13d83865",
         "name": "test Env",
         "haic_server": "13892724a379a5ca",
-        "aiEnvironmentId": "MFG_ENV",
+        "aiEnvironmentId": "NS_ENV",
         "x": 400,
         "y": 160,
         "wires": [
