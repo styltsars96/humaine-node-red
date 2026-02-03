@@ -23,10 +23,9 @@ const nodeInit = function (RED: NodeAPI): void {
         }
 
         node.baseUrl = node.baseUrl.replace(/\/$/, ""); // Remove trailing slash, if exists.
-        OpenAPI.BASE = node.baseUrl;
+
         if (config.token !== undefined && config.token !== "") {
             node.token = config.token;
-            OpenAPI.TOKEN = config.token;
         }
         if (
             config.username !== undefined &&
@@ -36,25 +35,33 @@ const nodeInit = function (RED: NodeAPI): void {
         ) {
             node.username = config.username;
             node.password = config.password;
-            OpenAPI.USERNAME = config.username;
-            OpenAPI.PASSWORD = config.password;
         }
         if (config.withCredentials !== undefined) {
             node.withCredentials = config.withCredentials;
-            OpenAPI.WITH_CREDENTIALS = config.withCredentials;
         }
+        let parsedHeaders: Record<string, string> | undefined = undefined;
         if (config.headers !== undefined && config.headers !== "") {
-            const parsedHeaders = getStringsRecord(config.headers);
+            parsedHeaders = getStringsRecord(config.headers);
 
             if (parsedHeaders) {
                 node.headers = config.headers;
-                OpenAPI.HEADERS = parsedHeaders;
             } else {
                 node.headers = undefined;
-                OpenAPI.HEADERS = undefined;
+                parsedHeaders = undefined;
             }
         }
-        node.OpenAPI = OpenAPI;
+
+        node.OpenAPI = {
+            BASE: node.baseUrl,
+            VERSION: OpenAPI.VERSION,
+            WITH_CREDENTIALS: node.withCredentials,
+            CREDENTIALS: OpenAPI.CREDENTIALS,
+            TOKEN: node.token,
+            USERNAME: node.username,
+            PASSWORD: node.password,
+            HEADERS: parsedHeaders,
+            ENCODE_PATH: OpenAPI.ENCODE_PATH,
+        };
     }
 
     RED.nodes.registerType("haic-config", HaicConfigNodeConstructor, {

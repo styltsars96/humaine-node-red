@@ -2,11 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SurveyQuestionSetIn } from '../models/SurveyQuestionSetIn';
-import type { SurveyQuestionSetOut } from '../models/SurveyQuestionSetOut';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { SurveyQuestionSetIn } from "../models/SurveyQuestionSetIn";
+import type { SurveyQuestionSetOut } from "../models/SurveyQuestionSetOut";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class SurveySchemasService {
     /**
      * Create Schema Route
@@ -16,12 +16,13 @@ export class SurveySchemasService {
      */
     public static createSchemaRouteApiV1SurveySchemasPost(
         requestBody: SurveyQuestionSetIn,
+        openAPI = OpenAPI,
     ): CancelablePromise<SurveyQuestionSetOut> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/survey/schemas',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/survey/schemas",
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Validation Error`,
             },
@@ -35,12 +36,13 @@ export class SurveySchemasService {
      */
     public static getLatestForPilotApiV1SurveySchemasGet(
         pilotTag: string,
-    ): CancelablePromise<(SurveyQuestionSetOut | null)> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/survey/schemas',
+        openAPI = OpenAPI,
+    ): CancelablePromise<SurveyQuestionSetOut | null> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/schemas",
             query: {
-                'pilot_tag': pilotTag,
+                pilot_tag: pilotTag,
             },
             errors: {
                 422: `Validation Error`,
@@ -55,12 +57,13 @@ export class SurveySchemasService {
      */
     public static getSchemaApiV1SurveySchemasSchemaIdGet(
         schemaId: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<SurveyQuestionSetOut> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/survey/schemas/{schema_id}',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/schemas/{schema_id}",
             path: {
-                'schema_id': schemaId,
+                schema_id: schemaId,
             },
             errors: {
                 422: `Validation Error`,

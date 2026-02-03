@@ -2,19 +2,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class MetaService {
     /**
      * Health
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static healthMetaHealthGet(): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/meta/health',
+    public static healthMetaHealthGet(
+        openAPI = OpenAPI,
+    ): CancelablePromise<any> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/meta/health",
         });
     }
     /**
@@ -22,10 +24,12 @@ export class MetaService {
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static versionMetaVersionGet(): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/meta/version',
+    public static versionMetaVersionGet(
+        openAPI = OpenAPI,
+    ): CancelablePromise<any> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/meta/version",
         });
     }
     /**
@@ -33,10 +37,12 @@ export class MetaService {
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static seedCoreMetricsMetaSeedCoreMetricsPost(): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/meta/seed/core-metrics',
+    public static seedCoreMetricsMetaSeedCoreMetricsPost(
+        openAPI = OpenAPI,
+    ): CancelablePromise<any> {
+        return __request(openAPI, {
+            method: "POST",
+            url: "/meta/seed/core-metrics",
         });
     }
 }

@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SimulationEnvelope } from '../models/SimulationEnvelope';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { SimulationEnvelope } from "../models/SimulationEnvelope";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class SimulatorService {
     /**
      * Run a simulation using a stored YAML config
@@ -17,14 +17,15 @@ export class SimulatorService {
      */
     public static simulateApiV1SimulatorSimulatePost(
         name: string,
-        seed?: (number | null),
+        seed?: number | null,
+        openAPI = OpenAPI,
     ): CancelablePromise<SimulationEnvelope> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/simulator/simulate',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/simulator/simulate",
             query: {
-                'name': name,
-                'seed': seed,
+                name: name,
+                seed: seed,
             },
             errors: {
                 404: `Not Found`,
@@ -37,10 +38,12 @@ export class SimulatorService {
      * @returns any Successful Response
      * @throws ApiError
      */
-    public static listRunsApiV1SimulatorRunsGet(): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/simulator/runs',
+    public static listRunsApiV1SimulatorRunsGet(
+        openAPI = OpenAPI,
+    ): CancelablePromise<any> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/simulator/runs",
         });
     }
     /**
@@ -52,12 +55,13 @@ export class SimulatorService {
      */
     public static loadRunApiV1SimulatorRunsFileGet(
         file: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<Record<string, any>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/simulator/runs/{file}',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/simulator/runs/{file}",
             path: {
-                'file': file,
+                file: file,
             },
             errors: {
                 404: `Not Found`,
@@ -74,12 +78,13 @@ export class SimulatorService {
      */
     public static listRunsByTaskApiV1SimulatorRunsByTaskGet(
         prefix: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/simulator/runs_by_task',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/simulator/runs_by_task",
             query: {
-                'prefix': prefix,
+                prefix: prefix,
             },
             errors: {
                 422: `Validation Error`,

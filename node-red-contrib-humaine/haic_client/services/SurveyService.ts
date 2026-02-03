@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { SurveyCreate } from '../models/SurveyCreate';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { SurveyCreate } from "../models/SurveyCreate";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class SurveyService {
     /**
      * Submit a survey response
@@ -15,12 +15,13 @@ export class SurveyService {
      */
     public static submitSurveyApiV1SurveyPost(
         requestBody: SurveyCreate,
+        openAPI = OpenAPI,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/survey',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/survey",
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Validation Error`,
             },
@@ -33,13 +34,14 @@ export class SurveyService {
      * @throws ApiError
      */
     public static getAggregatedMetricsApiV1SurveyAggregateGet(
-        pilotTag?: (string | null),
+        pilotTag?: string | null,
+        openAPI = OpenAPI,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/survey/aggregate',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/aggregate",
             query: {
-                'pilot_tag': pilotTag,
+                pilot_tag: pilotTag,
             },
             errors: {
                 422: `Validation Error`,
@@ -54,12 +56,13 @@ export class SurveyService {
      */
     public static listVersionsForPilotApiV1SurveyVersionsGet(
         pilotTag: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<Array<string>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/survey/versions',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/versions",
             query: {
-                'pilot_tag': pilotTag,
+                pilot_tag: pilotTag,
             },
             errors: {
                 422: `Validation Error`,
@@ -77,13 +80,14 @@ export class SurveyService {
     public static versionSummaryApiV1SurveySummaryGet(
         pilotTag: string,
         appVersion: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<Record<string, any>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/survey/summary',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/summary",
             query: {
-                'pilot_tag': pilotTag,
-                'app_version': appVersion,
+                pilot_tag: pilotTag,
+                app_version: appVersion,
             },
             errors: {
                 422: `Validation Error`,
@@ -94,54 +98,56 @@ export class SurveyService {
      * Compare two versions for a pilot
      * Returns:
      * {
-         * "A": { pilot_tag, app_version, avg_sus, avg_ethics, count },
-         * "B": { pilot_tag, app_version, avg_sus, avg_ethics, count }
-         * }
-         * @param pilotTag
-         * @param versionA
-         * @param versionB
-         * @returns any Successful Response
-         * @throws ApiError
-         */
-        public static compareVersionsApiV1SurveyCompareGet(
-            pilotTag: string,
-            versionA: string,
-            versionB: string,
-        ): CancelablePromise<Record<string, any>> {
-            return __request(OpenAPI, {
-                method: 'GET',
-                url: '/api/v1/survey/compare',
-                query: {
-                    'pilot_tag': pilotTag,
-                    'version_a': versionA,
-                    'version_b': versionB,
-                },
-                errors: {
-                    422: `Validation Error`,
-                },
-            });
-        }
-        /**
-         * Question Averages Route
-         * @param pilotTag
-         * @param appVersion
-         * @returns any Successful Response
-         * @throws ApiError
-         */
-        public static questionAveragesRouteApiV1SurveyQuestionAveragesGet(
-            pilotTag: string,
-            appVersion: string,
-        ): CancelablePromise<any> {
-            return __request(OpenAPI, {
-                method: 'GET',
-                url: '/api/v1/survey/question-averages',
-                query: {
-                    'pilot_tag': pilotTag,
-                    'app_version': appVersion,
-                },
-                errors: {
-                    422: `Validation Error`,
-                },
-            });
-        }
+     * "A": { pilot_tag, app_version, avg_sus, avg_ethics, count },
+     * "B": { pilot_tag, app_version, avg_sus, avg_ethics, count }
+     * }
+     * @param pilotTag
+     * @param versionA
+     * @param versionB
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static compareVersionsApiV1SurveyCompareGet(
+        pilotTag: string,
+        versionA: string,
+        versionB: string,
+        openAPI = OpenAPI,
+    ): CancelablePromise<Record<string, any>> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/compare",
+            query: {
+                pilot_tag: pilotTag,
+                version_a: versionA,
+                version_b: versionB,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
     }
+    /**
+     * Question Averages Route
+     * @param pilotTag
+     * @param appVersion
+     * @returns any Successful Response
+     * @throws ApiError
+     */
+    public static questionAveragesRouteApiV1SurveyQuestionAveragesGet(
+        pilotTag: string,
+        appVersion: string,
+        openAPI = OpenAPI,
+    ): CancelablePromise<any> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/survey/question-averages",
+            query: {
+                pilot_tag: pilotTag,
+                app_version: appVersion,
+            },
+            errors: {
+                422: `Validation Error`,
+            },
+        });
+    }
+}

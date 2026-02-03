@@ -2,12 +2,12 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ConfigList } from '../models/ConfigList';
-import type { ConfigRequest } from '../models/ConfigRequest';
-import type { MessageWithPath } from '../models/MessageWithPath';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { ConfigList } from "../models/ConfigList";
+import type { ConfigRequest } from "../models/ConfigRequest";
+import type { MessageWithPath } from "../models/MessageWithPath";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class EnvironmentBuilderService {
     /**
      * Generate and persist a scenario config YAML
@@ -17,12 +17,13 @@ export class EnvironmentBuilderService {
      */
     public static generateConfigApiV1EnvGenerateConfigPost(
         requestBody: ConfigRequest,
+        openAPI = OpenAPI,
     ): CancelablePromise<MessageWithPath> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/env/generate_config',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/env/generate_config",
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Unprocessable Entity`,
             },
@@ -33,10 +34,12 @@ export class EnvironmentBuilderService {
      * @returns ConfigList Successful Response
      * @throws ApiError
      */
-    public static listConfigsApiV1EnvListConfigsGet(): CancelablePromise<ConfigList> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/env/list_configs',
+    public static listConfigsApiV1EnvListConfigsGet(
+        openAPI = OpenAPI,
+    ): CancelablePromise<ConfigList> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/env/list_configs",
         });
     }
     /**
@@ -47,12 +50,13 @@ export class EnvironmentBuilderService {
      */
     public static loadConfigApiV1EnvLoadConfigGet(
         name: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/env/load_config',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/env/load_config",
             query: {
-                'name': name,
+                name: name,
             },
             errors: {
                 404: `Not Found`,

@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { FairnessInput } from '../models/FairnessInput';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { FairnessInput } from "../models/FairnessInput";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class FairnessService {
     /**
      * Evaluate Fairness
@@ -17,15 +17,16 @@ export class FairnessService {
     public static evaluateFairnessApiV1FairnessEvaluatePost(
         feature: string,
         requestBody: FairnessInput,
+        openAPI = OpenAPI,
     ): CancelablePromise<any> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/fairness/evaluate/',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/fairness/evaluate/",
             query: {
-                'feature': feature,
+                feature: feature,
             },
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Validation Error`,
             },

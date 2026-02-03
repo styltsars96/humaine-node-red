@@ -2,11 +2,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { CollabMetricsResponse } from '../models/CollabMetricsResponse';
-import type { ComputeRequest } from '../models/ComputeRequest';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { CollabMetricsResponse } from "../models/CollabMetricsResponse";
+import type { ComputeRequest } from "../models/ComputeRequest";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class CollaborationMetricsService {
     /**
      * Compute
@@ -16,12 +16,13 @@ export class CollaborationMetricsService {
      */
     public static computeApiV1CollabMetricsCollabComputePost(
         requestBody: ComputeRequest,
+        openAPI = OpenAPI,
     ): CancelablePromise<CollabMetricsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/collab-metrics/collab/compute',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/collab-metrics/collab/compute",
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Validation Error`,
             },
@@ -35,12 +36,13 @@ export class CollaborationMetricsService {
      */
     public static computeFromArtifactApiV1CollabMetricsCollabFromArtifactPost(
         file: string,
+        openAPI = OpenAPI,
     ): CancelablePromise<CollabMetricsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/collab-metrics/collab/from-artifact',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/collab-metrics/collab/from-artifact",
             query: {
-                'file': file,
+                file: file,
             },
             errors: {
                 422: `Validation Error`,
@@ -58,17 +60,18 @@ export class CollaborationMetricsService {
     public static computeFromRunApiV1CollabMetricsCollabFromRunRunIdPost(
         runId: string,
         rtMax: number = 5,
-        baselineS?: (number | null),
+        baselineS?: number | null,
+        openAPI = OpenAPI,
     ): CancelablePromise<CollabMetricsResponse> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/collab-metrics/collab/from-run/{run_id}',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/collab-metrics/collab/from-run/{run_id}",
             path: {
-                'run_id': runId,
+                run_id: runId,
             },
             query: {
-                'rt_max': rtMax,
-                'baseline_s': baselineS,
+                rt_max: rtMax,
+                baseline_s: baselineS,
             },
             errors: {
                 422: `Validation Error`,

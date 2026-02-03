@@ -3,6 +3,7 @@
         "asynciterable",
         "axios",
         "codegen",
+        "Collab",
         "dotenv",
         "envman",
         "eslintcache",

@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { EvaluationConfigSchema } from '../models/EvaluationConfigSchema';
-import type { CancelablePromise } from '../core/CancelablePromise';
-import { OpenAPI } from '../core/OpenAPI';
-import { request as __request } from '../core/request';
+import type { EvaluationConfigSchema } from "../models/EvaluationConfigSchema";
+import type { CancelablePromise } from "../core/CancelablePromise";
+import { OpenAPI } from "../core/OpenAPI";
+import { request as __request } from "../core/request";
 export class ConfigurationService {
     /**
      * Create Configuration
@@ -15,12 +15,13 @@ export class ConfigurationService {
      */
     public static createConfigurationApiV1ConfigurationNewPost(
         requestBody: EvaluationConfigSchema,
+        openAPI = OpenAPI,
     ): CancelablePromise<EvaluationConfigSchema> {
-        return __request(OpenAPI, {
-            method: 'POST',
-            url: '/api/v1/configuration/new',
+        return __request(openAPI, {
+            method: "POST",
+            url: "/api/v1/configuration/new",
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Validation Error`,
             },
@@ -34,12 +35,13 @@ export class ConfigurationService {
      */
     public static getConfigurationApiV1ConfigurationConfigurationIdGet(
         configurationId: number,
+        openAPI = OpenAPI,
     ): CancelablePromise<EvaluationConfigSchema> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/configuration/{configuration_id}',
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/configuration/{configuration_id}",
             path: {
-                'configuration_id': configurationId,
+                configuration_id: configurationId,
             },
             errors: {
                 422: `Validation Error`,
@@ -51,10 +53,12 @@ export class ConfigurationService {
      * @returns EvaluationConfigSchema Successful Response
      * @throws ApiError
      */
-    public static getAllConfigurationsApiV1ConfigurationListGet(): CancelablePromise<Array<EvaluationConfigSchema>> {
-        return __request(OpenAPI, {
-            method: 'GET',
-            url: '/api/v1/configuration/list/',
+    public static getAllConfigurationsApiV1ConfigurationListGet(
+        openAPI = OpenAPI,
+    ): CancelablePromise<Array<EvaluationConfigSchema>> {
+        return __request(openAPI, {
+            method: "GET",
+            url: "/api/v1/configuration/list/",
         });
     }
     /**
@@ -67,15 +71,16 @@ export class ConfigurationService {
     public static updateConfigurationApiV1ConfigurationUpdateConfigurationIdPut(
         configurationId: number,
         requestBody: EvaluationConfigSchema,
+        openAPI = OpenAPI,
     ): CancelablePromise<EvaluationConfigSchema> {
-        return __request(OpenAPI, {
-            method: 'PUT',
-            url: '/api/v1/configuration/update/{configuration_id}',
+        return __request(openAPI, {
+            method: "PUT",
+            url: "/api/v1/configuration/update/{configuration_id}",
             path: {
-                'configuration_id': configurationId,
+                configuration_id: configurationId,
             },
             body: requestBody,
-            mediaType: 'application/json',
+            mediaType: "application/json",
             errors: {
                 422: `Validation Error`,
             },
@@ -89,12 +94,13 @@ export class ConfigurationService {
      */
     public static deleteConfigurationApiV1ConfigurationDeleteConfigurationIdDelete(
         configurationId: number,
+        openAPI = OpenAPI,
     ): CancelablePromise<Record<string, any>> {
-        return __request(OpenAPI, {
-            method: 'DELETE',
-            url: '/api/v1/configuration/delete/{configuration_id}',
+        return __request(openAPI, {
+            method: "DELETE",
+            url: "/api/v1/configuration/delete/{configuration_id}",
             path: {
-                'configuration_id': configurationId,
+                configuration_id: configurationId,
             },
             errors: {
                 422: `Validation Error`,

@@ -1,10 +1,6 @@
 import { NodeInitializer, NodeAPI } from "node-red";
 import { z } from "zod";
-import {
-    EnvironmentCatalogService,
-    OpenAPI,
-    ApiError,
-} from "../../haic_client";
+import { EnvironmentCatalogService, ApiError } from "../../haic_client";
 import { envMetaSchema } from "../../haic_client/schemas/EnvMeta";
 import { isHaicConfigNode } from "../shared/helpers";
 import {
@@ -29,13 +25,13 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             node.warn("HAIC Configuration not set!");
             return;
         }
-        Object.assign(OpenAPI, haic_config_node.OpenAPI);
 
         node.on("input", async function (msg) {
             let response;
             try {
-                response =
-                    await EnvironmentCatalogService.listEnvsApiV1EnvsGet();
+                response = await EnvironmentCatalogService.listEnvsApiV1EnvsGet(
+                    haic_config_node.OpenAPI,
+                );
             } catch (error: any) {
                 if (error instanceof ApiError) {
                     node.error(
