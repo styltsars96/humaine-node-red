@@ -34,7 +34,11 @@ const refreshHumAIneEnv = async (
         };
 
         flowContext.set("HumAIne_AI_PROCESS_ENVIRONMENT", aiEnv);
-
+        node.status({
+            fill: "green",
+            shape: "dot",
+            text: `AI process Environment: ${node.aiEnvironmentId}`,
+        });
         return aiEnv;
     } catch (error: any) {
         if (error instanceof ApiError) {
@@ -42,6 +46,11 @@ const refreshHumAIneEnv = async (
                 `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
             );
         } else node.error("Failed to fetch AI configuration: " + error);
+        node.status({
+            fill: "red",
+            shape: "ring",
+            text: `Failed to fetch env metadata for ${node.aiEnvironmentId}`,
+        });
         return;
     }
 };
@@ -113,9 +122,14 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 );
             });
         } else {
-            node.warn(
-                "No AI Environment ID is selected yet!!! Select the AI Process Environment to work on first!",
-            );
+            // node.warn(
+            //     "No AI Environment ID is selected yet!!! Select the AI Process Environment to work on first!",
+            // );
+            node.status({
+                fill: "red",
+                shape: "dot",
+                text: "No AI Environment ID is selected yet!",
+            });
         }
 
         node.on("input", async function (msg) {
@@ -123,6 +137,11 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 node.error(
                     "No AI Environment ID is selected!!! Select the AI Process Environment to work on first!",
                 );
+                node.status({
+                    fill: "red",
+                    shape: "dot",
+                    text: "No AI Environment ID is selected yet!",
+                });
                 return;
             }
             // Trigger renewal of the HumAIne environment metadata, and emit it
