@@ -3,12 +3,20 @@
     <label for="node-input-name"><i class="icon-tag"></i> Name</label>
     <input type="text" id="node-input-name" placeholder="Name">
   </div>
-    <div class="form-row">
+  <div class="form-row" id="node-setup-message-haic-server">
+    <p style="color: red;"> First, select or create HAIC server and deploy the node! </p>
+  </div>
+  <div class="form-row">
     <label for="node-input-haic_server"><i class="fa fa-bookmark"></i>HAIC Benchmark Suite Server Config</label>
     <input type="text" id="node-input-haic_server" placeholder="HAIC Server Config">
   </div>
+  <div class="form-row" id="node-setup-message-aiEnvironmentId">
+    <p style="color: red;"> Now, select your AI process environment and deploy node! </p>
+  </div>
   <div class="form-row">
-      <label for="node-input-aiEnvironmentId"><i class="fa fa-list"></i> AI ENVIRONMENT </label>
-      <select id="node-input-aiEnvironmentId"></select>
+      <div style="width: 85%; display: inline-flex;">
+        <label for="node-input-aiEnvironmentId"><i class="fa fa-list"></i> AI Process Environment </label>
+        <select id="node-input-aiEnvironmentId" style="flex-grow: 1;"></select>
+      </div>
   </div>
 </script>

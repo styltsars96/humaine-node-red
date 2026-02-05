@@ -4180,7 +4180,8 @@
         "wires": [
             [
                 "2f91d54b81491145",
-                "d58e9555d46c03d5"
+                "d58e9555d46c03d5",
+                "76a786c0dbbe3c0e"
             ]
         ]
     },
@@ -4219,10 +4220,10 @@
         "id": "d58e9555d46c03d5",
         "type": "ai-environment-config",
         "z": "529d431d13d83865",
-        "name": "",
+        "name": "Secondary",
         "haic_server": "13892724a379a5ca",
-        "aiEnvironmentId": "SE_ENV",
-        "x": 280,
+        "aiEnvironmentId": "NS_ENV",
+        "x": 250,
         "y": 480,
         "wires": [
             [
@@ -4244,6 +4245,37 @@
         "statusType": "auto",
         "x": 500,
         "y": 480,
+        "wires": []
+    },
+    {
+        "id": "76a786c0dbbe3c0e",
+        "type": "ai-environment-config",
+        "z": "529d431d13d83865",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "NS_ENV",
+        "x": 300,
+        "y": 640,
+        "wires": [
+            [
+                "1159f8f0fca84130"
+            ]
+        ]
+    },
+    {
+        "id": "1159f8f0fca84130",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "debug 8",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 640,
         "wires": []
     },
     {

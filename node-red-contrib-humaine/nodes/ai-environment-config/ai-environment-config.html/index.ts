@@ -18,7 +18,7 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
         defaults: {
             name: { value: "" },
             haic_server: { value: "", type: "haic-config", required: true },
-            aiEnvironmentId: { value: "", required: true },
+            aiEnvironmentId: { value: "", required: false },
         },
         inputs: 1,
         outputs: 1,
@@ -37,10 +37,15 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                 let errorMsg = ""; // Error message to be displayed in the UI
 
                 if (!haic_server) {
+                    // Remove the other setup messages after the initial one:
+                    $("#node-setup-message-aiEnvironmentId").remove();
+
                     console.warn(
                         "HAIC server must be set before Config options are available!",
                     );
                 } else {
+                    // Remove the setup message after HAIC server is selected
+                    $("#node-setup-message-haic-server").remove();
                     const haic_config_node = RED.nodes.node(haic_server) as
                         | HaicConfigEditorNodeProperties
                         | undefined;
@@ -66,6 +71,7 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                     }
                 }
 
+                // Set up the AI Environments list
                 const selectElement = document.getElementById(
                     "node-input-aiEnvironmentId",
                 ) as HTMLSelectElement;
@@ -105,12 +111,23 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                     // If there are no options and we had a previous selection,
                     // keep the error message option but don't auto-select anything
                     selectElement.value = "";
+                    node.aiEnvironmentId = null;
+                    $("#node-setup-message-aiEnvironmentId")
+                        .children("p")
+                        .text(
+                            "No AI process environments have been found! Please set one up first!",
+                        );
                 }
             } catch (error) {
                 console.error(
                     "Error populating AI Environment Config options dropdown:",
                     error,
                 );
+            }
+
+            if (node.aiEnvironmentId) {
+                // Remove the AI environment setup message if AI environment ID is selected!
+                $("#node-setup-message-aiEnvironmentId").remove();
             }
         },
     },
