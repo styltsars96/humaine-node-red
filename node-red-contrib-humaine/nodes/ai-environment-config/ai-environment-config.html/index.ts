@@ -13,7 +13,7 @@ type EnvsData = {
 RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
     "ai-environment-config",
     {
-        category: "HumAIne HAIC Benchmark Suite",
+        category: "HumAIne",
         color: "#58A69F",
         defaults: {
             name: { value: "" },
