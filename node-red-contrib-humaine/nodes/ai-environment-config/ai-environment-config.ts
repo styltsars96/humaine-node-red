@@ -9,28 +9,32 @@ import {
     AiEnvironmentConfigNode,
     AiEnvironmentConfigNodeDef,
 } from "./modules/types";
-import { EnvsMetaList, EnvsMetaListSchema } from "./shared/types";
-
-type EnvObject = {
-    env: Record<string, any>;
-    blocks: Record<string, any>;
-};
+import {
+    EnvsMetaList,
+    EnvsMetaListSchema,
+    HumAIneEnvironmentData,
+} from "./shared/types";
 
 const refreshHumAIneEnv = async (
     node: AiEnvironmentConfigNode,
     openApi: OpenAPIConfig,
-): Promise<EnvObject | undefined> => {
+): Promise<HumAIneEnvironmentData | undefined> => {
     const flowContext = node.context().flow;
     try {
-        const aiEnv = {
-            env: await EnvironmentCatalogService.getEnvApiV1EnvsEnvIdGet(
+        const [envResult, blocksResult] = await Promise.all([
+            EnvironmentCatalogService.getEnvApiV1EnvsEnvIdGet(
                 node.aiEnvironmentId,
                 openApi,
             ),
-            blocks: await EnvironmentCatalogService.getEnvBlocksApiV1EnvsEnvIdBlocksGet(
+            EnvironmentCatalogService.getEnvBlocksApiV1EnvsEnvIdBlocksGet(
                 node.aiEnvironmentId,
                 openApi,
             ),
+        ]);
+
+        const aiEnv: HumAIneEnvironmentData = {
+            env: envResult,
+            blocks: blocksResult,
         };
 
         flowContext.set("HumAIne_AI_PROCESS_ENVIRONMENT", aiEnv);
@@ -45,7 +49,9 @@ const refreshHumAIneEnv = async (
             node.error(
                 `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
             );
-        } else node.error("Failed to fetch AI configuration: " + error);
+        } else {
+            node.error("Failed to fetch AI configuration: " + error);
+        }
         node.status({
             fill: "red",
             shape: "ring",
@@ -60,12 +66,10 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         this: AiEnvironmentConfigNode,
         config: AiEnvironmentConfigNodeDef,
     ) {
-        // console.log("AiEnvironmentConfigNodeConstructor", config);
         RED.nodes.createNode(this, config);
         const node = this;
         const localId = node.id;
         node.aiEnvironmentId = config.aiEnvironmentId;
-        // console.log("Node created", node);
 
         const haic_config_node = RED.nodes.getNode(config.haic_server);
         if (!isHaicConfigNode(haic_config_node)) {
@@ -81,6 +85,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 let result;
                 let envMetaList: EnvsMetaList = [];
                 let errorMsg: string | undefined;
+
                 try {
                     result =
                         await EnvironmentCatalogService.listEnvsApiV1EnvsGet(
@@ -99,13 +104,14 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                     }
                 }
 
-                if (!errorMsg)
+                if (!errorMsg) {
                     try {
                         envMetaList = EnvsMetaListSchema.parse(result);
                     } catch (error: any) {
-                        errorMsg = `Failed to parse AI configuration:${error.message} Response: ${JSON.stringify(result, null, 4)}`;
+                        errorMsg = `Failed to parse AI configuration: ${error.message} Response: ${JSON.stringify(result, null, 4)}`;
                         node.error(errorMsg);
                     }
+                }
 
                 res.json({
                     envMetaList: envMetaList,
@@ -122,9 +128,6 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 );
             });
         } else {
-            // node.warn(
-            //     "No AI Environment ID is selected yet!!! Select the AI Process Environment to work on first!",
-            // );
             node.status({
                 fill: "red",
                 shape: "dot",
@@ -144,6 +147,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 });
                 return;
             }
+
             // Trigger renewal of the HumAIne environment metadata, and emit it
             msg.payload = await refreshHumAIneEnv(
                 node,
@@ -154,7 +158,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         });
 
         node.on("close", function () {
-            //Cleanup
+            // Cleanup
         });
     }
 

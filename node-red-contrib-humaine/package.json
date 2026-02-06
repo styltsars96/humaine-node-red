@@ -28,7 +28,8 @@
     "version": ">=3.0.0",
     "nodes": {
       "haic-config": "./dist/nodes/haic-config/haic-config.js",
-      "ai-environment-config": "./dist/nodes/ai-environment-config/ai-environment-config.js"
+      "ai-environment-config": "./dist/nodes/ai-environment-config/ai-environment-config.js",
+      "haic-logger": "./dist/nodes/haic-logger/haic-logger.js"
     },
     "icons": "icons"
   },

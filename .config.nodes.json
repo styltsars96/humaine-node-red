@@ -1065,6 +1065,17 @@
                 "user": false,
                 "module": "node-red-contrib-humaine",
                 "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/ai-environment-config/ai-environment-config.js"
+            },
+            "haic-logger": {
+                "name": "haic-logger",
+                "types": [
+                    "haic-logger"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/haic-logger/haic-logger.js"
             }
         }
     }
