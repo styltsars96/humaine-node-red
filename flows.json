@@ -40,14 +40,6 @@
         "env": []
     },
     {
-        "id": "eb9f48db9f88a8d2",
-        "type": "tab",
-        "label": "Message Creation Flow (Kousiou)",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
         "id": "b4f6c615c8ef09ab",
         "type": "tab",
         "label": "Demo App Triggers",
@@ -70,141 +62,6 @@
         "disabled": false,
         "info": "",
         "env": []
-    },
-    {
-        "id": "6d5f83638870930c",
-        "type": "subflow",
-        "name": "HAIC API Config",
-        "info": "This node handles the authentication, and the overall API connection for the rest of the HAIC API Client nodes, on the flow or global level, depending on user choice.",
-        "category": "HumAIne",
-        "in": [
-            {
-                "x": 100,
-                "y": 40,
-                "wires": []
-            }
-        ],
-        "out": [
-            {
-                "x": 620,
-                "y": 40,
-                "wires": []
-            },
-            {
-                "x": 570,
-                "y": 100,
-                "wires": []
-            }
-        ],
-        "env": [
-            {
-                "name": "Use Globally",
-                "type": "bool",
-                "value": "false",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "bool"
-                        ]
-                    }
-                }
-            },
-            {
-                "name": "Use HTTPS",
-                "type": "bool",
-                "value": "false",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "bool"
-                        ]
-                    }
-                }
-            },
-            {
-                "name": "Host",
-                "type": "str",
-                "value": "127.0.0.1",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "str"
-                        ]
-                    }
-                }
-            },
-            {
-                "name": "Port",
-                "type": "num",
-                "value": "8000",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "num"
-                        ]
-                    }
-                }
-            },
-            {
-                "name": "Username",
-                "type": "str",
-                "value": "",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "str"
-                        ]
-                    }
-                }
-            },
-            {
-                "name": "Password",
-                "type": "str",
-                "value": "",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "str"
-                        ]
-                    }
-                }
-            },
-            {
-                "name": "Options",
-                "type": "json",
-                "value": "{}",
-                "ui": {
-                    "type": "input",
-                    "opts": {
-                        "types": [
-                            "json"
-                        ]
-                    }
-                }
-            }
-        ],
-        "meta": {
-            "module": "humaine_haic_client",
-            "version": "0.1.0",
-            "author": "stsarsitalidis@hua.gr",
-            "desc": "Configuration node for HumAIne Human-AI Collaboration Benchmarking suite",
-            "license": "GPL-3.0"
-        },
-        "color": "#58A69F",
-        "inputLabels": [
-            "HAIC API Setup trigger"
-        ],
-        "outputLabels": [
-            "HAIC API connection status",
-            "Error"
-        ],
-        "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
     },
     {
         "id": "36d9140454085321",
@@ -862,19 +719,16 @@
             "color": "#f8f8f2"
         },
         "nodes": [
-            "20e14f4b549b1fa5",
-            "cf0ff9703df94c43",
             "4706f440553adaed",
             "ab463566f2505cd6",
             "7599a8fb56641b12",
             "c57411dbe5e643e9",
             "bb75e47029df8995",
-            "77a5e7071aa41d3f",
             "d9ccfc89f1b5d324"
         ],
-        "x": 24,
+        "x": 234,
         "y": 19,
-        "w": 842,
+        "w": 632,
         "h": 222
     },
     {
@@ -1024,19 +878,16 @@
             "label": true
         },
         "nodes": [
-            "f445093bc9466b6d",
-            "3f9e2fd9de8af5ad",
             "384bca9bd4e2c0ef",
             "1b2c3fb326eacf7a",
             "238207fab5042de9",
             "4f3846a242d4c3d6",
             "e2a0ec598f9c05a5",
-            "2d000ff74d5823c1",
             "0214858918135093"
         ],
-        "x": 234,
+        "x": 534,
         "y": 339,
-        "w": 832,
+        "w": 532,
         "h": 242
     },
     {
@@ -1164,68 +1015,6 @@
         "username": "",
         "withCredentials": false,
         "headers": ""
-    },
-    {
-        "id": "e9e39ea536989380",
-        "type": "function",
-        "z": "6d5f83638870930c",
-        "name": "Set HAIC API Client Config ",
-        "func": "if(msg.useGlobally) {\n    global.set(\"HaicApiClientConfiguration\", msg.HaicApiClientConfiguration);\n    context.set(\"useGlobally\", true);\n} else {\n    // Sets on the context of the \"parent\" flow, where this subflow is instantiated.\n    flow.set(\"$parent.HaicApiClientConfiguration\", msg.HaicApiClientConfiguration);\n    context.set(\"useGlobally\", false);\n}\n\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nconst useGlobally = context.get(\"useGlobally\");\n\nif (useGlobally) {\n    global.set(\"HaicApiClientConfiguration\", undefined);\n} else {\n    flow.set(\"$parent.HaicApiClientConfiguration\", undefined);\n}",
-        "libs": [],
-        "x": 340,
-        "y": 140,
-        "wires": [
-            [
-                "022fdfee8da92096"
-            ]
-        ],
-        "icon": "font-awesome/fa-floppy-o"
-    },
-    {
-        "id": "022fdfee8da92096",
-        "type": "function",
-        "z": "6d5f83638870930c",
-        "name": "Setup HAIC API UTILS",
-        "func": "// CONSTANTS FOR THE UTILITY FUNCTIONS\nconst RETRIES_NUM = 3;\nconst RETRIES_INTERVAL = 1000;\n\n\n// GENERIC UTILITY FUNCTIONS ------------------\n\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst mergeObjects = (a, b) => ({\n    ...((a ?? {}) || {}),\n    ...((b ?? {}) || {})\n});\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = RETRIES_NUM, interval = RETRIES_INTERVAL) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};\n\n\n\n// Client-Specific utility functions ---------\n\nconst processResponse = (clientResponseObj) => {\n\n    if (clientResponseObj.status >= 200 || clientResponseObj.status < 300) {\n        return {\n            clientResponse: clientResponseObj,\n            responseData: clientResponseObj.data,\n        }\n    } else {\n        return {\n            errorData: clientResponseObj.data,\n            clientResponse: clientResponseObj,\n        }\n    }\n\n};\n\n\n// HAIC-Specific utility functions -----------\n\nconst getHaicFunctions = (flowObj, globalObj, nodeObj) => {\n    const CONFIG_ERROR_MSG = \"HAIC API CLIENT CONNECTION NOT CONFIGURED PROPERLY!\";\n    let clientFunctions = flowObj.get(\"$parent.HaicApiClients\");\n    if (!clientFunctions) {\n        clientFunctions = globalObj.get(\"HaicApiClients\");\n    }\n    if (!clientFunctions) {\n        // If not found in either, throw an error and halt the flow\n        nodeObj.error(CONFIG_ERROR_MSG, msg);\n        nodeObj.send([null, {\n            error: CONFIG_ERROR_MSG\n        }]);\n        return;\n    }\n    return clientFunctions;\n};\n\n\n// FUNCTIONS MAP TO ALWAYS SET GLOBALLY\nconst globalUtilFunctions = {\n    // ALL GLOBALLY AVALIABLE FUNCTIONS HERE:\n    \"getHaicFunctions\": getHaicFunctions,\n};\n// Add/Update global utilities\nglobal.set(\"globalUtilFunctions\",\n    mergeObjects(\n        global.get(\"globalUtilFunctions\"), globalUtilFunctions\n    )\n);\n\n\n\n// FUNCTIONS MAP TO SET UP WHEREVER USER CHOSE\nconst utilFunctions = {\n    // ALL EXPORTED FUNCTIONS HERE:\n    \"isEmpty\": isEmpty,\n    \"delay\": delay,\n    \"retryWithDelay\": retryWithDelay,\n    \"processResponse\": processResponse,\n};\n\n\n// SET FUNCTIONS TO APPROPRIATE CONTEXT\n\nif (msg.useGlobally) {\n    global.set(\"HaicApiClientUtils\", utilFunctions);\n    context.set(\"useGlobally\", true);\n} else {\n    // Sets on the context of the \"parent\" flow, where this subflow is instantiated.\n    flow.set(\"$parent.HaicApiClientUtils\", utilFunctions);\n    context.set(\"useGlobally\", false);\n}\n\nmsg.HaicApiClientUtils = utilFunctions;\nreturn msg;",
-        "outputs": 1,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\nconst useGlobally = context.get(\"useGlobally\");\n\nif (useGlobally) {\n    global.set(\"HaicApiClientUtils\", undefined);\n} else {\n    flow.set(\"$parent.HaicApiClientUtils\", undefined);\n}",
-        "libs": [],
-        "x": 320,
-        "y": 220,
-        "wires": [
-            [
-                "5718cb282cf1b5a0"
-            ]
-        ]
-    },
-    {
-        "id": "5718cb282cf1b5a0",
-        "type": "function",
-        "z": "6d5f83638870930c",
-        "name": "SETUP HAIC API Clients",
-        "func": "// Import all client classes\nconst {\n    CollaborationMetricsApi,\n    ConfigurationApi,\n    EnvironmentBuilderApi,\n    EnvironmentCatalogApi,\n    EvaluationApi,\n    FairnessApi,\n    LogGeneratorApi,\n    LogsApi,\n    MetaApi,\n    ResultsApi,\n    SimulatorApi,\n    SurveyApi,\n    SurveySchemasApi,\n} = humanAiBenchmarkSuite;\nconst haicClasses = {\n    CollaborationMetricsApi,\n    ConfigurationApi,\n    EnvironmentBuilderApi,\n    EnvironmentCatalogApi,\n    EvaluationApi,\n    FairnessApi,\n    LogGeneratorApi,\n    LogsApi,\n    MetaApi,\n    ResultsApi,\n    SimulatorApi,\n    SurveyApi,\n    SurveySchemasApi,\n}\n// Import config and utils\nconst config = msg.HaicApiClientConfiguration;\nconst utils = msg.HaicApiClientUtils;\nconst retryWithDelay = utils.retryWithDelay;\nconst processResponse = utils.processResponse;\n\n// ALL CLIENTS AND THE FUNCTIONS SET UP HERE\nconst httpMethods = ['Get', 'Put', 'Post', 'Delete'];\n// Mapping: API Section -> Operation -> Function that does it\nconst haicApiClients = {};\n\nfor (const [originalClassName, ClassConstructor] of Object.entries(haicClasses)) {\n  const className = originalClassName.endsWith('Api')\n    ? originalClassName.slice(0, -3)\n    : originalClassName;\n\n  // ALL CLIENTS GET THE CONFIG HERE\n  const instance = new ClassConstructor(config);\n\n  const methodNames = Object.getOwnPropertyNames(ClassConstructor.prototype)\n    .filter(name => name !== 'constructor');\n\n  const filteredMethods = methodNames.filter(name =>\n    httpMethods.some(verb => name.endsWith(verb))\n  );\n\n  const haicApiWrappers = {};\n\n  filteredMethods.forEach(methodName => {\n    haicApiWrappers[methodName] = async function (...args) {\n      // --- Custom logic BEFORE calling the original async method ---\n      // console.log(`Calling async ${className}.${methodName} with arguments:`, args); //TEST\n      // const start = Date.now(); //TEST\n      console.log(\"ARGUMENTS\", args);\n\n      try {\n        // Await the async method call\n        const result = await retryWithDelay(\n          async () => {\n            return processResponse(await instance[methodName](...args));\n          }\n        );\n\n        // --- Custom logic AFTER the async method resolves ---\n        // const duration = Date.now() - start; // TEST\n        // console.log(`Result from async ${className}.${methodName} (took ${duration}ms):`, result); //TEST\n\n        // Return the awaited result (or a modified version)\n        return result;\n      } catch (error) {\n        console.error(`Error in async ${className}.${methodName}:`, error);\n        throw error; // re-throw or handle error as needed\n      }\n    };\n  });\n\n  haicApiClients[className] = haicApiWrappers;\n}\n\n// console.log(haicApiClients); // TEST\n\n\n// SET THE CLIENTS TO THE APPROPRIATE CONTEXT\nif(msg.useGlobally) {\n    global.set(\"HaicApiClients\", haicApiClients);\n    context.set(\"useGlobally\", true);\n} else {\n    // Sets on the context of the \"parent\" flow, where this subflow is instantiated.\n    flow.set(\"$parent.HaicApiClients\", haicApiClients);\n    context.set(\"useGlobally\", false);\n}\n\n\n",
-        "outputs": 0,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "// Code added here will be run when the\n// node is being stopped or re-deployed.\n// Code added here will be run when the\n// node is being stopped or re-deployed.\nconst useGlobally = context.get(\"useGlobally\");\n\nif (useGlobally) {\n    global.set(\"HaicApiClients\", undefined);\n} else {\n    flow.set(\"$parent.HaicApiClients\", undefined);\n}",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 330,
-        "y": 300,
-        "wires": []
     },
     {
         "id": "83a3c05684e3279a",
@@ -2600,59 +2389,6 @@
         "wires": []
     },
     {
-        "id": "f445093bc9466b6d",
-        "type": "subflow:6d5f83638870930c",
-        "z": "9db4af518e108976",
-        "g": "53afbf356bbf6601",
-        "name": "",
-        "env": [
-            {
-                "name": "Use HTTPS",
-                "value": "true",
-                "type": "bool"
-            },
-            {
-                "name": "Host",
-                "value": "benchmark.humaine-horizon.eu",
-                "type": "str"
-            },
-            {
-                "name": "Port",
-                "value": "443",
-                "type": "num"
-            }
-        ],
-        "x": 350,
-        "y": 440,
-        "wires": [
-            [
-                "2d000ff74d5823c1",
-                "8f27d79a374af28c"
-            ],
-            [
-                "3f9e2fd9de8af5ad"
-            ]
-        ]
-    },
-    {
-        "id": "3f9e2fd9de8af5ad",
-        "type": "debug",
-        "z": "9db4af518e108976",
-        "g": "53afbf356bbf6601",
-        "name": "Error Output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 330,
-        "y": 540,
-        "wires": []
-    },
-    {
         "id": "384bca9bd4e2c0ef",
         "type": "subflow:3e0b79a15665c98a",
         "z": "9db4af518e108976",
@@ -2737,32 +2473,6 @@
         "x": 680,
         "y": 380,
         "wires": []
-    },
-    {
-        "id": "2d000ff74d5823c1",
-        "type": "delay",
-        "z": "9db4af518e108976",
-        "g": "53afbf356bbf6601",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "2",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 500,
-        "y": 380,
-        "wires": [
-            [
-                "1b2c3fb326eacf7a"
-            ]
-        ]
     },
     {
         "id": "0214858918135093",
@@ -3171,80 +2881,14 @@
         "wires": []
     },
     {
-        "id": "8f27d79a374af28c",
-        "type": "debug",
-        "z": "9db4af518e108976",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 400,
-        "y": 300,
-        "wires": []
-    },
-    {
-        "id": "457db4028a714336",
-        "type": "subflow:6d5f83638870930c",
-        "z": "3f025920437f7905",
-        "name": "",
-        "env": [
-            {
-                "name": "Use HTTPS",
-                "value": "true",
-                "type": "bool"
-            },
-            {
-                "name": "Host",
-                "value": "benchmark.humaine-horizon.eu",
-                "type": "str"
-            },
-            {
-                "name": "Port",
-                "value": "443",
-                "type": "num"
-            }
-        ],
-        "x": 310,
-        "y": 40,
-        "wires": [
-            [
-                "8535dcb7749d12d4"
-            ],
-            [
-                "0c24b71d92ae68aa"
-            ]
-        ]
-    },
-    {
-        "id": "8535dcb7749d12d4",
-        "type": "debug",
-        "z": "3f025920437f7905",
-        "name": "HAIC API Status",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 560,
-        "y": 20,
-        "wires": []
-    },
-    {
         "id": "ac74fc14fb8fd09f",
         "type": "websocket in",
         "z": "3f025920437f7905",
         "name": "Add Evaluation Log",
         "server": "4e6412a56bb04544",
         "client": "",
-        "x": 110,
-        "y": 460,
+        "x": 90,
+        "y": 200,
         "wires": [
             [
                 "a32e3be57ce24c24"
@@ -3272,8 +2916,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 110,
-        "y": 320,
+        "x": 90,
+        "y": 60,
         "wires": [
             [
                 "427d9cbd4d8bf008"
@@ -3292,8 +2936,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 310,
-        "y": 320,
+        "x": 290,
+        "y": 60,
         "wires": [
             [
                 "d8b8d134790fcc86"
@@ -3305,8 +2949,8 @@
         "type": "subflow:3e0b79a15665c98a",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 550,
-        "y": 320,
+        "x": 530,
+        "y": 60,
         "wires": [
             [
                 "79861fc8ba4d35a0",
@@ -3330,8 +2974,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 800,
-        "y": 280,
+        "x": 780,
+        "y": 20,
         "wires": []
     },
     {
@@ -3347,8 +2991,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
-        "y": 380,
+        "x": 700,
+        "y": 120,
         "wires": []
     },
     {
@@ -3363,8 +3007,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
-        "y": 320,
+        "x": 800,
+        "y": 60,
         "wires": [
             []
         ]
@@ -3381,8 +3025,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 320,
-        "y": 460,
+        "x": 300,
+        "y": 200,
         "wires": [
             [
                 "177c20dc63803101"
@@ -3394,8 +3038,8 @@
         "type": "subflow:9e615b8a6da73d11",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 550,
-        "y": 460,
+        "x": 530,
+        "y": 200,
         "wires": [
             [
                 "cdb477a98e9f7dc5"
@@ -3426,8 +3070,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 110,
-        "y": 640,
+        "x": 90,
+        "y": 380,
         "wires": [
             [
                 "fd7faa26aa52eb78"
@@ -3446,8 +3090,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 280,
-        "y": 640,
+        "x": 260,
+        "y": 380,
         "wires": [
             [
                 "bb8d8e3c93033918"
@@ -3459,8 +3103,8 @@
         "type": "subflow:ee62c2e2054b032c",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 510,
-        "y": 640,
+        "x": 490,
+        "y": 380,
         "wires": [
             [
                 "e5d5871e033a236e"
@@ -3482,8 +3126,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 850,
-        "y": 660,
+        "x": 830,
+        "y": 400,
         "wires": [
             [
                 "4b58f8cefa56a306"
@@ -3503,8 +3147,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 540,
-        "y": 700,
+        "x": 520,
+        "y": 440,
         "wires": []
     },
     {
@@ -3516,8 +3160,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 110,
-        "y": 560,
+        "x": 90,
+        "y": 300,
         "wires": [
             [
                 "b6375845c5da5c22"
@@ -3531,8 +3175,8 @@
         "name": "Send Evaluation Logs",
         "statusCode": "",
         "headers": {},
-        "x": 960,
-        "y": 560,
+        "x": 940,
+        "y": 300,
         "wires": []
     },
     {
@@ -3540,8 +3184,8 @@
         "type": "subflow:3cc374149e5165e4",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 520,
-        "y": 560,
+        "x": 500,
+        "y": 300,
         "wires": [
             [
                 "538c98c93dc4ec4e"
@@ -3563,8 +3207,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
-        "y": 560,
+        "x": 280,
+        "y": 300,
         "wires": [
             [
                 "de0960e0207b8c65"
@@ -3583,8 +3227,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 750,
-        "y": 560,
+        "x": 730,
+        "y": 300,
         "wires": [
             [
                 "4ac61f62232da56d"
@@ -3604,8 +3248,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 740,
-        "y": 480,
+        "x": 720,
+        "y": 220,
         "wires": []
     },
     {
@@ -3621,8 +3265,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 740,
-        "y": 600,
+        "x": 720,
+        "y": 340,
         "wires": []
     },
     {
@@ -3638,8 +3282,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 750,
-        "y": 440,
+        "x": 730,
+        "y": 180,
         "wires": []
     },
     {
@@ -3647,8 +3291,8 @@
         "type": "subflow:e260c7f298a6dd52",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 210,
-        "y": 820,
+        "x": 190,
+        "y": 560,
         "wires": [
             [
                 "72822ea23e2002d7"
@@ -3671,8 +3315,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 440,
-        "y": 840,
+        "x": 420,
+        "y": 580,
         "wires": []
     },
     {
@@ -3687,8 +3331,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 470,
-        "y": 800,
+        "x": 450,
+        "y": 540,
         "wires": [
             [
                 "e736dc111c27129f"
@@ -3708,25 +3352,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 710,
-        "y": 800,
-        "wires": []
-    },
-    {
-        "id": "0c24b71d92ae68aa",
-        "type": "debug",
-        "z": "3f025920437f7905",
-        "name": "Error handling",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 560,
-        "y": 60,
+        "x": 690,
+        "y": 540,
         "wires": []
     },
     {
@@ -3922,67 +3549,6 @@
         "info": "",
         "x": 1790,
         "y": 40,
-        "wires": []
-    },
-    {
-        "id": "2d36e29ded19d7d5",
-        "type": "inject",
-        "z": "3f025920437f7905",
-        "name": "trigger",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 90,
-        "y": 180,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "1ea64d3250214f3d",
-        "type": "debug",
-        "z": "3f025920437f7905",
-        "name": "ENVS",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 510,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "ab5620281338c9d2",
-        "type": "debug",
-        "z": "3f025920437f7905",
-        "name": "Error handling",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 540,
-        "y": 200,
         "wires": []
     },
     {
@@ -4773,61 +4339,6 @@
         ]
     },
     {
-        "id": "cbc26cda78f6a783",
-        "type": "inject",
-        "z": "eb9f48db9f88a8d2",
-        "name": "BENCHMARKING TEMPLATE",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"session_id\":\"dss_img_recog-e5392b4b-0932-4e9c-a1ea-2a2e342b84a9\",\"user_id\":\"dss_img_recog-d7d0614f-c964-434b-b81d-fbed40daf844\",\"ai_model_version\":\"2.0.0\",\"app_version\":\"1.0.0\",\"start_time\":\"2024-06-22T21:46:29Z\",\"end_time\":\"2024-07-22T07:46:52Z\",\"interaction_data\":[{\"image_id\":\"img-8274735c-652b-428e-8446-e3e016c26679\",\"presentation_time\":\"2025-04-08T06:12:33.691445\",\"result\":\"true_negative\",\"ai_detection_results\":\"true_negative\",\"outcome\":\"incorrect\",\"performance_at_t\":0.794562706529144,\"performance_at_t_1\":0.6931220045719952,\"time_interval\":4645,\"response_time\":104.23293151567172,\"performance_improvement\":0.027104773111610823,\"time_spent\":2133,\"reached_target\":false,\"resources_used\":51,\"total_resources\":100,\"time_without_ai\":547,\"time_with_ai\":177,\"correction_effectiveness\":0.7932252208494405,\"correction_time\":79,\"errors_before\":5,\"errors_after\":2,\"pre_retention_performance\":0.7487288321451568,\"post_retention_performance\":0.853677365987549,\"pre_feedback_performance\":0.679955021005444,\"post_feedback_performance\":0.8004463003007924,\"pre_adaptation_performance\":0.620386928155566,\"post_adaptation_performance\":0.7672707766009791,\"pre_correction_performance\":0.7397263374849203,\"post_correction_performance\":0.8607282111115669,\"learning_gain\":0.02123736271376508,\"learning_time\":819,\"objective_status\":\"not achieved\",\"human_decision\":\"reject\",\"ai_suggestion\":\"reject\",\"ai_assisted\":true,\"decision_outcome\":\"successful\",\"resolution_time\":94,\"effort_without_ai\":13,\"effort_with_ai\":7,\"confidence_level\":0.30029541909188706,\"trust_rating\":6,\"trust_scale_maximum\":10,\"safety_incidents\":2,\"uptime\":4703,\"total_time\":6000,\"performance_adversarial\":0.783859114685352,\"performance_normal\":0.899850278537306,\"performance_across_domains\":0.7081882617007862,\"baseline_performance\":0.701667008885401}],\"infrastructure_data\":{\"cpu\":\"0.3\",\"memory\":\"234\"},\"model_data\":[{\"retraining_time\":\"2024-07-27T12:40:10.691502\",\"initial_metrics\":{\"detection_accuracy\":0.7893060173132472,\"false_positive_rate\":0.08314651052928203,\"false_negative_rate\":0.13646632696899683},\"post_retraining_metrics\":{\"detection_accuracy\":0.8390374771800702,\"false_positive_rate\":0.08163044342886192,\"false_negative_rate\":0.09478784808872005},\"retraining_details\":{\"time_taken_seconds\":2667,\"data_used\":\"feedback and corrections from the review\",\"ai_model_version_after_retraining\":\"1.5.4\"}}]}]",
-        "payloadType": "json",
-        "x": 190,
-        "y": 80,
-        "wires": [
-            [
-                "73662f183c97ad3f"
-            ]
-        ]
-    },
-    {
-        "id": "cd7d730dd8610d8e",
-        "type": "comment",
-        "z": "eb9f48db9f88a8d2",
-        "name": "Example JSON Template",
-        "info": "//JSON template for benchmarking\n//In principle the template can be whatever the application wants. It will be submitted to\n//the benchmarking API as part of the benchmark configuration. However some key fields or top level categories\n//are suggested and in some cases are mandatory for the various metrics to keep track of the progress.\n//The main structure includes\n//  user\n  //  -> performs a task (in a session)\n  //      -> uses an application\n  //          -> the application may have a model or not (e.g. HMI interface)\n  //      -> uses a model directly without an application (Model as a Service)\n\n[\n{   \"session_id\": \"dss_img_recog-e5392b4b-0932-4e9c-a1ea-2a2e342b84a9\", //mandatory to keep track of specific interaction for a given task\n    \"user_id\": \"dss_img_recog-d7d0614f-c964-434b-b81d-fbed40daf844\", //mandatory to keep track of specific user\n    \"ai_model_version\": \"2.0.0\", //optional if one needs to keep track of model evolution\n    \"app_version\": \"1.0.0\", //optional if one wants to apply the user friendliness of the app. If no UI, it can be ommitted\n    \"start_time\": \"2024-06-22T21:46:29Z\", //mandatory to calculate the task completion\n    \"end_time\": \"2024-07-22T07:46:52Z\",   //mandatory to calculate the task completion\n    \"interaction_data\": [{ //mandatory at this top level, inner fields can be any key-value pair\n      \"image_id\": \"img-8274735c-652b-428e-8446-e3e016c26679\",\n      \"presentation_time\": \"2025-04-08T06:12:33.691445\",\n      \"result\": \"true_negative\",\n      \"ai_detection_results\": \"true_negative\",\n      \"outcome\": \"incorrect\",\n      \"performance_at_t\": 0.794562706529144,\n      \"performance_at_t_1\": 0.6931220045719952,\n      \"time_interval\": 4645,\n      \"response_time\": 104.23293151567172,\n      \"performance_improvement\": 0.027104773111610823,\n      \"time_spent\": 2133,\n      \"reached_target\": false,\n      \"resources_used\": 51,\n      \"total_resources\": 100,\n      \"time_without_ai\": 547,\n      \"time_with_ai\": 177,\n      \"correction_effectiveness\": 0.7932252208494405,\n      \"correction_time\": 79,\n      \"errors_before\": 5,\n      \"errors_after\": 2,\n      \"pre_retention_performance\": 0.7487288321451568,\n      \"post_retention_performance\": 0.853677365987549,\n      \"pre_feedback_performance\": 0.679955021005444,\n      \"post_feedback_performance\": 0.8004463003007924,\n      \"pre_adaptation_performance\": 0.620386928155566,\n      \"post_adaptation_performance\": 0.7672707766009791,\n      \"pre_correction_performance\": 0.7397263374849203,\n      \"post_correction_performance\": 0.8607282111115669,\n      \"learning_gain\": 0.02123736271376508,\n      \"learning_time\": 819,\n      \"objective_status\": \"not achieved\",\n      \"human_decision\": \"reject\",\n      \"ai_suggestion\": \"reject\",\n      \"ai_assisted\": true,\n      \"decision_outcome\": \"successful\",\n      \"resolution_time\": 94,\n      \"effort_without_ai\": 13,\n      \"effort_with_ai\": 7,\n      \"confidence_level\": 0.30029541909188706,\n      \"trust_rating\": 6,\n      \"trust_scale_maximum\": 10,\n      \"safety_incidents\": 2,\n      \"uptime\": 4703,\n      \"total_time\": 6000,\n      \"performance_adversarial\": 0.783859114685352,\n      \"performance_normal\": 0.899850278537306,\n      \"performance_across_domains\": 0.7081882617007862,\n      \"baseline_performance\": 0.701667008885401\n    }],\n    \"infrastructure_data\": {//mandatory at this top level, inner fields can be any key-value pair or empty if not measured\n      \"cpu\":0.3,\n      \"memory\":234\n    }\n    \"model_metrics\": [ //optional at this top level because we may have applications (e.g. UIs) without models, inner fields can be any key-value pair\n      {\n        \"retraining_time\": \"2024-07-27T12:40:10.691502\",\n        \"initial_metrics\": {\n          \"detection_accuracy\": 0.7893060173132472,\n          \"false_positive_rate\": 0.08314651052928203,\n          \"false_negative_rate\": 0.13646632696899683\n        },\n        \"post_retraining_metrics\": {\n          \"detection_accuracy\": 0.8390374771800702,\n          \"false_positive_rate\": 0.08163044342886192,\n          \"false_negative_rate\": 0.09478784808872005\n        },\n        \"retraining_details\": {\n          \"time_taken_seconds\": 2667,\n          \"data_used\": \"feedback and corrections from the review\",\n          \"ai_model_version_after_retraining\": \"1.5.4\"\n        }\n      }\n    ]\n  }\n]\n",
-        "x": 370,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "73662f183c97ad3f",
-        "type": "debug",
-        "z": "eb9f48db9f88a8d2",
-        "name": "debug 39",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
-        "y": 80,
-        "wires": []
-    },
-    {
         "id": "4f8f9e74d9fb06ca",
         "type": "inject",
         "z": "b4f6c615c8ef09ab",
@@ -5215,57 +4726,6 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 470,
-        "y": 60,
-        "wires": []
-    },
-    {
-        "id": "ed2877831a341737",
-        "type": "subflow:6d5f83638870930c",
-        "z": "e3fd273272a37452",
-        "name": "",
-        "env": [],
-        "x": 290,
-        "y": 40,
-        "wires": [
-            [
-                "90539c81a29f6ed7"
-            ],
-            [
-                "5190b5e1973de94e"
-            ]
-        ]
-    },
-    {
-        "id": "90539c81a29f6ed7",
-        "type": "debug",
-        "z": "e3fd273272a37452",
-        "name": "HAIC API Status",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
-        "y": 20,
-        "wires": []
-    },
-    {
-        "id": "5190b5e1973de94e",
-        "type": "debug",
-        "z": "e3fd273272a37452",
-        "name": "Error handling",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
         "y": 60,
         "wires": []
     },
@@ -5664,42 +5124,6 @@
         ]
     },
     {
-        "id": "20e14f4b549b1fa5",
-        "type": "subflow:6d5f83638870930c",
-        "z": "68962323fb8f5a64",
-        "g": "bef08cda5cd6e15a",
-        "name": "",
-        "env": [],
-        "x": 130,
-        "y": 60,
-        "wires": [
-            [
-                "77a5e7071aa41d3f"
-            ],
-            [
-                "cf0ff9703df94c43"
-            ]
-        ]
-    },
-    {
-        "id": "cf0ff9703df94c43",
-        "type": "debug",
-        "z": "68962323fb8f5a64",
-        "g": "bef08cda5cd6e15a",
-        "name": "Error Output",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 150,
-        "y": 160,
-        "wires": []
-    },
-    {
         "id": "4706f440553adaed",
         "type": "subflow:3e0b79a15665c98a",
         "z": "68962323fb8f5a64",
@@ -6039,32 +5463,6 @@
         "x": 180,
         "y": 740,
         "wires": []
-    },
-    {
-        "id": "77a5e7071aa41d3f",
-        "type": "delay",
-        "z": "68962323fb8f5a64",
-        "g": "bef08cda5cd6e15a",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "2",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 340,
-        "y": 60,
-        "wires": [
-            [
-                "ab463566f2505cd6"
-            ]
-        ]
     },
     {
         "id": "ce744c27a71719a0",
