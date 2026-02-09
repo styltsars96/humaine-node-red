@@ -19,6 +19,7 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
             name: { value: "" },
             haic_server: { value: "", type: "haic-config", required: true },
             aiEnvironmentId: { value: "", required: false },
+            defaultApplication: { value: "", required: false },
         },
         inputs: 1,
         outputs: 1,

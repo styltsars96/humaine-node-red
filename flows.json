@@ -3555,7 +3555,7 @@
         "id": "b2d6d748be934985",
         "type": "inject",
         "z": "529d431d13d83865",
-        "name": "",
+        "name": "REFRESH TRIGGER",
         "props": [
             {
                 "p": "payload"
@@ -3572,8 +3572,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 220,
-        "y": 160,
+        "x": 180,
+        "y": 40,
         "wires": [
             [
                 "2f91d54b81491145"
@@ -3592,8 +3592,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 620,
-        "y": 160,
+        "x": 500,
+        "y": 40,
         "wires": []
     },
     {
@@ -3603,8 +3603,8 @@
         "name": "test Env",
         "haic_server": "13892724a379a5ca",
         "aiEnvironmentId": "NS_ENV",
-        "x": 400,
-        "y": 160,
+        "x": 360,
+        "y": 40,
         "wires": [
             [
                 "977bf3321eb6cdf0"

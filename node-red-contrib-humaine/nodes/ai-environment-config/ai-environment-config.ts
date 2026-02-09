@@ -3,13 +3,19 @@ import {
     EnvironmentCatalogService,
     ApiError,
     OpenAPIConfig,
+    ConfigurationService,
 } from "../../haic_client";
 import { isHaicConfigNode } from "../shared/helpers";
 import {
     AiEnvironmentConfigNode,
     AiEnvironmentConfigNodeDef,
 } from "./modules/types";
-import { EnvsMetaList, EnvsMetaListSchema } from "./shared/types";
+import {
+    EnvsMetaList,
+    EnvsMetaListSchema,
+    EvaluationConfigList,
+    EvaluationConfigListSchema,
+} from "./shared/types";
 import {
     HAICFlowEnvironmentData,
     HumAIneEnvironmentData,
@@ -17,6 +23,7 @@ import {
 
 const REFRESH_MSG_TIMEOUT_MS = 3000;
 
+// Refresh the AI Environment Data
 const refreshHumAIneEnv = async (
     node: AiEnvironmentConfigNode,
     openApi: OpenAPIConfig,
@@ -70,6 +77,54 @@ const refreshHumAIneEnv = async (
     }
 };
 
+type AppConfigsRefreshResult = {
+    appConfigsList: EvaluationConfigList;
+    errorMsg: string | undefined;
+};
+
+// Refresh the Application Configurations
+const refreshAppConfigs = async (
+    node: AiEnvironmentConfigNode,
+    openApi: OpenAPIConfig,
+): Promise<AppConfigsRefreshResult> => {
+    let result;
+    let appConfigsList: EvaluationConfigList = [];
+    let errorMsg: string | undefined;
+
+    try {
+        result =
+            await ConfigurationService.getAllConfigurationsApiV1ConfigurationListGet(
+                openApi,
+            );
+    } catch (error: any) {
+        if (error instanceof ApiError) {
+            errorMsg = `Failed to fetch App Configs: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`;
+            console.error(errorMsg);
+        } else {
+            errorMsg = "Failed to fetch  App Configs: " + error.message;
+            node.error(errorMsg);
+        }
+    }
+
+    if (!errorMsg) {
+        try {
+            appConfigsList = EvaluationConfigListSchema.parse(result);
+        } catch (error: any) {
+            errorMsg = `Failed to parse AI configuration: ${error.message} Response: ${JSON.stringify(result, null, 4)}`;
+            node.error(errorMsg);
+        }
+    }
+
+    if (!errorMsg) {
+        node.context().flow.set("HumAIne_APP_CONFIGS", appConfigsList);
+    }
+
+    return {
+        appConfigsList: appConfigsList,
+        errorMsg: errorMsg,
+    };
+};
+
 const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
     function AiEnvironmentConfigNodeConstructor(
         this: AiEnvironmentConfigNode,
@@ -79,6 +134,8 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         const node = this;
         const localId = node.id;
         node.aiEnvironmentId = config.aiEnvironmentId;
+        if (config.defaultApplication)
+            node.defaultApplication = config.defaultApplication;
 
         const haic_config_node = RED.nodes.getNode(config.haic_server);
         const flowContext = node.context().flow;
@@ -86,6 +143,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             node.warn("HAIC Configuration not set!");
             return;
         }
+
         if (flowContext.get("HumAIne_HAIC_ENVIRONMENT")) {
             node.status({
                 fill: "red",
@@ -98,13 +156,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             return;
         }
 
-        const humaineHaicEnvironment: HAICFlowEnvironmentData = {
-            haicApiNodeId: config.haic_server,
-            haicEnvironmentNodeId: node.id,
-        };
-        flowContext.set("HumAIne_HAIC_ENVIRONMENT", humaineHaicEnvironment);
-
-        // Endpoint for the Editor side, to dynamically populate environments list.
+        // Endpoint for the Editor side, to dynamically populate AI Process Environments list.
         RED.httpAdmin.get(
             `/node-red-contrib-humaine/ai-environment-config/${localId}/envs_list`,
             RED.auth.needsPermission("nodes.read"),
@@ -120,9 +172,8 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                         );
                 } catch (error: any) {
                     if (error instanceof ApiError) {
-                        console.error(
-                            `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`,
-                        );
+                        errorMsg = `Failed to fetch AI configuration: URL ${error.url} STATUS ${error.status} REQUEST ${error.request} RESPONSE BODY ${error.body}`;
+                        console.error(errorMsg);
                     } else {
                         errorMsg =
                             "Failed to fetch AI configuration: " +
@@ -147,20 +198,46 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             },
         );
 
-        if (node.aiEnvironmentId) {
-            // Save into the flow level, for usage by other nodes
-            refreshHumAIneEnv(node, haic_config_node.OpenAPI).catch((error) => {
-                node.error(
-                    "Failed to fetch AI configuration on startup: " + error,
+        // Endpoint for the Editor side, to dynamically populate HAIC Application Configurations list.
+        RED.httpAdmin.get(
+            `/node-red-contrib-humaine/ai-environment-config/${localId}/applications_list_refresh`,
+            RED.auth.needsPermission("nodes.read"),
+            async function (req, res) {
+                const result = await refreshAppConfigs(
+                    node,
+                    haic_config_node.OpenAPI,
                 );
-            });
-        } else {
+
+                res.json(result);
+            },
+        );
+
+        if (!node.aiEnvironmentId) {
             node.status({
                 fill: "red",
                 shape: "dot",
                 text: "No AI Environment ID is selected yet!",
             });
+            return;
         }
+
+        // Save the config node IDs, this and the API, in the flow context, for usage by other nodes
+        const humaineHaicEnvironment: HAICFlowEnvironmentData = {
+            haicApiNodeId: config.haic_server,
+            haicEnvironmentNodeId: node.id,
+        };
+        flowContext.set("HumAIne_HAIC_ENVIRONMENT", humaineHaicEnvironment);
+
+        // Save AI environment into the flow context, for usage by other nodes
+        refreshHumAIneEnv(node, haic_config_node.OpenAPI).catch((error) => {
+            node.error("Failed to fetch AI configuration on startup: " + error);
+        });
+        // Save application configs in the flow context, for usage by other nodes
+        refreshAppConfigs(node, haic_config_node.OpenAPI).catch((error) => {
+            node.error(
+                "Failed to fetch HAIC App configs list on startup: " + error,
+            );
+        });
 
         node.on("input", async function (msg) {
             if (!node.aiEnvironmentId) {
@@ -175,19 +252,27 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 return;
             }
 
-            // Trigger renewal of the HumAIne environment metadata, and emit it
-            msg.payload = await refreshHumAIneEnv(
-                node,
-                haic_config_node.OpenAPI,
-            );
+            // Trigger renewal of the HumAIne environment metadata, and emit the metadata
+            const [humaineEnvResult, appConfigsResult] = await Promise.all([
+                refreshHumAIneEnv(node, haic_config_node.OpenAPI),
+                refreshAppConfigs(node, haic_config_node.OpenAPI),
+            ]);
+
+            msg.payload = humaineEnvResult;
+            if (!appConfigsResult.errorMsg) {
+                msg.payload["appConfigsList"] = appConfigsResult.appConfigsList;
+            }
 
             node.send(msg);
         });
+
+        // NOTE: If other nodes need some internal usage endpoint for setups on the frontend/editor, add them here
 
         node.on("close", function () {
             // Cleanup
             flowContext.set("HumAIne_HAIC_ENVIRONMENT", undefined);
             flowContext.set("HumAIne_AI_PROCESS_ENVIRONMENT", undefined);
+            flowContext.set("HumAIne_APP_CONFIGS", undefined);
         });
     }
 

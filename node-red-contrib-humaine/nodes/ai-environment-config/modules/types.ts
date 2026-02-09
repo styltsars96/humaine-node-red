@@ -6,4 +6,5 @@ export interface AiEnvironmentConfigNodeDef
 
 export interface AiEnvironmentConfigNode extends Node {
     aiEnvironmentId: string;
+    defaultApplication?: string;
 }
