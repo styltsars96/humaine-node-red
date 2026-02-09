@@ -9,11 +9,11 @@ import {
     AiEnvironmentConfigNode,
     AiEnvironmentConfigNodeDef,
 } from "./modules/types";
+import { EnvsMetaList, EnvsMetaListSchema } from "./shared/types";
 import {
-    EnvsMetaList,
-    EnvsMetaListSchema,
+    HAICFlowEnvironmentData,
     HumAIneEnvironmentData,
-} from "./shared/types";
+} from "../shared/types";
 
 const REFRESH_MSG_TIMEOUT_MS = 3000;
 
@@ -81,10 +81,28 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         node.aiEnvironmentId = config.aiEnvironmentId;
 
         const haic_config_node = RED.nodes.getNode(config.haic_server);
+        const flowContext = node.context().flow;
         if (!isHaicConfigNode(haic_config_node)) {
             node.warn("HAIC Configuration not set!");
             return;
         }
+        if (flowContext.get("HumAIne_HAIC_ENVIRONMENT")) {
+            node.status({
+                fill: "red",
+                shape: "ring",
+                text: "DUPLICATE CONFIG IN THE FLOW! REMOVE!",
+            });
+            node.error(
+                "There already exists an AI Environment Configuration Node in this flow! There can be only one per flow!",
+            );
+            return;
+        }
+
+        const humaineHaicEnvironment: HAICFlowEnvironmentData = {
+            haicApiNodeId: config.haic_server,
+            haicEnvironmentNodeId: node.id,
+        };
+        flowContext.set("HumAIne_HAIC_ENVIRONMENT", humaineHaicEnvironment);
 
         // Endpoint for the Editor side, to dynamically populate environments list.
         RED.httpAdmin.get(
@@ -168,6 +186,8 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
 
         node.on("close", function () {
             // Cleanup
+            flowContext.set("HumAIne_HAIC_ENVIRONMENT", undefined);
+            flowContext.set("HumAIne_AI_PROCESS_ENVIRONMENT", undefined);
         });
     }
 
