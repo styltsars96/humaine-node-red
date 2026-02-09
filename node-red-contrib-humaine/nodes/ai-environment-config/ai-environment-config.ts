@@ -15,6 +15,8 @@ import {
     HumAIneEnvironmentData,
 } from "./shared/types";
 
+const REFRESH_MSG_TIMEOUT_MS = 3000;
+
 const refreshHumAIneEnv = async (
     node: AiEnvironmentConfigNode,
     openApi: OpenAPIConfig,
@@ -41,8 +43,15 @@ const refreshHumAIneEnv = async (
         node.status({
             fill: "green",
             shape: "dot",
-            text: `AI process Environment: ${node.aiEnvironmentId}`,
+            text: `JUST UPDATED ${node.aiEnvironmentId} Environment for this flow!`,
         });
+        setTimeout(() => {
+            node.status({
+                fill: "green",
+                shape: "dot",
+                text: `AI Process Environment: ${node.aiEnvironmentId}`,
+            });
+        }, REFRESH_MSG_TIMEOUT_MS);
         return aiEnv;
     } catch (error: any) {
         if (error instanceof ApiError) {
