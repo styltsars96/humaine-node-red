@@ -8,17 +8,18 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
     color: "#58A69F",
     defaults: {
         name: { value: "" },
+        application: { value: "", required: false },
         model: { value: "" },
         action: { value: "" },
-        sessionIdJsonPath: { value: "$sessionId" },
-        interactionIdJsonPath: { value: "$interactionId", required: false },
+        sessionIdJsonPath: { value: "$sessionId", required: false },
+        // interactionIdJsonPath: { value: "$interactionId", required: false },
     },
     inputs: 1,
     outputs: 1,
     icon: "haic.svg",
     paletteLabel: "HAIC Logger",
     label: function () {
-        return this.name || "AI Environment Config";
+        return this.name || "HAIC Logger";
     },
     oneditprepare: async function () {},
 });
