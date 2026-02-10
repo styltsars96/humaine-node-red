@@ -3576,7 +3576,7 @@
         "y": 40,
         "wires": [
             [
-                "2f91d54b81491145"
+                "e1405bca9112b117"
             ]
         ]
     },
@@ -3597,14 +3597,15 @@
         "wires": []
     },
     {
-        "id": "2f91d54b81491145",
+        "id": "e1405bca9112b117",
         "type": "ai-environment-config",
         "z": "529d431d13d83865",
-        "name": "test Env",
+        "name": "AI Env Config",
         "haic_server": "13892724a379a5ca",
         "aiEnvironmentId": "NS_ENV",
-        "x": 360,
-        "y": 40,
+        "defaultApplication": "",
+        "x": 320,
+        "y": 120,
         "wires": [
             [
                 "977bf3321eb6cdf0"

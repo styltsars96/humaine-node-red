@@ -15,6 +15,8 @@ import {
     EnvsMetaListSchema,
     EvaluationConfigList,
     EvaluationConfigListSchema,
+    AppConfigsRefreshResult,
+    AppConfigContextData,
 } from "./shared/types";
 import {
     HAICFlowEnvironmentData,
@@ -77,11 +79,6 @@ const refreshHumAIneEnv = async (
     }
 };
 
-type AppConfigsRefreshResult = {
-    appConfigsList: EvaluationConfigList;
-    errorMsg: string | undefined;
-};
-
 // Refresh the Application Configurations
 const refreshAppConfigs = async (
     node: AiEnvironmentConfigNode,
@@ -116,7 +113,16 @@ const refreshAppConfigs = async (
     }
 
     if (!errorMsg) {
-        node.context().flow.set("HumAIne_APP_CONFIGS", appConfigsList);
+        const appConfigsMap: AppConfigContextData = appConfigsList.reduce(
+            (acc, config) => {
+                if (config.id) {
+                    acc[config.id] = config;
+                }
+                return acc;
+            },
+            {} as AppConfigContextData,
+        );
+        node.context().flow.set("HumAIne_APP_CONFIGS", appConfigsMap);
     }
 
     return {

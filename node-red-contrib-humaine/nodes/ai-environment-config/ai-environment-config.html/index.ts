@@ -1,7 +1,11 @@
 import { EditorRED } from "node-red";
 import { AiEnvironmentConfigEditorNodeProperties } from "./modules/types";
 import { HaicConfigEditorNodeProperties } from "../../haic-config/haic-config.html/modules/types";
-import { EnvsMetaList } from "../shared/types";
+import {
+    EnvsMetaList,
+    EvaluationConfigList,
+    AppConfigsRefreshResult,
+} from "../shared/types";
 
 declare const RED: EditorRED;
 
@@ -34,12 +38,15 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
 
             try {
                 const haic_server = node.haic_server;
-                let envMetaList: EnvsMetaList = []; // List to be populated from HAIC API
+                // Lists to be populated from HAIC API
+                let envMetaList: EnvsMetaList = [];
+                let appConfigsList: EvaluationConfigList = [];
                 let errorMsg = ""; // Error message to be displayed in the UI
 
                 if (!haic_server) {
                     // Remove the other setup messages after the initial one:
                     $("#node-setup-message-aiEnvironmentId").remove();
+                    $("#node-setup-message-defaultApplication").remove();
 
                     console.warn(
                         "HAIC server must be set before Config options are available!",
@@ -61,6 +68,17 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                             } else {
                                 envMetaList = envsData.envMetaList;
                             }
+
+                            // Ask backend / runtime to get list of app configs from HAIC API and store them in flow context
+                            const appsData: AppConfigsRefreshResult =
+                                await $.getJSON(
+                                    `/node-red-contrib-humaine/ai-environment-config/${localId}/applications_list_refresh`,
+                                );
+                            if (appsData.errorMsg) {
+                                errorMsg = appsData.errorMsg;
+                            } else {
+                                appConfigsList = appsData.appConfigsList;
+                            }
                         } catch (error: any) {
                             errorMsg = error.message;
                             console.error(errorMsg);
@@ -73,50 +91,86 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                 }
 
                 // Set up the AI Environments list
-                const selectElement = document.getElementById(
+                const aiEnvSelectElement = document.getElementById(
                     "node-input-aiEnvironmentId",
                 ) as HTMLSelectElement;
 
-                // Store the currently selected value before clearing
-                const currentSelectedValue = node.aiEnvironmentId || "";
+                const defaultAppSelectElement = document.getElementById(
+                    "node-input-defaultApplication",
+                ) as HTMLSelectElement;
 
-                selectElement.innerHTML = "";
+                // Store the currently selected values before clearing
+                const currentSelectedAIEnv = node.aiEnvironmentId || "";
+                const currentSelectedDefaultApp = node.defaultApplication || "";
+
+                aiEnvSelectElement.innerHTML = "";
+                defaultAppSelectElement.innerHTML = "";
 
                 // Add default option
-                const defaultOption = document.createElement("option");
-                defaultOption.value = "";
+                const defaultEvnOption = document.createElement("option");
+                defaultEvnOption.value = "";
                 if (envMetaList.length > 0) {
-                    defaultOption.text = "Select an option";
+                    defaultEvnOption.text = "Select an option";
                 } else {
-                    defaultOption.text =
+                    defaultEvnOption.text =
                         "SET UP HAIC Server Configuration Correctly First! " +
                         errorMsg;
                 }
-                selectElement.appendChild(defaultOption);
+                aiEnvSelectElement.appendChild(defaultEvnOption);
+                const defaultAppDefaultOption =
+                    document.createElement("option");
+                defaultAppDefaultOption.value = "";
+                defaultAppDefaultOption.text =
+                    "None, select application PER NODE only!";
+                defaultAppSelectElement.appendChild(defaultAppDefaultOption);
 
                 // Populate with dynamic options
                 envMetaList.forEach((option) => {
                     const optionElement = document.createElement("option");
                     optionElement.value = option.id;
                     optionElement.text = option.name || option.id;
-                    selectElement.appendChild(optionElement);
+                    aiEnvSelectElement.appendChild(optionElement);
+                });
+                appConfigsList.forEach((option) => {
+                    const optionElement = document.createElement("option");
+                    optionElement.value = option.id.toString();
+                    optionElement.text = option.application_name;
+                    defaultAppSelectElement.appendChild(optionElement);
                 });
 
                 // Restore the previously selected value if it's still valid
                 if (
-                    currentSelectedValue &&
-                    envMetaList.some((env) => env.id === currentSelectedValue)
+                    currentSelectedAIEnv &&
+                    envMetaList.some((env) => env.id === currentSelectedAIEnv)
                 ) {
-                    selectElement.value = currentSelectedValue;
+                    aiEnvSelectElement.value = currentSelectedAIEnv;
                 } else if (envMetaList.length === 0) {
                     // If there are no options and we had a previous selection,
                     // keep the error message option but don't auto-select anything
-                    selectElement.value = "";
+                    aiEnvSelectElement.value = "";
                     node.aiEnvironmentId = null;
                     $("#node-setup-message-aiEnvironmentId")
                         .children("p")
                         .text(
                             "No AI process environments have been found! Please set one up first!",
+                        );
+                }
+                // Same as above for default app
+                if (
+                    currentSelectedDefaultApp &&
+                    appConfigsList.some(
+                        (appConfig) =>
+                            appConfig.id.toString() ===
+                            currentSelectedDefaultApp,
+                    )
+                ) {
+                    defaultAppSelectElement.value = currentSelectedDefaultApp;
+                } else if (appConfigsList.length === 0) {
+                    defaultAppSelectElement.value = "";
+                    $("#node-setup-message-defaultApplication")
+                        .children("p")
+                        .text(
+                            "No HAIC Application Configuration found! Set one up first!",
                         );
                 }
             } catch (error) {
