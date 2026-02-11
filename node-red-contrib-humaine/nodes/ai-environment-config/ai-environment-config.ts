@@ -135,15 +135,66 @@ const refreshAppConfigs = async (
 
 const fetchHaicLoggerSelectionOptions = async (
     node: AiEnvironmentConfigNode,
+    selected_model: string | null = null,
 ): Promise<IntraNodeMsg<HaicLoggerSelectionOptions>> => {
-    let errorMsg: string | null | undefined = undefined;
+    let errorMsg: string = "";
     const payload: HaicLoggerSelectionOptions = {
         applications: [],
         models: [],
         actions: [],
     };
+    const flowContext = node.context().flow;
 
-    // TODO: fetch selection options from flow
+    const appConfigs = flowContext.get("HumAIne_APP_CONFIGS") as
+        | AppConfigContextData
+        | undefined;
+    if (!appConfigs) {
+        errorMsg += " HumAIne HAIC APP CONFIGS are NOT SET! ";
+    } else {
+        payload.applications = Object.entries(appConfigs).map(
+            ([idStr, config]) => ({
+                id: String(config.id ?? Number(idStr)),
+                text: config.application_name,
+            }),
+        );
+    }
+
+    const aiEnv = flowContext.get("HumAIne_AI_PROCESS_ENVIRONMENT") as
+        | HumAIneEnvironmentData
+        | undefined;
+    if (!aiEnv) {
+        errorMsg += " AI Process Environment is NOT SET! ";
+    } else {
+        const aiModels = aiEnv.env.agents;
+
+        payload.models = aiModels.map((modelEntry) => {
+            return {
+                id: modelEntry.id,
+                text: `${modelEntry.label || ""} ${modelEntry.id} ${modelEntry.model || ""}`,
+            };
+        });
+
+        if (!selected_model) {
+            payload.actions = [
+                {
+                    id: "",
+                    text: "SELECT MODEL FIRST",
+                },
+            ];
+        } else {
+            const modelDef = aiModels.find((item) => item.id == selected_model);
+            if (modelDef) {
+                if (modelDef.affordances.length === 0) {
+                    errorMsg += ` Model ${selected_model} has no affordances!`;
+                } else {
+                    payload.actions = modelDef.affordances.map((affordance) => {
+                        return { id: affordance, text: affordance };
+                    });
+                }
+            } else
+                errorMsg += ` Model definition ${selected_model} not found in environment! `;
+        }
+    }
 
     return {
         payload: payload,
@@ -294,12 +345,24 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             node.send(msg);
         });
 
-        // Endpoint for the HAIC Logger Options
+        // Endpoints for the HAIC Logger Options
         RED.httpAdmin.get(
             `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
             RED.auth.needsPermission("nodes.read"),
             async function (req, res) {
                 const result = await fetchHaicLoggerSelectionOptions(node);
+                res.json(result);
+            },
+        );
+        RED.httpAdmin.post(
+            `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
+            RED.auth.needsPermission("nodes.read"),
+            async function (req, res) {
+                const selectedModel = req.body.selectedModel ?? "";
+                const result = await fetchHaicLoggerSelectionOptions(
+                    node,
+                    selectedModel,
+                );
                 res.json(result);
             },
         );
