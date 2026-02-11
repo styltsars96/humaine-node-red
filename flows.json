@@ -2236,6 +2236,21 @@
         ]
     },
     {
+        "id": "6e744cb53a9975e1",
+        "type": "haic-logger",
+        "z": "529d431d13d83865",
+        "name": "",
+        "application": "14",
+        "model": "NSAI",
+        "affordance_action": "train",
+        "sessionIdJsonPath": "$session_id",
+        "x": 290,
+        "y": 400,
+        "wires": [
+            []
+        ]
+    },
+    {
         "id": "fa5d8bc1d91e9134",
         "type": "inject",
         "z": "9db4af518e108976",

@@ -154,7 +154,7 @@ const fetchHaicLoggerSelectionOptions = async (
         payload.applications = Object.entries(appConfigs).map(
             ([idStr, config]) => ({
                 id: String(config.id ?? Number(idStr)),
-                text: config.application_name,
+                text: `${config.application_name} (${String(config.id ?? Number(idStr))})`,
             }),
         );
     }

@@ -79,11 +79,32 @@ export const populateSelectWithOptions = (
 ) => {
     element.innerHTML = "";
 
-    // Determine if the preselected value is valid (i.e., exists in options)
+    // If only one option exists, auto-select it (ignore placeholder)
+    if (options.length === 1) {
+        const opt = options[0];
+        const optionEl = document.createElement("option");
+        optionEl.value = opt.id;
+        optionEl.textContent = opt.text;
+        element.appendChild(optionEl);
+        element.value = opt.id;
+        return;
+    }
+
+    // Handle zero options case: show "No available options"
+    if (options.length === 0) {
+        const noOptionsOption = document.createElement("option");
+        noOptionsOption.value = "";
+        noOptionsOption.textContent = "No available options";
+        noOptionsOption.disabled = true;
+        noOptionsOption.selected = true;
+        element.appendChild(noOptionsOption);
+        return;
+    }
+
+    // For ≥2 options: show placeholder unless preselected value is valid
     const hasValidPreselection =
         preselectedValue && options.some((opt) => opt.id === preselectedValue);
 
-    // Add placeholder option only when no valid preselection
     if (!hasValidPreselection) {
         const placeholderOption = document.createElement("option");
         placeholderOption.value = "";
@@ -93,15 +114,13 @@ export const populateSelectWithOptions = (
         element.appendChild(placeholderOption);
     }
 
-    // Add actual options
     options.forEach((opt) => {
         const optionEl = document.createElement("option");
         optionEl.value = opt.id;
-        optionEl.textContent = opt.text; // assuming `text` field — adjust if needed (e.g., `label`)
+        optionEl.textContent = opt.text;
         element.appendChild(optionEl);
     });
 
-    // Set preselected value only if valid
     if (hasValidPreselection && preselectedValue) {
         element.value = preselectedValue;
     }

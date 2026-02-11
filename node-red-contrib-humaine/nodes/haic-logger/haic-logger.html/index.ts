@@ -21,6 +21,11 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
     icon: "haic.svg",
     paletteLabel: "HAIC Logger",
     label: function () {
+        if (this.model && this.affordance_action) {
+            return (
+                this.name || `${this.model}  ${this.affordance_action} Logger`
+            );
+        }
         return this.name || "HAIC Logger";
     },
     oneditprepare: async function () {
