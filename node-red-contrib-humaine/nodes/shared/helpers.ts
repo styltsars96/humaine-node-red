@@ -75,11 +75,34 @@ export const retryWithDelay = async (
 export const populateSelectWithOptions = (
     element: HTMLSelectElement,
     options: SelectionOptions,
+    preselectedValue?: string,
 ) => {
-    options.forEach((option) => {
-        const optionElement = document.createElement("option");
-        optionElement.value = option.id;
-        optionElement.text = option.text;
-        element.appendChild(optionElement);
+    element.innerHTML = "";
+
+    // Determine if the preselected value is valid (i.e., exists in options)
+    const hasValidPreselection =
+        preselectedValue && options.some((opt) => opt.id === preselectedValue);
+
+    // Add placeholder option only when no valid preselection
+    if (!hasValidPreselection) {
+        const placeholderOption = document.createElement("option");
+        placeholderOption.value = "";
+        placeholderOption.textContent = "Select an option";
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true;
+        element.appendChild(placeholderOption);
+    }
+
+    // Add actual options
+    options.forEach((opt) => {
+        const optionEl = document.createElement("option");
+        optionEl.value = opt.id;
+        optionEl.textContent = opt.text; // assuming `text` field — adjust if needed (e.g., `label`)
+        element.appendChild(optionEl);
     });
+
+    // Set preselected value only if valid
+    if (hasValidPreselection && preselectedValue) {
+        element.value = preselectedValue;
+    }
 };

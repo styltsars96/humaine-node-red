@@ -57,7 +57,6 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
                 let selectionOptionsResponse: IntraNodeMsg<HaicLoggerSelectionOptions>;
 
                 if (selectedModel) {
-                    // POST request with selected model
                     selectionOptionsResponse = (await $.ajax({
                         url: `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
                         method: "POST",
@@ -65,7 +64,6 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
                         data: JSON.stringify({ selectedModel }),
                     })) as IntraNodeMsg<HaicLoggerSelectionOptions>;
                 } else {
-                    // GET request
                     selectionOptionsResponse = (await $.getJSON(
                         `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
                     )) as IntraNodeMsg<HaicLoggerSelectionOptions>;
@@ -93,49 +91,22 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
         // Initial fetch (GET if no model selected yet)
         await fetchSelectionOptions(currentSelectedModel || undefined);
 
-        // Clear dropdowns and repopulate
-        actionSelectElement.innerHTML = "";
-        modelSelectElement.innerHTML = "";
-        applicationSelectElement.innerHTML = "";
-
+        // Populate dropdowns with placeholder + preselection logic
         populateSelectWithOptions(
             actionSelectElement,
             selectionOptions.actions,
+            currentSelectedAction,
         );
-        populateSelectWithOptions(modelSelectElement, selectionOptions.models);
+        populateSelectWithOptions(
+            modelSelectElement,
+            selectionOptions.models,
+            currentSelectedModel,
+        );
         populateSelectWithOptions(
             applicationSelectElement,
             selectionOptions.applications,
+            currentSelectedApplication,
         );
-
-        // Restore previously selected values if valid
-        if (
-            currentSelectedAction &&
-            selectionOptions.actions.some(
-                (action) => action.id == currentSelectedAction,
-            )
-        ) {
-            actionSelectElement.value = currentSelectedAction;
-        }
-        if (
-            currentSelectedModel &&
-            selectionOptions.models.some(
-                (model) => model.id == currentSelectedModel,
-            )
-        ) {
-            modelSelectElement.value = currentSelectedModel;
-        } else {
-            // If no valid pre-selection, clear it
-            node.model = "";
-        }
-        if (
-            currentSelectedApplication &&
-            selectionOptions.applications.some(
-                (application) => application.id == currentSelectedApplication,
-            )
-        ) {
-            applicationSelectElement.value = currentSelectedApplication;
-        }
 
         // Add change listener for model dropdown to trigger dynamic refresh
         modelSelectElement.addEventListener("change", async () => {
@@ -147,43 +118,12 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
 
                 await fetchSelectionOptions(newModelId);
 
-                // Repopulate dropdowns with updated options
-                actionSelectElement.innerHTML = "";
-                applicationSelectElement.innerHTML = "";
-
+                // Repopulate only dependent dropdowns
                 populateSelectWithOptions(
                     actionSelectElement,
                     selectionOptions.actions,
+                    node.affordance_action, // keep current value if valid
                 );
-                populateSelectWithOptions(
-                    applicationSelectElement,
-                    selectionOptions.applications,
-                );
-
-                // Restore previous selections if still valid
-                const prevAction = node.affordance_action;
-                if (
-                    prevAction &&
-                    selectionOptions.actions.some(
-                        (action) => action.id == prevAction,
-                    )
-                ) {
-                    actionSelectElement.value = prevAction;
-                } else {
-                    node.affordance_action = "";
-                }
-
-                const prevApp = node.application;
-                if (
-                    prevApp &&
-                    selectionOptions.applications.some(
-                        (application) => application.id == prevApp,
-                    )
-                ) {
-                    applicationSelectElement.value = prevApp;
-                } else {
-                    node.application = "";
-                }
             }
         });
 
