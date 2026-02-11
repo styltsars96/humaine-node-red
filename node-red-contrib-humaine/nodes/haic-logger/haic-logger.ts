@@ -3,7 +3,7 @@ import { HaicLoggerNode, HaicLoggerNodeDef } from "./modules/types";
 
 // Simple JSONPath implementation for basic paths
 type JsonValue = any;
-function getJsonPath(obj: JsonValue, path: string): JsonValue {
+const getJsonPath = (obj: JsonValue, path: string): JsonValue => {
     if (!path) return obj;
 
     // Handle $ prefix and split by dots or brackets
@@ -19,7 +19,7 @@ function getJsonPath(obj: JsonValue, path: string): JsonValue {
     }
 
     return result;
-}
+};
 
 const nodeInit: NodeInitializer = (RED): void => {
     function HaicLoggerNodeConstructor(

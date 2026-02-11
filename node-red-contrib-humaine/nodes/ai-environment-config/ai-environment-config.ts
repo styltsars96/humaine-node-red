@@ -20,7 +20,9 @@ import {
 } from "./shared/types";
 import {
     HAICFlowEnvironmentData,
+    HaicLoggerSelectionOptions,
     HumAIneEnvironmentData,
+    IntraNodeMsg,
 } from "../shared/types";
 
 const REFRESH_MSG_TIMEOUT_MS = 3000;
@@ -131,6 +133,24 @@ const refreshAppConfigs = async (
     };
 };
 
+const fetchHaicLoggerSelectionOptions = async (
+    node: AiEnvironmentConfigNode,
+): Promise<IntraNodeMsg<HaicLoggerSelectionOptions>> => {
+    let errorMsg: string | null | undefined = undefined;
+    const payload: HaicLoggerSelectionOptions = {
+        applications: [],
+        models: [],
+        actions: [],
+    };
+
+    // TODO: fetch selection options from flow
+
+    return {
+        payload: payload,
+        errorMsg: errorMsg,
+    };
+};
+
 const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
     function AiEnvironmentConfigNodeConstructor(
         this: AiEnvironmentConfigNode,
@@ -139,6 +159,8 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         RED.nodes.createNode(this, config);
         const node = this;
         const localId = node.id;
+        const localFlowId = node.z;
+
         node.aiEnvironmentId = config.aiEnvironmentId;
         if (config.defaultApplication)
             node.defaultApplication = config.defaultApplication;
@@ -272,6 +294,15 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             node.send(msg);
         });
 
+        // Endpoint for the HAIC Logger Options
+        RED.httpAdmin.get(
+            `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
+            RED.auth.needsPermission("nodes.read"),
+            async function (req, res) {
+                const result = await fetchHaicLoggerSelectionOptions(node);
+                res.json(result);
+            },
+        );
         // NOTE: If other nodes need some internal usage endpoint for setups on the frontend/editor, add them here
 
         node.on("close", function () {
