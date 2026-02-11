@@ -3,5 +3,5 @@ import { HaicLoggerOptions } from "../shared/types";
 
 export interface HaicLoggerNodeDef extends NodeDef, HaicLoggerOptions {}
 
-// export interface HaicLoggerNode extends Node {}
-export type HaicLoggerNode = Node;
+export interface HaicLoggerNode extends Node, HaicLoggerOptions {}
+// export type HaicLoggerNode = Node;

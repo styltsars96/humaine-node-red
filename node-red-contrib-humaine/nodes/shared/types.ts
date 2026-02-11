@@ -1,5 +1,26 @@
 import { z } from "zod";
 
+// Generic selection options
+export type SelectionOption = {
+    id: string;
+    text: string;
+};
+
+export type SelectionOptions = Array<SelectionOption>;
+
+// Generic intra-node comms messages, used between runtime and editor
+export type IntraNodeMsg<T> = {
+    payload: T | null | undefined;
+    errorMsg: string | null | undefined;
+};
+
+// HAIC Logger options
+export type HaicLoggerSelectionOptions = {
+    applications: SelectionOptions;
+    models: SelectionOptions;
+    actions: SelectionOptions;
+};
+
 //  HAIC Environment Object
 export interface HAICFlowEnvironmentData {
     haicApiNodeId: string;

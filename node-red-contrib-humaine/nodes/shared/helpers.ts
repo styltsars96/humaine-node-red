@@ -1,6 +1,7 @@
 import { Node } from "node-red";
 import { HaicConfigNode } from "../haic-config/modules/types";
 import { z } from "zod";
+import { SelectionOptions } from "./types";
 
 // CONSTANTS FOR THE UTILITY FUNCTIONS
 const RETRIES_NUM = 3;
@@ -69,4 +70,16 @@ export const retryWithDelay = async (
         await delay(interval);
         return retryWithDelay(fn, retries - 1, interval);
     }
+};
+
+export const populateSelectWithOptions = (
+    element: HTMLSelectElement,
+    options: SelectionOptions,
+) => {
+    options.forEach((option) => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.id;
+        optionElement.text = option.text;
+        element.appendChild(optionElement);
+    });
 };

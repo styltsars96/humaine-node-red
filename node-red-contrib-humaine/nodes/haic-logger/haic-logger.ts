@@ -31,35 +31,20 @@ const nodeInit: NodeInitializer = (RED): void => {
         const node = this;
 
         // Store config values
-        const model = config.model || "";
-        const action = config.action || "";
-        const sessionIdPath = config.sessionIdJsonPath || "$sessionId";
-        const interactionIdPath =
-            config.interactionIdJsonPath || "$interactionId";
+        node.model = config.model || "";
+        node.affordance_action = config.affordance_action || "";
+        node.application = config.application || "";
+        node.sessionIdJsonPath = config.sessionIdJsonPath || "$session_id";
+        // const interactionIdPath = config.interactionIdJsonPath || "$interactionId";
 
         node.on("input", (msg, send, done) => {
             try {
                 // Extract session ID and optional interaction ID from msg.payload using JSON paths
-                const sessionId = getJsonPath(msg.payload, sessionIdPath);
-                const interactionId = interactionIdPath
-                    ? getJsonPath(msg.payload, interactionIdPath)
-                    : undefined;
+                const sessionId = getJsonPath(
+                    msg.payload,
+                    node.sessionIdJsonPath,
+                );
 
-                // Create log entry with model, action, session ID, and optional interaction ID
-                const logEntry: Record<string, string | number> = {
-                    model,
-                    action,
-                    sessionId,
-                };
-
-                if (interactionId !== undefined && interactionId !== null) {
-                    logEntry.interactionId = interactionId;
-                }
-
-                // Log the entry
-                node.debug(`HAIC Logger: ${JSON.stringify(logEntry)}`);
-
-                // Pass message through unchanged
                 send(msg);
                 done();
             } catch (err) {

@@ -1,5 +1,13 @@
 [
     {
+        "id": "529d431d13d83865",
+        "type": "tab",
+        "label": "HumAIne New Nodes Test",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "9db4af518e108976",
         "type": "tab",
         "label": "Feedback Consolidation Pattern",
@@ -11,14 +19,6 @@
         "id": "3f025920437f7905",
         "type": "tab",
         "label": "HAIC Client Example",
-        "disabled": false,
-        "info": "",
-        "env": []
-    },
-    {
-        "id": "529d431d13d83865",
-        "type": "tab",
-        "label": "Active Learning Healthentia",
         "disabled": false,
         "info": "",
         "env": []
@@ -2175,6 +2175,67 @@
         ]
     },
     {
+        "id": "b2d6d748be934985",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "REFRESH TRIGGER",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 40,
+        "wires": [
+            [
+                "e1405bca9112b117"
+            ]
+        ]
+    },
+    {
+        "id": "977bf3321eb6cdf0",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "debug 6",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 500,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "e1405bca9112b117",
+        "type": "ai-environment-config",
+        "z": "529d431d13d83865",
+        "name": "AI Env Config",
+        "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "NS_ENV",
+        "defaultApplication": "",
+        "x": 320,
+        "y": 120,
+        "wires": [
+            [
+                "977bf3321eb6cdf0"
+            ]
+        ]
+    },
+    {
         "id": "fa5d8bc1d91e9134",
         "type": "inject",
         "z": "9db4af518e108976",
@@ -3550,67 +3611,6 @@
         "x": 1790,
         "y": 40,
         "wires": []
-    },
-    {
-        "id": "b2d6d748be934985",
-        "type": "inject",
-        "z": "529d431d13d83865",
-        "name": "REFRESH TRIGGER",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 180,
-        "y": 40,
-        "wires": [
-            [
-                "e1405bca9112b117"
-            ]
-        ]
-    },
-    {
-        "id": "977bf3321eb6cdf0",
-        "type": "debug",
-        "z": "529d431d13d83865",
-        "name": "debug 6",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 500,
-        "y": 40,
-        "wires": []
-    },
-    {
-        "id": "e1405bca9112b117",
-        "type": "ai-environment-config",
-        "z": "529d431d13d83865",
-        "name": "AI Env Config",
-        "haic_server": "13892724a379a5ca",
-        "aiEnvironmentId": "NS_ENV",
-        "defaultApplication": "",
-        "x": 320,
-        "y": 120,
-        "wires": [
-            [
-                "977bf3321eb6cdf0"
-            ]
-        ]
     },
     {
         "id": "1599caf449da9654",

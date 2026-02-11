@@ -121,7 +121,7 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                     document.createElement("option");
                 defaultAppDefaultOption.value = "";
                 defaultAppDefaultOption.text =
-                    "None, select application PER NODE only!";
+                    "None, select default application PER NODE only!";
                 defaultAppSelectElement.appendChild(defaultAppDefaultOption);
 
                 // Populate with dynamic options
