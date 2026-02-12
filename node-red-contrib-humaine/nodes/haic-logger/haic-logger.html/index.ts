@@ -13,7 +13,7 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
         application: { value: "", required: false },
         model: { value: "" },
         affordance_action: { value: "" },
-        sessionIdJsonPath: { value: "$session_id", required: false },
+        sessionIdJsonPath: { value: "$payload.session_id", required: false },
         // interactionIdJsonPath: { value: "$interactionId", required: false },
     },
     inputs: 1,

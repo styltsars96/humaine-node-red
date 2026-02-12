@@ -125,3 +125,117 @@ export const populateSelectWithOptions = (
         element.value = preselectedValue;
     }
 };
+
+export const showErrorStatus = (
+    node: Node,
+    errorMsg: string,
+    normalMsg: string,
+    errorVisibilityMs: number,
+) => {
+    node.status({
+        fill: "red",
+        shape: "dot",
+        text: errorMsg,
+    });
+
+    setTimeout(() => {
+        node.status({
+            fill: "green",
+            shape: "dot",
+            text: normalMsg,
+        });
+    }, errorVisibilityMs);
+};
+
+export const showSuccessStatus = (
+    node: Node,
+    tempMsg: string,
+    normalMsg: string,
+    tempVisibilityMs: number,
+) => {
+    node.status({
+        fill: "green",
+        shape: "ring",
+        text: tempMsg,
+    });
+
+    setTimeout(() => {
+        node.status({
+            fill: "green",
+            shape: "dot",
+            text: normalMsg,
+        });
+    }, tempVisibilityMs);
+};
+
+// Simple JSONPath implementation for basic paths
+type JsonValue = any;
+export const getJsonPath = (obj: JsonValue, path: string): JsonValue => {
+    if (!path) return obj;
+
+    // Remove leading $ if present
+    const cleanPath = path.replace(/^\$\.?/, "");
+
+    // Handle empty path after cleaning
+    if (!cleanPath) return obj;
+
+    // Split by dots and bracket notation properly
+    const parts: string[] = [];
+    let current = "";
+    let i = 0;
+
+    while (i < cleanPath.length) {
+        const char = cleanPath[i];
+
+        if (char === ".") {
+            if (current) {
+                parts.push(current);
+                current = "";
+            }
+            i++;
+        } else if (char === "[") {
+            // Handle bracket notation
+            if (current) {
+                parts.push(current);
+                current = "";
+            }
+
+            let j = i + 1;
+            while (j < cleanPath.length && cleanPath[j] !== "]") {
+                j++;
+            }
+
+            const bracketContent = cleanPath.slice(i + 1, j);
+            if (bracketContent) {
+                parts.push(bracketContent);
+            }
+
+            i = j + 1;
+        } else {
+            current += char;
+            i++;
+        }
+    }
+
+    // Push remaining part
+    if (current) {
+        parts.push(current);
+    }
+
+    let result: JsonValue = obj;
+    for (const part of parts) {
+        if (result == null) return undefined;
+
+        // Convert string number to integer for array access
+        const index = parseInt(part, 10);
+        if (!isNaN(index) && Array.isArray(result)) {
+            result = result[index];
+        } else if (typeof result === "object" && result !== null) {
+            result = result[part as keyof typeof result];
+        } else {
+            return undefined;
+        }
+    }
+
+    return result;
+};

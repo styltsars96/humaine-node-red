@@ -398,61 +398,6 @@
         "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
     },
     {
-        "id": "9e615b8a6da73d11",
-        "type": "subflow",
-        "name": "Add Evaluation Logs",
-        "info": "",
-        "category": "HumAIne",
-        "in": [
-            {
-                "x": 120,
-                "y": 40,
-                "wires": [
-                    {
-                        "id": "8b23153116a8e27f"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 640,
-                "y": 40,
-                "wires": [
-                    {
-                        "id": "cfbf9857f9fb93cb",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 610,
-                "y": 120,
-                "wires": [
-                    {
-                        "id": "cfbf9857f9fb93cb",
-                        "port": 1
-                    },
-                    {
-                        "id": "2eb58186ecb7c41e",
-                        "port": 0
-                    }
-                ]
-            }
-        ],
-        "env": [],
-        "meta": {},
-        "color": "#58A69F",
-        "inputLabels": [
-            "Evaluation Log"
-        ],
-        "outputLabels": [
-            "Addition Status",
-            "Error"
-        ],
-        "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
-    },
-    {
         "id": "3cc374149e5165e4",
         "type": "subflow",
         "name": "Access Evaluation Logs",
@@ -664,7 +609,6 @@
         },
         "nodes": [
             "4ba40f0c2e4f14c0",
-            "3608d47356411615",
             "29d7ab5d6e14a8fd",
             "188354c4ec9ec40b",
             "c265fcf25934dc11",
@@ -966,7 +910,6 @@
             "18f629cb308d85c8",
             "83744dbc9b049153",
             "cf5eda9e288ea4ea",
-            "eb728213c6c2b5f3",
             "978f789a0139cf0d",
             "a3a434068a939f61",
             "6c420e3f86def41d",
@@ -1527,94 +1470,6 @@
         "y": 360,
         "wires": [
             [],
-            []
-        ]
-    },
-    {
-        "id": "cfbf9857f9fb93cb",
-        "type": "function",
-        "z": "9e615b8a6da73d11",
-        "name": "Add Evaluation Log",
-        "func": "const logClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Logs; // Common step\n//Client Function\nconst addLog = logClient.registerLogApiV1LogsRegisterPost;\n\nconst ERROR_MSG = \"Failed to register new Evaluation Log\";\n\nconst config_id = msg.payload.config_id;\nconst log_entries = msg.payload.log_entries;\n\nlet response = null;\n\ntry {\n    response = await addLog(log_entries, config_id);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}`;\n    msg.error_response = err.response;\n    if (err.response && err.response.data) {\n        msg.payload = err.response.data;\n    }\n    msg.payload.status = err.response.status;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 430,
-        "y": 60,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "8b23153116a8e27f",
-        "type": "object-validation",
-        "z": "9e615b8a6da73d11",
-        "name": "Log",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "log_entries",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "config_id",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "log_entries",
-                "validator": "type",
-                "value": "array",
-                "error": ""
-            },
-            {
-                "property": "config_id",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            },
-            {
-                "property": "config_id",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 270,
-        "y": 60,
-        "wires": [
-            [
-                "cfbf9857f9fb93cb"
-            ]
-        ]
-    },
-    {
-        "id": "2eb58186ecb7c41e",
-        "type": "catch",
-        "z": "9e615b8a6da73d11",
-        "name": "",
-        "scope": null,
-        "uncaught": false,
-        "x": 240,
-        "y": 140,
-        "wires": [
             []
         ]
     },
@@ -2236,16 +2091,28 @@
         ]
     },
     {
-        "id": "6e744cb53a9975e1",
-        "type": "haic-logger",
+        "id": "97aab2bf50ab7b29",
+        "type": "inject",
         "z": "529d431d13d83865",
-        "name": "",
-        "application": "14",
-        "model": "NSAI",
-        "affordance_action": "train",
-        "sessionIdJsonPath": "$session_id",
-        "x": 290,
-        "y": 400,
+        "name": "Inject test payload",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"myTest\"}",
+        "payloadType": "json",
+        "x": 130,
+        "y": 220,
         "wires": [
             []
         ]
@@ -2718,7 +2585,6 @@
         "y": 840,
         "wires": [
             [
-                "eb728213c6c2b5f3",
                 "120b2d00836d1305"
             ]
         ]
@@ -2740,25 +2606,7 @@
         "y": 880,
         "wires": [
             [
-                "eb728213c6c2b5f3",
                 "341745117b49659b"
-            ]
-        ]
-    },
-    {
-        "id": "eb728213c6c2b5f3",
-        "type": "subflow:9e615b8a6da73d11",
-        "z": "9db4af518e108976",
-        "g": "825a94b5cf333ad6",
-        "name": "Add Evaluation Log",
-        "x": 750,
-        "y": 860,
-        "wires": [
-            [
-                "978f789a0139cf0d"
-            ],
-            [
-                "a3a434068a939f61"
             ]
         ]
     },
@@ -3104,25 +2952,7 @@
         "x": 300,
         "y": 200,
         "wires": [
-            [
-                "177c20dc63803101"
-            ]
-        ]
-    },
-    {
-        "id": "177c20dc63803101",
-        "type": "subflow:9e615b8a6da73d11",
-        "z": "3f025920437f7905",
-        "name": "",
-        "x": 530,
-        "y": 200,
-        "wires": [
-            [
-                "cdb477a98e9f7dc5"
-            ],
-            [
-                "5895e7226e85fd39"
-            ]
+            []
         ]
     },
     {
@@ -4762,22 +4592,6 @@
         ]
     },
     {
-        "id": "31594b326627084b",
-        "type": "subflow:9e615b8a6da73d11",
-        "z": "e3fd273272a37452",
-        "name": "",
-        "x": 350,
-        "y": 360,
-        "wires": [
-            [
-                "4f9508974cc57ab0"
-            ],
-            [
-                "b86c9bfdc23e428e"
-            ]
-        ]
-    },
-    {
         "id": "9847aacf9490cd37",
         "type": "subflow:3cc374149e5165e4",
         "z": "e3fd273272a37452",
@@ -4979,9 +4793,7 @@
         "x": 130,
         "y": 360,
         "wires": [
-            [
-                "31594b326627084b"
-            ]
+            []
         ]
     },
     {
@@ -5230,28 +5042,7 @@
         "x": 290,
         "y": 400,
         "wires": [
-            [
-                "3608d47356411615"
-            ]
-        ]
-    },
-    {
-        "id": "3608d47356411615",
-        "type": "subflow:9e615b8a6da73d11",
-        "z": "68962323fb8f5a64",
-        "g": "223eaaa2f11c7912",
-        "name": "",
-        "x": 160,
-        "y": 480,
-        "wires": [
-            [
-                "daf37b3e8f4b4112",
-                "86ca7f27691876f1"
-            ],
-            [
-                "c265fcf25934dc11",
-                "e819d0f0b75f3343"
-            ]
+            []
         ]
     },
     {
