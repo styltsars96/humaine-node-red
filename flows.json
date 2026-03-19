@@ -64,6 +64,22 @@
         "env": []
     },
     {
+        "id": "25ec5b6512814081",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "7ff3eec4187058d0",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "36d9140454085321",
         "type": "subflow",
         "name": "KubeFlow Pipelines Configuration",
@@ -958,6 +974,31 @@
         "username": "",
         "withCredentials": false,
         "headers": ""
+    },
+    {
+        "id": "2130dd8f60487c85",
+        "type": "haic-config",
+        "name": "Main HAIC",
+        "baseUrl": "https://benchmark.humaine-horizon.eu/",
+        "username": "",
+        "withCredentials": false,
+        "headers": ""
+    },
+    {
+        "id": "822e45b6e1656f63",
+        "type": "websocket-listener",
+        "path": "/ws/model_reviewed",
+        "wholemsg": "false"
+    },
+    {
+        "id": "d3a135df7d956656",
+        "type": "websocket-client",
+        "path": "/ws/model_reviewed",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
     },
     {
         "id": "83a3c05684e3279a",
@@ -2114,8 +2155,43 @@
         "x": 130,
         "y": 220,
         "wires": [
-            []
+            [
+                "e8d03a0ad1882a4a"
+            ]
         ]
+    },
+    {
+        "id": "e8d03a0ad1882a4a",
+        "type": "haic-logger",
+        "z": "529d431d13d83865",
+        "name": "",
+        "application": "34",
+        "model": "MLE",
+        "affordance_action": "review",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 410,
+        "y": 220,
+        "wires": [
+            [
+                "d1a4872b07e07507"
+            ]
+        ]
+    },
+    {
+        "id": "d1a4872b07e07507",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 220,
+        "wires": []
     },
     {
         "id": "fa5d8bc1d91e9134",
@@ -2811,8 +2887,8 @@
         "name": "Add Evaluation Log",
         "server": "4e6412a56bb04544",
         "client": "",
-        "x": 90,
-        "y": 200,
+        "x": 130,
+        "y": 180,
         "wires": [
             [
                 "a32e3be57ce24c24"
@@ -2840,8 +2916,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 90,
-        "y": 60,
+        "x": 110,
+        "y": 300,
         "wires": [
             [
                 "427d9cbd4d8bf008"
@@ -2860,8 +2936,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 290,
-        "y": 60,
+        "x": 310,
+        "y": 300,
         "wires": [
             [
                 "d8b8d134790fcc86"
@@ -2873,8 +2949,8 @@
         "type": "subflow:3e0b79a15665c98a",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 530,
-        "y": 60,
+        "x": 550,
+        "y": 300,
         "wires": [
             [
                 "79861fc8ba4d35a0",
@@ -2898,8 +2974,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 780,
-        "y": 20,
+        "x": 800,
+        "y": 260,
         "wires": []
     },
     {
@@ -2915,8 +2991,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
-        "y": 120,
+        "x": 720,
+        "y": 360,
         "wires": []
     },
     {
@@ -2931,8 +3007,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 800,
-        "y": 60,
+        "x": 820,
+        "y": 300,
         "wires": [
             []
         ]
@@ -2949,10 +3025,12 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 300,
-        "y": 200,
+        "x": 340,
+        "y": 180,
         "wires": [
-            []
+            [
+                "8f80eafbab13c9be"
+            ]
         ]
     },
     {
@@ -2976,8 +3054,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 90,
-        "y": 380,
+        "x": 110,
+        "y": 480,
         "wires": [
             [
                 "fd7faa26aa52eb78"
@@ -2996,8 +3074,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 260,
-        "y": 380,
+        "x": 280,
+        "y": 480,
         "wires": [
             [
                 "bb8d8e3c93033918"
@@ -3009,8 +3087,8 @@
         "type": "subflow:ee62c2e2054b032c",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 490,
-        "y": 380,
+        "x": 510,
+        "y": 480,
         "wires": [
             [
                 "e5d5871e033a236e"
@@ -3032,8 +3110,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 830,
-        "y": 400,
+        "x": 850,
+        "y": 500,
         "wires": [
             [
                 "4b58f8cefa56a306"
@@ -3053,8 +3131,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 520,
-        "y": 440,
+        "x": 540,
+        "y": 540,
         "wires": []
     },
     {
@@ -3066,8 +3144,8 @@
         "method": "get",
         "upload": false,
         "swaggerDoc": "",
-        "x": 90,
-        "y": 300,
+        "x": 110,
+        "y": 400,
         "wires": [
             [
                 "b6375845c5da5c22"
@@ -3081,8 +3159,8 @@
         "name": "Send Evaluation Logs",
         "statusCode": "",
         "headers": {},
-        "x": 940,
-        "y": 300,
+        "x": 960,
+        "y": 400,
         "wires": []
     },
     {
@@ -3090,8 +3168,8 @@
         "type": "subflow:3cc374149e5165e4",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 500,
-        "y": 300,
+        "x": 520,
+        "y": 400,
         "wires": [
             [
                 "538c98c93dc4ec4e"
@@ -3113,8 +3191,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 280,
-        "y": 300,
+        "x": 300,
+        "y": 400,
         "wires": [
             [
                 "de0960e0207b8c65"
@@ -3133,30 +3211,13 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 730,
-        "y": 300,
+        "x": 750,
+        "y": 400,
         "wires": [
             [
                 "4ac61f62232da56d"
             ]
         ]
-    },
-    {
-        "id": "5895e7226e85fd39",
-        "type": "debug",
-        "z": "3f025920437f7905",
-        "name": "Error handling",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 720,
-        "y": 220,
-        "wires": []
     },
     {
         "id": "56502e1af53b33e3",
@@ -3171,8 +3232,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 720,
-        "y": 340,
+        "x": 740,
+        "y": 440,
         "wires": []
     },
     {
@@ -3188,7 +3249,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 730,
+        "x": 790,
         "y": 180,
         "wires": []
     },
@@ -3197,8 +3258,8 @@
         "type": "subflow:e260c7f298a6dd52",
         "z": "3f025920437f7905",
         "name": "",
-        "x": 190,
-        "y": 560,
+        "x": 210,
+        "y": 660,
         "wires": [
             [
                 "72822ea23e2002d7"
@@ -3221,8 +3282,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 420,
-        "y": 580,
+        "x": 440,
+        "y": 680,
         "wires": []
     },
     {
@@ -3237,8 +3298,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 450,
-        "y": 540,
+        "x": 470,
+        "y": 640,
         "wires": [
             [
                 "e736dc111c27129f"
@@ -3258,8 +3319,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 690,
-        "y": 540,
+        "x": 710,
+        "y": 640,
         "wires": []
     },
     {
@@ -3455,6 +3516,85 @@
         "info": "",
         "x": 1790,
         "y": 40,
+        "wires": []
+    },
+    {
+        "id": "8f80eafbab13c9be",
+        "type": "haic-logger",
+        "z": "3f025920437f7905",
+        "name": "",
+        "application": "20",
+        "model": "OP",
+        "affordance_action": "annotate",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 560,
+        "y": 180,
+        "wires": [
+            [
+                "cdb477a98e9f7dc5"
+            ]
+        ]
+    },
+    {
+        "id": "bd6e3f8919aadcf5",
+        "type": "ai-environment-config",
+        "z": "3f025920437f7905",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "SE_ENV",
+        "defaultApplication": "",
+        "x": 540,
+        "y": 60,
+        "wires": [
+            [
+                "ee90b893863758ea"
+            ]
+        ]
+    },
+    {
+        "id": "1412442c07738a70",
+        "type": "inject",
+        "z": "3f025920437f7905",
+        "name": "trigger",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 350,
+        "y": 60,
+        "wires": [
+            [
+                "bd6e3f8919aadcf5"
+            ]
+        ]
+    },
+    {
+        "id": "ee90b893863758ea",
+        "type": "debug",
+        "z": "3f025920437f7905",
+        "name": "AI Environment Metadata Preview",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 60,
         "wires": []
     },
     {
@@ -5764,5 +5904,502 @@
             []
         ],
         "icon": "font-awesome/fa-save"
+    },
+    {
+        "id": "cef8b9c08f6c7964",
+        "type": "ai-environment-config",
+        "z": "25ec5b6512814081",
+        "name": "AI Env Config",
+        "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "NS_ENV",
+        "defaultApplication": "",
+        "x": 560,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d5035e46872de83b",
+        "type": "inject",
+        "z": "25ec5b6512814081",
+        "name": "Environment parameters refresh trigger",
+        "props": [],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "x": 310,
+        "y": 40,
+        "wires": [
+            [
+                "cef8b9c08f6c7964"
+            ]
+        ]
+    },
+    {
+        "id": "997787b7.53e9e8",
+        "type": "amqp-in",
+        "z": "25ec5b6512814081",
+        "name": "FROM MINIO-RESULTS READY",
+        "broker": "",
+        "prefetch": 0,
+        "noAck": true,
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "",
+        "exchangeDurable": true,
+        "queueName": "",
+        "queueExclusive": true,
+        "queueDurable": false,
+        "queueAutoDelete": true,
+        "headers": "{}",
+        "x": 200,
+        "y": 180,
+        "wires": [
+            [
+                "71c59e9884927dfb"
+            ]
+        ]
+    },
+    {
+        "id": "44997c15.fd35f4",
+        "type": "amqp-out",
+        "z": "25ec5b6512814081",
+        "name": "TO MLE",
+        "broker": "",
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "mle",
+        "exchangeRoutingKeyType": "str",
+        "exchangeDurable": true,
+        "amqpProperties": "{ \"headers\": {} }",
+        "rpcTimeoutMilliseconds": 3000,
+        "outputs": 0,
+        "x": 620,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "9947eefe.57316",
+        "type": "comment",
+        "z": "25ec5b6512814081",
+        "name": "STEP 4",
+        "info": "",
+        "x": 160,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "ea44a8bf.8f66",
+        "type": "comment",
+        "z": "25ec5b6512814081",
+        "name": "STEP 5b",
+        "info": "",
+        "x": 140,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "c7704e5.fba07b",
+        "type": "comment",
+        "z": "25ec5b6512814081",
+        "name": "STEP 6",
+        "info": "",
+        "x": 120,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "86cd1002.d86cf",
+        "type": "amqp-in",
+        "z": "25ec5b6512814081",
+        "name": "HE RECEIVES RESULTS",
+        "broker": "",
+        "prefetch": 0,
+        "noAck": true,
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "he",
+        "exchangeDurable": true,
+        "queueName": "",
+        "queueExclusive": true,
+        "queueDurable": false,
+        "queueAutoDelete": true,
+        "headers": "{}",
+        "x": 140,
+        "y": 620,
+        "wires": [
+            [
+                "5cb7ad1e.150274"
+            ]
+        ]
+    },
+    {
+        "id": "5cb7ad1e.150274",
+        "type": "function",
+        "z": "25ec5b6512814081",
+        "name": "decision",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 210,
+        "y": 560,
+        "wires": [
+            [
+                "1d304c4b2ac6966d"
+            ]
+        ]
+    },
+    {
+        "id": "87bf3284.adf8a",
+        "type": "comment",
+        "z": "25ec5b6512814081",
+        "name": "RELEASE MODEL-TO HEALTHENTIA",
+        "info": "",
+        "x": 800,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "a2872dd7.54b17",
+        "type": "switch",
+        "z": "25ec5b6512814081",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 550,
+        "y": 560,
+        "wires": [
+            [
+                "3fb95eef.6a0252"
+            ],
+            [
+                "f7a028ae.343b4"
+            ]
+        ]
+    },
+    {
+        "id": "cbd51c94.b3b4b",
+        "type": "comment",
+        "z": "25ec5b6512814081",
+        "name": "ALERT MLE-MODEL REJECTED",
+        "info": "",
+        "x": 780,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "f7a028ae.343b4",
+        "type": "amqp-out",
+        "z": "25ec5b6512814081",
+        "name": "TO MLE",
+        "broker": "",
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "mle",
+        "exchangeRoutingKeyType": "str",
+        "exchangeDurable": true,
+        "amqpProperties": "{ \"headers\": {} }",
+        "rpcTimeoutMilliseconds": 3000,
+        "outputs": 0,
+        "x": 730,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "9440bb22.3d6998",
+        "type": "amqp-in",
+        "z": "25ec5b6512814081",
+        "name": "MLE RECEIVES RESULTS",
+        "broker": "",
+        "prefetch": 0,
+        "noAck": true,
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "mle",
+        "exchangeDurable": true,
+        "queueName": "",
+        "queueExclusive": true,
+        "queueDurable": false,
+        "queueAutoDelete": true,
+        "headers": "{}",
+        "x": 160,
+        "y": 360,
+        "wires": [
+            [
+                "d83d441.dd8d3b8"
+            ]
+        ]
+    },
+    {
+        "id": "d83d441.dd8d3b8",
+        "type": "function",
+        "z": "25ec5b6512814081",
+        "name": "MLE decision",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 380,
+        "y": 360,
+        "wires": [
+            [
+                "8d2a74e8a0c8a5d4"
+            ]
+        ]
+    },
+    {
+        "id": "4d6a4ca2.c95994",
+        "type": "amqp-out",
+        "z": "25ec5b6512814081",
+        "name": "TO HUMAN EXPERT",
+        "broker": "",
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "he",
+        "exchangeRoutingKeyType": "str",
+        "exchangeDurable": true,
+        "amqpProperties": "{ \"headers\": {} }",
+        "rpcTimeoutMilliseconds": 3000,
+        "outputs": 0,
+        "x": 780,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "3fb95eef.6a0252",
+        "type": "http request",
+        "z": "25ec5b6512814081",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": false,
+        "url": "",
+        "persist": false,
+        "authType": "",
+        "x": 730,
+        "y": 520,
+        "wires": [
+            [
+                "ab6c7699.2f387"
+            ]
+        ]
+    },
+    {
+        "id": "ab6c7699.2f387",
+        "type": "debug",
+        "z": "25ec5b6512814081",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 910,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "71c59e9884927dfb",
+        "type": "haic-logger",
+        "z": "25ec5b6512814081",
+        "name": "",
+        "application": "34",
+        "model": "MLE",
+        "affordance_action": "",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 430,
+        "y": 180,
+        "wires": [
+            [
+                "44997c15.fd35f4"
+            ]
+        ]
+    },
+    {
+        "id": "8d2a74e8a0c8a5d4",
+        "type": "haic-logger",
+        "z": "25ec5b6512814081",
+        "name": "",
+        "application": "34",
+        "model": "",
+        "affordance_action": "",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 550,
+        "y": 360,
+        "wires": [
+            [
+                "4d6a4ca2.c95994"
+            ]
+        ]
+    },
+    {
+        "id": "1d304c4b2ac6966d",
+        "type": "haic-logger",
+        "z": "25ec5b6512814081",
+        "name": "",
+        "application": "34",
+        "model": "",
+        "affordance_action": "",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 380,
+        "y": 560,
+        "wires": [
+            [
+                "a2872dd7.54b17"
+            ]
+        ]
+    },
+    {
+        "id": "7b23566f84e22509",
+        "type": "ai-environment-config",
+        "z": "7ff3eec4187058d0",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "aiEnvironmentId": "NS_ENV",
+        "defaultApplication": "",
+        "x": 460,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cef8a7f8a769bd5d",
+        "type": "websocket in",
+        "z": "7ff3eec4187058d0",
+        "name": "Event - Model is reviewed",
+        "server": "822e45b6e1656f63",
+        "client": "",
+        "x": 170,
+        "y": 260,
+        "wires": [
+            [
+                "0afce7cb4261b9bb"
+            ]
+        ]
+    },
+    {
+        "id": "0afce7cb4261b9bb",
+        "type": "function",
+        "z": "7ff3eec4187058d0",
+        "name": "prepare action and log",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 440,
+        "y": 260,
+        "wires": [
+            [
+                "7a19119bf20cfeda"
+            ]
+        ]
+    },
+    {
+        "id": "79fb2a4a1094273c",
+        "type": "function",
+        "z": "7ff3eec4187058d0",
+        "name": "forward action to index",
+        "func": "\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 940,
+        "y": 260,
+        "wires": [
+            [
+                "faca2da78f80720f"
+            ]
+        ]
+    },
+    {
+        "id": "faca2da78f80720f",
+        "type": "debug",
+        "z": "7ff3eec4187058d0",
+        "name": "test out",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "7a19119bf20cfeda",
+        "type": "haic-logger",
+        "z": "7ff3eec4187058d0",
+        "name": "",
+        "application": "34",
+        "model": "MLE",
+        "affordance_action": "review",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 710,
+        "y": 260,
+        "wires": [
+            [
+                "79fb2a4a1094273c"
+            ]
+        ]
+    },
+    {
+        "id": "e8a03b3d57d13ed4",
+        "type": "inject",
+        "z": "7ff3eec4187058d0",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-YYYYMMDD-XXXX\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2025-10-17\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG001\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG001\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"II\"}}},{\"interaction_id\":\"IMG001\",\"t\":1.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG001\",\"t\":5,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_abc123\"}},{\"interaction_id\":\"IMG001\",\"t\":14,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.2,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with protocol\"},\"correct\":true},{\"interaction_id\":\"IMG002\",\"t\":20,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG002\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"III\"}}},{\"interaction_id\":\"IMG002\",\"t\":22,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":900,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG002\",\"t\":26,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_def456\"}},{\"interaction_id\":\"IMG002\",\"t\":35,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":7.5,\"payload\":{\"decision\":\"reject\",\"note\":\"rule RS12 conflicts with guideline\"},\"correct\":false}]}",
+        "payloadType": "json",
+        "x": 270,
+        "y": 340,
+        "wires": [
+            []
+        ]
     }
 ]

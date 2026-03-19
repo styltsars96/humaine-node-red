@@ -23,5 +23,5 @@ export const logSchemaSchema = z.object({
     performance_infrastructure: performanceInfrastructureSchema.optional().nullable(),
     performance_logs: performanceLogsSchema.optional().nullable(),
     ai_model_data: aiModelDataSchema.optional().nullable(),
-    decisions: z.null().optional()
+    decisions: z.array(z.record(z.string(), z.unknown())).optional().nullable()
 });
