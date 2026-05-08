@@ -72,6 +72,14 @@
         "env": []
     },
     {
+        "id": "6db8202e18c571bd",
+        "type": "tab",
+        "label": "Flow 3",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "7ff3eec4187058d0",
         "type": "tab",
         "label": "Flow 2",
@@ -991,14 +999,116 @@
         "wholemsg": "false"
     },
     {
-        "id": "d3a135df7d956656",
+        "id": "487d59aa72433058",
+        "type": "amqp-broker",
+        "name": "HumAIne RabbitMQ",
+        "host": "rabbitmq-console.humaine-horizon.euost",
+        "port": 5672,
+        "vhost": "",
+        "tls": true,
+        "credsFromSettings": false
+    },
+    {
+        "id": "5b31d14bd74f91ec",
+        "type": "websocket-listener",
+        "path": "/ws/mle_model_reviewed",
+        "wholemsg": "false"
+    },
+    {
+        "id": "e30232f8de63e97e",
+        "type": "websocket-listener",
+        "path": "/ws/test/minio_results_ready",
+        "wholemsg": "false"
+    },
+    {
+        "id": "e0b05d16f7ecdd04",
+        "type": "websocket-listener",
+        "path": "/ws/test/mle_receives_results",
+        "wholemsg": "false"
+    },
+    {
+        "id": "743a3cf797628c28",
         "type": "websocket-client",
-        "path": "/ws/model_reviewed",
+        "path": "ws://localhost:1881/ws/test/mle_step_4",
         "tls": "",
         "wholemsg": "false",
         "hb": "0",
         "subprotocol": "",
         "headers": []
+    },
+    {
+        "id": "c3ab61e0182c58c8",
+        "type": "websocket-listener",
+        "path": "/ws/test/mle_step_4",
+        "wholemsg": "false"
+    },
+    {
+        "id": "e0a4c11dab58c10a",
+        "type": "websocket-client",
+        "path": "ws://localhost:1881/ws/test/he_step_5",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "bacb0b3b014ebde2",
+        "type": "websocket-listener",
+        "path": "/ws/test/he_step_5",
+        "wholemsg": "false"
+    },
+    {
+        "id": "f94c9c43fbee4115",
+        "type": "websocket-client",
+        "path": "ws://localhost:1881/ws/test/mle_step_6_alert",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "cbd4bb2dc19ed05b",
+        "type": "websocket-listener",
+        "path": "/ws/test/mle_step_6_alert",
+        "wholemsg": "false"
+    },
+    {
+        "id": "e840b54a83d5c305",
+        "type": "websocket-client",
+        "path": "ws://localhost:1881/ws/test/minio_results_ready",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "3149c7765d0f5a9f",
+        "type": "websocket-client",
+        "path": "ws://localhost:1881/ws/test/mle_receives_results",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "9e564e680e309af9",
+        "type": "websocket-client",
+        "path": "ws://localhost:1881/ws/test/he_receives_results",
+        "tls": "",
+        "wholemsg": "false",
+        "hb": "0",
+        "subprotocol": "",
+        "headers": []
+    },
+    {
+        "id": "0cab48b7b0ba975d",
+        "type": "websocket-listener",
+        "path": "/ws/test/he_receives_results",
+        "wholemsg": "false"
     },
     {
         "id": "83a3c05684e3279a",
@@ -3029,7 +3139,7 @@
         "y": 180,
         "wires": [
             [
-                "8f80eafbab13c9be"
+                "1f4486a4522b83e7"
             ]
         ]
     },
@@ -3519,29 +3629,12 @@
         "wires": []
     },
     {
-        "id": "8f80eafbab13c9be",
-        "type": "haic-logger",
-        "z": "3f025920437f7905",
-        "name": "",
-        "application": "20",
-        "model": "OP",
-        "affordance_action": "annotate",
-        "sessionIdJsonPath": "$payload.session_id",
-        "x": 560,
-        "y": 180,
-        "wires": [
-            [
-                "cdb477a98e9f7dc5"
-            ]
-        ]
-    },
-    {
         "id": "bd6e3f8919aadcf5",
         "type": "ai-environment-config",
         "z": "3f025920437f7905",
         "name": "",
         "haic_server": "13892724a379a5ca",
-        "aiEnvironmentId": "SE_ENV",
+        "aiEnvironmentId": "NS_ENV",
         "defaultApplication": "",
         "x": 540,
         "y": 60,
@@ -3596,6 +3689,23 @@
         "x": 820,
         "y": 60,
         "wires": []
+    },
+    {
+        "id": "1f4486a4522b83e7",
+        "type": "haic-logger",
+        "z": "3f025920437f7905",
+        "name": "",
+        "application": "23",
+        "model": "NSAI",
+        "affordance_action": "explain",
+        "sessionIdJsonPath": "$payload.session_id",
+        "x": 560,
+        "y": 180,
+        "wires": [
+            [
+                "cdb477a98e9f7dc5"
+            ]
+        ]
     },
     {
         "id": "1599caf449da9654",
@@ -5939,56 +6049,13 @@
         ]
     },
     {
-        "id": "997787b7.53e9e8",
-        "type": "amqp-in",
-        "z": "25ec5b6512814081",
-        "name": "FROM MINIO-RESULTS READY",
-        "broker": "",
-        "prefetch": 0,
-        "noAck": true,
-        "exchangeName": "",
-        "exchangeType": "topic",
-        "exchangeRoutingKey": "",
-        "exchangeDurable": true,
-        "queueName": "",
-        "queueExclusive": true,
-        "queueDurable": false,
-        "queueAutoDelete": true,
-        "headers": "{}",
-        "x": 200,
-        "y": 180,
-        "wires": [
-            [
-                "71c59e9884927dfb"
-            ]
-        ]
-    },
-    {
-        "id": "44997c15.fd35f4",
-        "type": "amqp-out",
-        "z": "25ec5b6512814081",
-        "name": "TO MLE",
-        "broker": "",
-        "exchangeName": "",
-        "exchangeType": "topic",
-        "exchangeRoutingKey": "mle",
-        "exchangeRoutingKeyType": "str",
-        "exchangeDurable": true,
-        "amqpProperties": "{ \"headers\": {} }",
-        "rpcTimeoutMilliseconds": 3000,
-        "outputs": 0,
-        "x": 620,
-        "y": 180,
-        "wires": []
-    },
-    {
         "id": "9947eefe.57316",
         "type": "comment",
         "z": "25ec5b6512814081",
         "name": "STEP 4",
         "info": "",
-        "x": 160,
-        "y": 140,
+        "x": 120,
+        "y": 120,
         "wires": []
     },
     {
@@ -5997,8 +6064,8 @@
         "z": "25ec5b6512814081",
         "name": "STEP 5b",
         "info": "",
-        "x": 140,
-        "y": 300,
+        "x": 120,
+        "y": 260,
         "wires": []
     },
     {
@@ -6007,34 +6074,9 @@
         "z": "25ec5b6512814081",
         "name": "STEP 6",
         "info": "",
-        "x": 120,
-        "y": 500,
+        "x": 110,
+        "y": 440,
         "wires": []
-    },
-    {
-        "id": "86cd1002.d86cf",
-        "type": "amqp-in",
-        "z": "25ec5b6512814081",
-        "name": "HE RECEIVES RESULTS",
-        "broker": "",
-        "prefetch": 0,
-        "noAck": true,
-        "exchangeName": "",
-        "exchangeType": "topic",
-        "exchangeRoutingKey": "he",
-        "exchangeDurable": true,
-        "queueName": "",
-        "queueExclusive": true,
-        "queueDurable": false,
-        "queueAutoDelete": true,
-        "headers": "{}",
-        "x": 140,
-        "y": 620,
-        "wires": [
-            [
-                "5cb7ad1e.150274"
-            ]
-        ]
     },
     {
         "id": "5cb7ad1e.150274",
@@ -6046,8 +6088,8 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 210,
-        "y": 560,
+        "x": 200,
+        "y": 500,
         "wires": [
             [
                 "1d304c4b2ac6966d"
@@ -6060,8 +6102,8 @@
         "z": "25ec5b6512814081",
         "name": "RELEASE MODEL-TO HEALTHENTIA",
         "info": "",
-        "x": 800,
-        "y": 480,
+        "x": 790,
+        "y": 420,
         "wires": []
     },
     {
@@ -6086,14 +6128,14 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 550,
-        "y": 560,
+        "x": 540,
+        "y": 500,
         "wires": [
             [
                 "3fb95eef.6a0252"
             ],
             [
-                "f7a028ae.343b4"
+                "3ce357657da4939c"
             ]
         ]
     },
@@ -6103,52 +6145,9 @@
         "z": "25ec5b6512814081",
         "name": "ALERT MLE-MODEL REJECTED",
         "info": "",
-        "x": 780,
-        "y": 600,
+        "x": 770,
+        "y": 540,
         "wires": []
-    },
-    {
-        "id": "f7a028ae.343b4",
-        "type": "amqp-out",
-        "z": "25ec5b6512814081",
-        "name": "TO MLE",
-        "broker": "",
-        "exchangeName": "",
-        "exchangeType": "topic",
-        "exchangeRoutingKey": "mle",
-        "exchangeRoutingKeyType": "str",
-        "exchangeDurable": true,
-        "amqpProperties": "{ \"headers\": {} }",
-        "rpcTimeoutMilliseconds": 3000,
-        "outputs": 0,
-        "x": 730,
-        "y": 640,
-        "wires": []
-    },
-    {
-        "id": "9440bb22.3d6998",
-        "type": "amqp-in",
-        "z": "25ec5b6512814081",
-        "name": "MLE RECEIVES RESULTS",
-        "broker": "",
-        "prefetch": 0,
-        "noAck": true,
-        "exchangeName": "",
-        "exchangeType": "topic",
-        "exchangeRoutingKey": "mle",
-        "exchangeDurable": true,
-        "queueName": "",
-        "queueExclusive": true,
-        "queueDurable": false,
-        "queueAutoDelete": true,
-        "headers": "{}",
-        "x": 160,
-        "y": 360,
-        "wires": [
-            [
-                "d83d441.dd8d3b8"
-            ]
-        ]
     },
     {
         "id": "d83d441.dd8d3b8",
@@ -6160,31 +6159,13 @@
         "noerr": 0,
         "initialize": "",
         "finalize": "",
-        "x": 380,
-        "y": 360,
+        "x": 360,
+        "y": 320,
         "wires": [
             [
                 "8d2a74e8a0c8a5d4"
             ]
         ]
-    },
-    {
-        "id": "4d6a4ca2.c95994",
-        "type": "amqp-out",
-        "z": "25ec5b6512814081",
-        "name": "TO HUMAN EXPERT",
-        "broker": "",
-        "exchangeName": "",
-        "exchangeType": "topic",
-        "exchangeRoutingKey": "he",
-        "exchangeRoutingKeyType": "str",
-        "exchangeDurable": true,
-        "amqpProperties": "{ \"headers\": {} }",
-        "rpcTimeoutMilliseconds": 3000,
-        "outputs": 0,
-        "x": 780,
-        "y": 360,
-        "wires": []
     },
     {
         "id": "3fb95eef.6a0252",
@@ -6193,12 +6174,17 @@
         "name": "",
         "method": "GET",
         "ret": "txt",
-        "paytoqs": false,
-        "url": "",
+        "paytoqs": "body",
+        "url": "http://localhost:1881/test/healthentia-model",
+        "tls": "",
         "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
         "authType": "",
-        "x": 730,
-        "y": 520,
+        "senderr": false,
+        "headers": [],
+        "x": 720,
+        "y": 460,
         "wires": [
             [
                 "ab6c7699.2f387"
@@ -6217,8 +6203,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 910,
-        "y": 520,
+        "x": 900,
+        "y": 460,
         "wires": []
     },
     {
@@ -6228,13 +6214,13 @@
         "name": "",
         "application": "34",
         "model": "MLE",
-        "affordance_action": "",
+        "affordance_action": "review",
         "sessionIdJsonPath": "$payload.session_id",
-        "x": 430,
-        "y": 180,
+        "x": 410,
+        "y": 160,
         "wires": [
             [
-                "44997c15.fd35f4"
+                "5d2b58f3f6221a77"
             ]
         ]
     },
@@ -6244,14 +6230,14 @@
         "z": "25ec5b6512814081",
         "name": "",
         "application": "34",
-        "model": "",
-        "affordance_action": "",
+        "model": "MLE",
+        "affordance_action": "review",
         "sessionIdJsonPath": "$payload.session_id",
         "x": 550,
-        "y": 360,
+        "y": 320,
         "wires": [
             [
-                "4d6a4ca2.c95994"
+                "0762bd3dea133aad"
             ]
         ]
     },
@@ -6261,16 +6247,585 @@
         "z": "25ec5b6512814081",
         "name": "",
         "application": "34",
-        "model": "",
-        "affordance_action": "",
+        "model": "MLE",
+        "affordance_action": "review",
         "sessionIdJsonPath": "$payload.session_id",
         "x": 380,
-        "y": 560,
+        "y": 500,
         "wires": [
             [
                 "a2872dd7.54b17"
             ]
         ]
+    },
+    {
+        "id": "7b560c82de22fe0f",
+        "type": "amqp-in",
+        "z": "25ec5b6512814081",
+        "name": "FROM MINIO-RESULTS READY",
+        "broker": "487d59aa72433058",
+        "prefetch": 0,
+        "noAck": true,
+        "exchangeName": "ex.pilot.smart_healthcare_diabetes",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "minio",
+        "exchangeDurable": true,
+        "queueName": "",
+        "queueExclusive": true,
+        "queueDurable": false,
+        "queueAutoDelete": true,
+        "headers": "{}",
+        "x": 200,
+        "y": 900,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b1028c8ee8de4461",
+        "type": "amqp-out",
+        "z": "25ec5b6512814081",
+        "name": "TO MLE",
+        "broker": "487d59aa72433058",
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "mle",
+        "exchangeRoutingKeyType": "str",
+        "exchangeDurable": true,
+        "amqpProperties": "{ \"headers\": {} }",
+        "rpcTimeoutMilliseconds": 3000,
+        "outputs": 0,
+        "x": 620,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "8bf7ed4936f98618",
+        "type": "amqp-in",
+        "z": "25ec5b6512814081",
+        "name": "MLE RECEIVES RESULTS",
+        "broker": "487d59aa72433058",
+        "prefetch": 0,
+        "noAck": true,
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "mle",
+        "exchangeDurable": true,
+        "queueName": "",
+        "queueExclusive": true,
+        "queueDurable": false,
+        "queueAutoDelete": true,
+        "headers": "{}",
+        "x": 160,
+        "y": 1080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a3f1ddad62e7d443",
+        "type": "amqp-out",
+        "z": "25ec5b6512814081",
+        "name": "TO HUMAN EXPERT",
+        "broker": "487d59aa72433058",
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "he",
+        "exchangeRoutingKeyType": "str",
+        "exchangeDurable": true,
+        "amqpProperties": "{ \"headers\": {} }",
+        "rpcTimeoutMilliseconds": 3000,
+        "outputs": 0,
+        "x": 780,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "ecb469202590a01c",
+        "type": "amqp-in",
+        "z": "25ec5b6512814081",
+        "name": "HE RECEIVES RESULTS",
+        "broker": "487d59aa72433058",
+        "prefetch": 0,
+        "noAck": true,
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "he",
+        "exchangeDurable": true,
+        "queueName": "",
+        "queueExclusive": true,
+        "queueDurable": false,
+        "queueAutoDelete": true,
+        "headers": "{}",
+        "x": 140,
+        "y": 1340,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d6cb122865fa20a5",
+        "type": "amqp-out",
+        "z": "25ec5b6512814081",
+        "name": "TO MLE",
+        "broker": "487d59aa72433058",
+        "exchangeName": "",
+        "exchangeType": "topic",
+        "exchangeRoutingKey": "mle",
+        "exchangeRoutingKeyType": "str",
+        "exchangeDurable": true,
+        "amqpProperties": "{ \"headers\": {} }",
+        "rpcTimeoutMilliseconds": 3000,
+        "outputs": 0,
+        "x": 730,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "d5b060ada6b2ac4c",
+        "type": "websocket in",
+        "z": "25ec5b6512814081",
+        "name": "FROM MINIO-RESULTS READY",
+        "server": "e30232f8de63e97e",
+        "client": "",
+        "x": 170,
+        "y": 160,
+        "wires": [
+            [
+                "71c59e9884927dfb"
+            ]
+        ],
+        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+    },
+    {
+        "id": "5d2b58f3f6221a77",
+        "type": "websocket out",
+        "z": "25ec5b6512814081",
+        "name": "TO MLE",
+        "server": "",
+        "client": "743a3cf797628c28",
+        "x": 600,
+        "y": 160,
+        "wires": [],
+        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+    },
+    {
+        "id": "1b35175838d6381f",
+        "type": "websocket in",
+        "z": "25ec5b6512814081",
+        "name": "MLE RECEIVES RESULTS",
+        "server": "e0b05d16f7ecdd04",
+        "client": "",
+        "x": 140,
+        "y": 320,
+        "wires": [
+            [
+                "d83d441.dd8d3b8"
+            ]
+        ],
+        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+    },
+    {
+        "id": "0762bd3dea133aad",
+        "type": "websocket out",
+        "z": "25ec5b6512814081",
+        "name": "TO HUMAN EXPERT",
+        "server": "",
+        "client": "e0a4c11dab58c10a",
+        "x": 780,
+        "y": 320,
+        "wires": [],
+        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+    },
+    {
+        "id": "470f5409d770659c",
+        "type": "websocket in",
+        "z": "25ec5b6512814081",
+        "name": "H.E. RECEIVES RESULTS",
+        "server": "0cab48b7b0ba975d",
+        "client": "",
+        "x": 120,
+        "y": 580,
+        "wires": [
+            [
+                "5cb7ad1e.150274"
+            ]
+        ],
+        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+    },
+    {
+        "id": "3ce357657da4939c",
+        "type": "websocket out",
+        "z": "25ec5b6512814081",
+        "name": "TO MLE",
+        "server": "",
+        "client": "f94c9c43fbee4115",
+        "x": 710,
+        "y": 580,
+        "wires": [],
+        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+    },
+    {
+        "id": "655b54b579bb98f1",
+        "type": "websocket in",
+        "z": "6db8202e18c571bd",
+        "name": "step 4 output",
+        "server": "c3ab61e0182c58c8",
+        "client": "",
+        "x": 730,
+        "y": 80,
+        "wires": [
+            [
+                "74e9c1e0022469e1"
+            ]
+        ]
+    },
+    {
+        "id": "475a635fa0d219d5",
+        "type": "websocket in",
+        "z": "6db8202e18c571bd",
+        "name": "step 5b output",
+        "server": "bacb0b3b014ebde2",
+        "client": "",
+        "x": 730,
+        "y": 160,
+        "wires": [
+            [
+                "1b9d29a3e9fe78c8"
+            ]
+        ]
+    },
+    {
+        "id": "f93a480378301085",
+        "type": "websocket in",
+        "z": "6db8202e18c571bd",
+        "name": "step 6 alert",
+        "server": "cbd4bb2dc19ed05b",
+        "client": "",
+        "x": 720,
+        "y": 360,
+        "wires": [
+            [
+                "69faf2f773e0b5b4"
+            ]
+        ]
+    },
+    {
+        "id": "7da0b7099e0b4a97",
+        "type": "http response",
+        "z": "6db8202e18c571bd",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 850,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "adf51dc131729a4a",
+        "type": "function",
+        "z": "6db8202e18c571bd",
+        "name": "function 1",
+        "func": "msg.payload = {status: \"New Model Received! Deploying...\"}\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 280,
+        "wires": [
+            [
+                "7da0b7099e0b4a97"
+            ]
+        ]
+    },
+    {
+        "id": "d973166f6f3011ae",
+        "type": "http in",
+        "z": "6db8202e18c571bd",
+        "name": "Step 6 Model Release",
+        "url": "/test/healthentia-model",
+        "method": "get",
+        "upload": false,
+        "skipBodyParsing": false,
+        "swaggerDoc": "",
+        "x": 760,
+        "y": 240,
+        "wires": [
+            [
+                "adf51dc131729a4a"
+            ]
+        ]
+    },
+    {
+        "id": "74e9c1e0022469e1",
+        "type": "debug",
+        "z": "6db8202e18c571bd",
+        "name": "step 4 output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 890,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "1b9d29a3e9fe78c8",
+        "type": "debug",
+        "z": "6db8202e18c571bd",
+        "name": "STEP 5b output",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "69faf2f773e0b5b4",
+        "type": "debug",
+        "z": "6db8202e18c571bd",
+        "name": "step 6 alert",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "748a645869ff5aa2",
+        "type": "websocket out",
+        "z": "6db8202e18c571bd",
+        "name": "step 4 input",
+        "server": "",
+        "client": "e840b54a83d5c305",
+        "x": 310,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "3a6441e3068e96df",
+        "type": "websocket out",
+        "z": "6db8202e18c571bd",
+        "name": "step 5b input",
+        "server": "",
+        "client": "3149c7765d0f5a9f",
+        "x": 350,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "12c101484a201d6c",
+        "type": "websocket out",
+        "z": "6db8202e18c571bd",
+        "name": "step 6 input",
+        "server": "",
+        "client": "9e564e680e309af9",
+        "x": 350,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "702082e8c0d3bb2b",
+        "type": "inject",
+        "z": "6db8202e18c571bd",
+        "name": "step 4 v1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0003\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2025-10-17\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG001\",\"t\":5,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_abc123\"}},{\"interaction_id\":\"IMG001\",\"t\":14,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.2,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with protocol\"},\"correct\":true},{\"interaction_id\":\"IMG002\",\"t\":20,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG002\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"III\"}}},{\"interaction_id\":\"IMG002\",\"t\":22,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":900,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG002\",\"t\":26,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_def456\"}},{\"interaction_id\":\"IMG002\",\"t\":35,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":7.5,\"payload\":{\"decision\":\"reject\",\"note\":\"rule RS12 conflicts with guideline\"},\"correct\":false}]}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 40,
+        "wires": [
+            [
+                "748a645869ff5aa2"
+            ]
+        ]
+    },
+    {
+        "id": "aa2b433b2cd73e40",
+        "type": "inject",
+        "z": "6db8202e18c571bd",
+        "name": "step 4 v2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0004\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2026-03-03\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG007\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG007\",\"cohort\":{\"cancer_type\":\"prostate\",\"stage\":\"IV\"},\"site_id\":\"site_D\"}},{\"interaction_id\":\"IMG007\",\"t\":1.5,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":1100,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.89}}},{\"interaction_id\":\"IMG007\",\"t\":4,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img007\"}},{\"interaction_id\":\"IMG007\",\"t\":12.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.5,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with prior biopsy\"},\"correct\":true},{\"interaction_id\":\"IMG008\",\"t\":16,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG008\",\"cohort\":{\"cancer_type\":\"pancreatic\",\"stage\":\"I\"},\"site_id\":\"site_E\"}},{\"interaction_id\":\"IMG008\",\"t\":17.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.82}}},{\"interaction_id\":\"IMG008\",\"t\":19,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img008\"}},{\"interaction_id\":\"IMG008\",\"t\":25,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":6,\"payload\":{\"decision\":\"reject\",\"note\":\"inconclusive features detected\"},\"correct\":false},{\"interaction_id\":\"IMG009\",\"t\":30,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG009\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"I\"},\"site_id\":\"site_F\"}},{\"interaction_id\":\"IMG009\",\"t\":31.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":850,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.91}}},{\"interaction_id\":\"IMG009\",\"t\":33,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img009\"}},{\"interaction_id\":\"IMG009\",\"t\":36.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":12,\"payload\":{\"decision\":\"accept\",\"note\":\"early detection confirmed\"},\"correct\":true},{\"interaction_id\":\"IMG010\",\"t\":40,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG010\",\"cohort\":{\"cancer_type\":\"lung\",\"stage\":\"IV\"},\"site_id\":\"site_G\"}},{\"interaction_id\":\"IMG010\",\"t\":41.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":930,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.84}}},{\"interaction_id\":\"IMG010\",\"t\":43,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img010\"}},{\"interaction_id\":\"IMG010\",\"t\":48,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":5,\"payload\":{\"decision\":\"accept\",\"note\":\"standard protocol\"},\"correct\":true}]}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 80,
+        "wires": [
+            [
+                "748a645869ff5aa2"
+            ]
+        ]
+    },
+    {
+        "id": "8435d2c5b8600c7b",
+        "type": "inject",
+        "z": "6db8202e18c571bd",
+        "name": "step 5b v1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0003\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2025-10-17\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG001\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG001\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"II\"}}},{\"interaction_id\":\"IMG001\",\"t\":1.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG001\",\"t\":5,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_abc123\"}},{\"interaction_id\":\"IMG001\",\"t\":14,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.2,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with protocol\"},\"correct\":true},{\"interaction_id\":\"IMG002\",\"t\":20,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG002\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"III\"}}},{\"interaction_id\":\"IMG002\",\"t\":22,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":900,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG002\",\"t\":26,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_def456\"}},{\"interaction_id\":\"IMG002\",\"t\":35,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":7.5,\"payload\":{\"decision\":\"reject\",\"note\":\"rule RS12 conflicts with guideline\"},\"correct\":false}]}",
+        "payloadType": "json",
+        "x": 136.36000061035156,
+        "y": 173.36000061035156,
+        "wires": [
+            [
+                "3a6441e3068e96df"
+            ]
+        ]
+    },
+    {
+        "id": "e1a2856a1c1f8b31",
+        "type": "inject",
+        "z": "6db8202e18c571bd",
+        "name": "step 5b v2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0004\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2026-03-03\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG007\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG007\",\"cohort\":{\"cancer_type\":\"prostate\",\"stage\":\"IV\"},\"site_id\":\"site_D\"}},{\"interaction_id\":\"IMG007\",\"t\":1.5,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":1100,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.89}}},{\"interaction_id\":\"IMG007\",\"t\":4,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img007\"}},{\"interaction_id\":\"IMG007\",\"t\":12.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.5,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with prior biopsy\"},\"correct\":true},{\"interaction_id\":\"IMG008\",\"t\":16,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG008\",\"cohort\":{\"cancer_type\":\"pancreatic\",\"stage\":\"I\"},\"site_id\":\"site_E\"}},{\"interaction_id\":\"IMG008\",\"t\":17.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.82}}},{\"interaction_id\":\"IMG008\",\"t\":19,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img008\"}},{\"interaction_id\":\"IMG008\",\"t\":25,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":6,\"payload\":{\"decision\":\"reject\",\"note\":\"inconclusive features detected\"},\"correct\":false},{\"interaction_id\":\"IMG009\",\"t\":30,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG009\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"I\"},\"site_id\":\"site_F\"}},{\"interaction_id\":\"IMG009\",\"t\":31.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":850,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.91}}},{\"interaction_id\":\"IMG009\",\"t\":33,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img009\"}},{\"interaction_id\":\"IMG009\",\"t\":36.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":12,\"payload\":{\"decision\":\"accept\",\"note\":\"early detection confirmed\"},\"correct\":true},{\"interaction_id\":\"IMG010\",\"t\":40,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG010\",\"cohort\":{\"cancer_type\":\"lung\",\"stage\":\"IV\"},\"site_id\":\"site_G\"}},{\"interaction_id\":\"IMG010\",\"t\":41.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":930,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.84}}},{\"interaction_id\":\"IMG010\",\"t\":43,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img010\"}},{\"interaction_id\":\"IMG010\",\"t\":48,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":5,\"payload\":{\"decision\":\"accept\",\"note\":\"standard protocol\"},\"correct\":true}]}",
+        "payloadType": "json",
+        "x": 133.36000061035156,
+        "y": 208.36000061035156,
+        "wires": [
+            [
+                "3a6441e3068e96df"
+            ]
+        ]
+    },
+    {
+        "id": "fce51b937f494aeb",
+        "type": "inject",
+        "z": "6db8202e18c571bd",
+        "name": "step 6 v1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0003\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2025-10-17\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG001\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG001\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"II\"}}},{\"interaction_id\":\"IMG001\",\"t\":1.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG001\",\"t\":5,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_abc123\"}},{\"interaction_id\":\"IMG001\",\"t\":14,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.2,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with protocol\"},\"correct\":true},{\"interaction_id\":\"IMG002\",\"t\":20,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG002\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"III\"}}},{\"interaction_id\":\"IMG002\",\"t\":22,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":900,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG002\",\"t\":26,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_def456\"}},{\"interaction_id\":\"IMG002\",\"t\":35,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":7.5,\"payload\":{\"decision\":\"reject\",\"note\":\"rule RS12 conflicts with guideline\"},\"correct\":false}]}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "12c101484a201d6c"
+            ]
+        ]
+    },
+    {
+        "id": "e1ec050db8ad47aa",
+        "type": "inject",
+        "z": "6db8202e18c571bd",
+        "name": "step 6 v2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0004\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2026-03-03\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG007\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG007\",\"cohort\":{\"cancer_type\":\"prostate\",\"stage\":\"IV\"},\"site_id\":\"site_D\"}},{\"interaction_id\":\"IMG007\",\"t\":1.5,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":1100,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.89}}},{\"interaction_id\":\"IMG007\",\"t\":4,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img007\"}},{\"interaction_id\":\"IMG007\",\"t\":12.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.5,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with prior biopsy\"},\"correct\":true},{\"interaction_id\":\"IMG008\",\"t\":16,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG008\",\"cohort\":{\"cancer_type\":\"pancreatic\",\"stage\":\"I\"},\"site_id\":\"site_E\"}},{\"interaction_id\":\"IMG008\",\"t\":17.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.82}}},{\"interaction_id\":\"IMG008\",\"t\":19,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img008\"}},{\"interaction_id\":\"IMG008\",\"t\":25,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":6,\"payload\":{\"decision\":\"reject\",\"note\":\"inconclusive features detected\"},\"correct\":false},{\"interaction_id\":\"IMG009\",\"t\":30,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG009\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"I\"},\"site_id\":\"site_F\"}},{\"interaction_id\":\"IMG009\",\"t\":31.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":850,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.91}}},{\"interaction_id\":\"IMG009\",\"t\":33,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img009\"}},{\"interaction_id\":\"IMG009\",\"t\":36.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":12,\"payload\":{\"decision\":\"accept\",\"note\":\"early detection confirmed\"},\"correct\":true},{\"interaction_id\":\"IMG010\",\"t\":40,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG010\",\"cohort\":{\"cancer_type\":\"lung\",\"stage\":\"IV\"},\"site_id\":\"site_G\"}},{\"interaction_id\":\"IMG010\",\"t\":41.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":930,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.84}}},{\"interaction_id\":\"IMG010\",\"t\":43,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img010\"}},{\"interaction_id\":\"IMG010\",\"t\":48,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":5,\"payload\":{\"decision\":\"accept\",\"note\":\"standard protocol\"},\"correct\":true}]}",
+        "payloadType": "json",
+        "x": 140,
+        "y": 320,
+        "wires": [
+            [
+                "12c101484a201d6c"
+            ]
+        ]
+    },
+    {
+        "id": "e6bf6f9675903c93",
+        "type": "comment",
+        "z": "6db8202e18c571bd",
+        "name": "the injected are NOT CLEAN!",
+        "info": "",
+        "x": 260,
+        "y": 400,
+        "wires": []
     },
     {
         "id": "7b23566f84e22509",
@@ -6291,7 +6846,7 @@
         "type": "websocket in",
         "z": "7ff3eec4187058d0",
         "name": "Event - Model is reviewed",
-        "server": "822e45b6e1656f63",
+        "server": "5b31d14bd74f91ec",
         "client": "",
         "x": 170,
         "y": 260,
@@ -6399,7 +6954,67 @@
         "x": 270,
         "y": 340,
         "wires": [
-            []
+            [
+                "0afce7cb4261b9bb"
+            ]
+        ]
+    },
+    {
+        "id": "a7963245db1ec11e",
+        "type": "inject",
+        "z": "7ff3eec4187058d0",
+        "name": "v1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0003\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2025-10-17\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG001\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG001\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"II\"}}},{\"interaction_id\":\"IMG001\",\"t\":1.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG001\",\"t\":5,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_abc123\"}},{\"interaction_id\":\"IMG001\",\"t\":14,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.2,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with protocol\"},\"correct\":true},{\"interaction_id\":\"IMG002\",\"t\":20,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG002\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"III\"}}},{\"interaction_id\":\"IMG002\",\"t\":22,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":900,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_001\",\"metrics\":{\"auc\":0.86}}},{\"interaction_id\":\"IMG002\",\"t\":26,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_def456\"}},{\"interaction_id\":\"IMG002\",\"t\":35,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":7.5,\"payload\":{\"decision\":\"reject\",\"note\":\"rule RS12 conflicts with guideline\"},\"correct\":false}]}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 420,
+        "wires": [
+            [
+                "0afce7cb4261b9bb"
+            ]
+        ]
+    },
+    {
+        "id": "83e9180aee12fa17",
+        "type": "inject",
+        "z": "7ff3eec4187058d0",
+        "name": "v2",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "{\"session_id\":\"sess-20260303-0004\",\"pilot_tag\":\"healthcare_oncology\",\"user_id\":\"expert_anon\",\"app_version\":\"ns_v0.1.0\",\"ai_model_version\":\"ns-2026-03-03\",\"meta\":{\"task_parameters\":{\"rt_max\":30}},\"decisions\":[{\"interaction_id\":\"IMG007\",\"t\":0,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG007\",\"cohort\":{\"cancer_type\":\"prostate\",\"stage\":\"IV\"},\"site_id\":\"site_D\"}},{\"interaction_id\":\"IMG007\",\"t\":1.5,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":1100,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.89}}},{\"interaction_id\":\"IMG007\",\"t\":4,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img007\"}},{\"interaction_id\":\"IMG007\",\"t\":12.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":8.5,\"payload\":{\"decision\":\"accept\",\"note\":\"consistent with prior biopsy\"},\"correct\":true},{\"interaction_id\":\"IMG008\",\"t\":16,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG008\",\"cohort\":{\"cancer_type\":\"pancreatic\",\"stage\":\"I\"},\"site_id\":\"site_E\"}},{\"interaction_id\":\"IMG008\",\"t\":17.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":950,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.82}}},{\"interaction_id\":\"IMG008\",\"t\":19,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img008\"}},{\"interaction_id\":\"IMG008\",\"t\":25,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":6,\"payload\":{\"decision\":\"reject\",\"note\":\"inconclusive features detected\"},\"correct\":false},{\"interaction_id\":\"IMG009\",\"t\":30,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG009\",\"cohort\":{\"cancer_type\":\"breast\",\"stage\":\"I\"},\"site_id\":\"site_F\"}},{\"interaction_id\":\"IMG009\",\"t\":31.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":850,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.91}}},{\"interaction_id\":\"IMG009\",\"t\":33,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"sms\",\"presigned_url_id\":\"psu_img009\"}},{\"interaction_id\":\"IMG009\",\"t\":36.5,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":12,\"payload\":{\"decision\":\"accept\",\"note\":\"early detection confirmed\"},\"correct\":true},{\"interaction_id\":\"IMG010\",\"t\":40,\"actor_type\":\"system\",\"action\":\"initial_input_provided\",\"payload\":{\"image_id\":\"IMG010\",\"cohort\":{\"cancer_type\":\"lung\",\"stage\":\"IV\"},\"site_id\":\"site_G\"}},{\"interaction_id\":\"IMG010\",\"t\":41.2,\"actor_type\":\"ai\",\"action\":\"model_trained\",\"latency_ms\":930,\"payload\":{\"model_uri\":\"minio://bucket/models/ns/mdl_002\",\"metrics\":{\"auc\":0.84}}},{\"interaction_id\":\"IMG010\",\"t\":43,\"actor_type\":\"human\",\"action\":\"human_review_notified\",\"payload\":{\"method\":\"email\",\"presigned_url_id\":\"psu_img010\"}},{\"interaction_id\":\"IMG010\",\"t\":48,\"actor_type\":\"human\",\"action\":\"human_review_performed\",\"duration_s\":5,\"payload\":{\"decision\":\"accept\",\"note\":\"standard protocol\"},\"correct\":true}]}",
+        "payloadType": "json",
+        "x": 250,
+        "y": 480,
+        "wires": [
+            [
+                "0afce7cb4261b9bb"
+            ]
         ]
     }
 ]
