@@ -1,66 +1,70 @@
-# TODO: Separate build and runtime, use a different base which only has the node-modules!
-FROM nodered/node-red:4.1.3-20
-
-WORKDIR /data
-
-
-# Copy all files that are required
-COPY package.json .
-COPY package-lock.json .
-COPY example.settings.js ./settings.js
-COPY flows.json .
-COPY node-red-contrib-custom-icons/ ./node-red-contrib-custom-icons/
-COPY human_ai_benchmark_suite/ ./human_ai_benchmark_suite/
-COPY kubeflow_pipelines_api/ ./kubeflow_pipelines_api/
-COPY node-red-contrib-humaine/ ./node-red-contrib-humaine/
+# ============================================================================
+# Stage 1: Builder - compile and pack all custom packages + resolve deps
+# ============================================================================
+FROM gkousiou/hellokubeunp as builder
 
 USER root
-# Set explicit ownership to avoid permission issues during build
-RUN chown -R 1000:1000 /data && \
-    chmod -R 755 /data
 
-# Switch to non-root user (Node-RED typically handles this)
-USER node-red
+WORKDIR /build
 
-WORKDIR /data/node-red-contrib-custom-icons/
+# ---- Copy source packages (no package.json/lock yet — we install from tgz) ----
+COPY node-red-contrib-custom-icons/ ./node-red-contrib-custom-icons/
+COPY human_ai_benchmark_suite/       ./human_ai_benchmark_suite/
+COPY kubeflow_pipelines_api/         ./kubeflow_pipelines_api/
+COPY node-red-contrib-humaine/       ./node-red-contrib-humaine/
+
+# ---- Build & pack each custom package ---------------------------------------
+
+# 1) node-red-contrib-custom-icons — JS-only, no build step, just pack
+WORKDIR /build/node-red-contrib-custom-icons
 RUN npm pack
 
-WORKDIR /data/human_ai_benchmark_suite
-RUN npm install
+# 2) human_ai_benchmark_suite — TypeScript, rebuild to ensure clean dist
+WORKDIR /build/human_ai_benchmark_suite
 RUN npm run build
 RUN npm pack
 
-WORKDIR /data/kubeflow_pipelines_api
-RUN npm install
+# 3) kubeflow_pipelines_api — TypeScript, rebuild to ensure clean dist
+WORKDIR /build/kubeflow_pipelines_api
 RUN npm run build
 RUN npm pack
 
-# TODO: Install build and pack node-red-contrib-humaine
-WORKDIR /data/node-red-contrib-humaine
-RUN npm install yarn
-# TODO: Add the final version of the build process, with yarn this time
-# RUN npm install
-# RUN npm run build
-# RUN npm pack
+# 4) node-red-contrib-humaine — rollup + tsc via yarn, then remove dist
+WORKDIR /build/node-red-contrib-humaine
+RUN npm install           # needs devDeps (rollup, tsc, copyfiles) for build
+RUN npm install -g yarn
+RUN yarn build
+RUN rm -rf dist          # clean up compiled TS output (matching devcontainer_setup.sh)
+RUN npm pack
 
-# Return to main data directory
-WORKDIR /data
-
-# Install all dependencies including custom packages, but without dev dependencies
+# ---- Install root-level production dependencies from packed tgz files --------
+WORKDIR /build
+COPY package.json package-lock.json ./
 RUN npm install --production
 
-# TODO: Copy from build phase to runtime phase? Start anew and copy node_modules and artifacts
+# ============================================================================
+# Stage 2: Runtime - clean Node-RED image with all nodes pre-installed
+# ============================================================================
+FROM gkousiou/hellokubeunp
 
-# Set ownership and user
 USER root
-RUN chown -R 1000:1000 /usr/src/node-red
-USER node-red
 
-# NOTES:
-# The settings.js file should be overridden by a volume.
-# The flows.json file should be overridden by a volume.
-# If the whole project is the base, then this should be used as a volume for the /data directory.
+WORKDIR /data
 
-WORKDIR /usr/src/node-red
-ENTRYPOINT ["/usr/src/node-red/entrypoint.sh"]
-CMD ["node"]["/usr/src/node-red/node_modules/node-red/red.js"]["--userDir"]["/data"]
+# Copy production node_modules from builder (no build tools, no tgz sources)
+COPY --from=builder /build/node_modules ./node_modules
+
+# Set ownership to jovyan user (UID 1000)
+RUN chown -R 1000:1000 /data
+
+# Copy entrypoint script and default-flow templates
+COPY entrypoint.sh    /entrypoint.sh
+COPY default-flows/       /default-flows/
+
+RUN chmod +x /entrypoint.sh && \
+    chown -R 1000:1000 /entrypoint.sh /default-flows
+
+USER 1000
+
+ENTRYPOINT ["/entrypoint.sh"]
+CMD ["node", "/usr/src/node-red/node_modules/node-red/red.js", "--userDir", "/data"]
