@@ -32,15 +32,16 @@ RUN npm pack
 # 4) node-red-contrib-humaine — rollup + tsc via yarn, then remove dist
 WORKDIR /build/node-red-contrib-humaine
 RUN npm install           # needs devDeps (rollup, tsc, copyfiles) for build
-RUN npm install -g yarn
 RUN yarn build
-RUN rm -rf dist          # clean up compiled TS output (matching devcontainer_setup.sh)
 RUN npm pack
+RUN rm -rf dist          # clean up compiled TS output (matching devcontainer_setup.sh)
 
 # ---- Install root-level production dependencies from packed tgz files --------
+# Don't COPY package-lock.json — it has stale integrity checksums for the freshly-built .tgz files.
+# Let npm generate a fresh lock with correct hashes during this build step.
 WORKDIR /build
-COPY package.json package-lock.json ./
-RUN npm install --production
+COPY package.json ./
+RUN npm install --omit=dev
 
 # ============================================================================
 # Stage 2: Runtime - clean Node-RED image with all nodes pre-installed
