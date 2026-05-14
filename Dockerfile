@@ -55,15 +55,27 @@ WORKDIR /data
 # Copy production node_modules from builder (no build tools, no tgz sources)
 COPY --from=builder /build/node_modules ./node_modules
 
-# Set ownership to jovyan user (UID 1000)
-RUN chown -R 1000:1000 /data
+# Copy package.json and its generated lock file into /defaults for lazy-init
+RUN mkdir -p /defaults/node_modules
+COPY --from=builder /build/package.json /defaults/package.json
+COPY --from=builder /build/package-lock.json /defaults/package-lock.json
+COPY --from=builder /build/node_modules /defaults/node_modules
 
-# Copy entrypoint script and default-flow templates
-COPY entrypoint.sh    /entrypoint.sh
-COPY default-flows/       /default-flows/
+# Copy flows and settings into defaults
+COPY default-flows/flows.json /defaults/flows.json
+COPY default-flows/example.settings.js /defaults/settings.js
+
+# Copy base image config files that may be needed (lib, .config.*)
+RUN mkdir -p /defaults/lib && \
+    cp -a /data/.config.nodes.json /defaults/ 2>/dev/null || true && \
+    cp -a /data/.config.runtime.json /defaults/ 2>/dev/null || true && \
+    cp -a /data/.config.users.json /defaults/ 2>/dev/null || true
+
+# Copy entrypoint script
+COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /entrypoint.sh && \
-    chown -R 1000:1000 /entrypoint.sh /default-flows
+    chown -R 1000:1000 /entrypoint.sh /defaults
 
 EXPOSE 8888
 

@@ -3,6 +3,6 @@ services:
     build: .
     container_name: humaine-node-red
     ports:
-      - "1880:1880"
+      - "8888:8888"
     environment:
       TZ: "Europe/Athens"
