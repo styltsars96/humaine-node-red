@@ -65,7 +65,8 @@ COPY default-flows/       /default-flows/
 RUN chmod +x /entrypoint.sh && \
     chown -R 1000:1000 /entrypoint.sh /default-flows
 
+EXPOSE 8888
+
 USER 1000
 
 ENTRYPOINT ["/entrypoint.sh"]
-CMD ["node", "/usr/src/node-red/node_modules/node-red/red.js", "--userDir", "/data"]

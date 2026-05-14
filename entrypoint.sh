@@ -1,6 +1,11 @@
 #!/bin/bash
-# Entrypoint: copy default flows/settings into /data only on first run,
-# then hand off to Node-RED via exec.
+
+trap stop SIGINT SIGTERM
+
+function stop() {
+        kill $CHILD_PID
+        wait $CHILD_PID
+}
 
 set -e
 
@@ -16,8 +21,15 @@ if [ ! -f /data/settings.js ]; then
     echo "[entrypoint] Copied default settings.js"
 fi
 
-# Ensure jovyan user owns the data directory
-chown -R 1000:1000 /data 2>/dev/null || true
+# Sync working flows to jovyan home (needs -u to avoid overwriting the working version with the base version on restart of container)
+cp -u /data/flows.json /home/jovyan/flows.json 2>/dev/null || true
 
-# Execute whatever was passed as CMD
-exec "$@"
+# Ensure jovyan user owns the data directory and home
+chown -R 1000:1000 /data 2>/dev/null || true
+chown -R 1000:1000 /home/jovyan 2>/dev/null || true
+
+/usr/local/bin/node $NODEOPTIONS /usr/src/node-red/node_modules/node-red/red.js -p 8888 --userDir /data $FLOWS &
+
+CHILD_PID="$!"
+
+wait "${CHILD_PID}"
