@@ -1,7 +1,7 @@
 import { EditorRED } from "node-red";
 import { HaicLoggerEditorNodeProperties } from "./modules/types";
 import { IntraNodeMsg, HaicLoggerSelectionOptions } from "../../shared/types";
-import { populateSelectWithOptions } from "../../shared/helpers";
+import { populateSelectWithOptions, adminUrl } from "../../shared/helpers";
 
 declare const RED: EditorRED;
 
@@ -63,14 +63,14 @@ RED.nodes.registerType<HaicLoggerEditorNodeProperties>("haic-logger", {
 
                 if (selectedModel) {
                     selectionOptionsResponse = (await $.ajax({
-                        url: `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
+                        url: adminUrl(`/flows/${localFlowId}/haic-logger/selection_options`),
                         method: "POST",
                         contentType: "application/json",
                         data: JSON.stringify({ selectedModel }),
                     })) as IntraNodeMsg<HaicLoggerSelectionOptions>;
                 } else {
                     selectionOptionsResponse = (await $.getJSON(
-                        `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
+                        adminUrl(`/flows/${localFlowId}/haic-logger/selection_options`),
                     )) as IntraNodeMsg<HaicLoggerSelectionOptions>;
                 }
 

@@ -1,11 +1,8 @@
 import { EditorRED } from "node-red";
 import { AiEnvironmentConfigEditorNodeProperties } from "./modules/types";
 import { HaicConfigEditorNodeProperties } from "../../haic-config/haic-config.html/modules/types";
-import {
-    EnvsMetaList,
-    EvaluationConfigList,
-    AppConfigsRefreshResult,
-} from "../shared/types";
+import { EnvsMetaList, EvaluationConfigList, AppConfigsRefreshResult } from "../shared/types";
+import { adminUrl } from "../../shared/helpers";
 
 declare const RED: EditorRED;
 
@@ -61,7 +58,7 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                         try {
                             // Ask backend / runtime to get list of environments from HAIC API
                             const envsData: EnvsData = await $.getJSON(
-                                `/node-red-contrib-humaine/ai-environment-config/${localId}/envs_list`,
+                                adminUrl(`/ai-environment-config/${localId}/envs_list`),
                             );
                             if (envsData.errorMsg) {
                                 errorMsg = envsData.errorMsg;
@@ -72,7 +69,7 @@ RED.nodes.registerType<AiEnvironmentConfigEditorNodeProperties>(
                             // Ask backend / runtime to get list of app configs from HAIC API and store them in flow context
                             const appsData: AppConfigsRefreshResult =
                                 await $.getJSON(
-                                    `/node-red-contrib-humaine/ai-environment-config/${localId}/applications_list_refresh`,
+                                    adminUrl(`/ai-environment-config/${localId}/applications_list_refresh`),
                                 );
                             if (appsData.errorMsg) {
                                 errorMsg = appsData.errorMsg;

@@ -239,3 +239,16 @@ export const getJsonPath = (obj: JsonValue, path: string): JsonValue => {
 
     return result;
 };
+
+const PACKAGE_PREFIX = "/node-red-contrib-humaine";
+
+export const adminUrl = (path: string): string => {
+    let bp = window.location.pathname;
+    if (bp.endsWith("/")) {
+        bp = bp.slice(0, -1);
+    }
+    if (!path.startsWith("/")) {
+        path = `/${path}`;
+    }
+    return `${bp}${PACKAGE_PREFIX}${path}`;
+};
