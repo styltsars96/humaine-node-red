@@ -1,3 +1,81 @@
 <script type="text/html" data-help-name="haic-logger">
-  <p>Logs Human-AI Collaboration events to the HAIC benchmarking suite, based on the AI Process Environment and the HAIC evaluation config.</p>
+  <h3>Description</h3>
+  <p>Captures Human-AI interaction events, validates them against the HAIC LogSchema, and registers them with the HAIC Benchmark Suite backend. Passes messages through after logging.</p>
+
+  <h3>Usage Steps</h3>
+  <ol>
+    <li><strong>Add an <code>ai-environment-config</code> node first</strong> in this flow (this logger needs it to find the HAIC API)</li>
+    <li><strong>Add this <code>haic-logger</code> node</strong> from the palette (top panel → HumAIne)</li>
+    <li><strong>Select a Model / Agent</strong> — pick from agents defined in your flow's environment. Dropdown populated live.</li>
+    <li><strong>Select an Action / Affordance</strong> — auto-filtered based on the chosen model (shows only that agent's affordances)</li>
+    <li><strong>(Optional) Select an Application Config</strong> — if empty, falls back to the default set on the flow's <code>ai-environment-config</code> node</li>
+    <li><strong>(Optional) Set Session ID JSON Path</strong> — defaults to <code>$payload.session_id</code>, customize for your message structure</li>
+    <li><strong>Wire input messages</strong> with at least a session_id in the payload. Deploy and send data!</li>
+  </ol>
+
+  <h3>Configuration Fields</h3>
+  <table>
+    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
+    <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display name shown in the editor and palette label</td></tr>
+    <tr><td>Model / Agent</td><td>Yes</td><td>—</td><td>AI agent/model from your flow's environment. Populated dynamically.</td></tr>
+    <tr><td>Action / Affordance</td><td>Yes</td><td>—</td><td>Available actions for the selected model. Auto-filtered when you change the model.</td></tr>
+    <tr><td>Application (Evaluation Config)</td><td>No</td><td>Fallback from flow</td><td>Target application config ID. Falls back to <code>defaultApplication</code> on the flow's ai-environment-config node.</td></tr>
+    <tr><td>Session ID JSON Path</td><td>No</td><td><code>$payload.session_id</code></td><td>Path to extract session_id from incoming messages. Supports dot/bracket notation (e.g., <code>$session_id</code>, <code>$payload.data.session_id</code>)</td></tr>
+  </table>
+
+  <h3>Input Message Format</h3>
+  <p>Expected <code>msg.payload</code> structure:</p>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    session_id: "abc-123",           // Required — extracted via JSON path
+    user_id: "user-42",              // Optional, defaults to "unknown"
+    ai_model_version: "v2.1",        // Optional
+    app_version: "1.0.0",            // Optional, defaults to "1.0.0"
+    start_time: "2025-01-01T00:00Z", // Optional ISO datetime, defaults to now
+    end_time: "2025-01-01T00:05Z",   // Optional ISO datetime, defaults to now
+    interaction_data: {...},         // Any — raw interaction data
+    retrain_events: [...],           // Array of retrain events
+    performance_infrastructure: {},  // Infrastructure metrics
+    performance_logs: [...],         // Performance log entries
+    ai_model_data: {...},            // AI model metadata
+    decisions: [...]                 // Decision records
+};</pre>
+
+  <h3>Output Message</h3>
+  <p>The same message is passed through with <code>msg.payload</code> replaced by the validated log data:</p>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = { /* normalized LogSchema object */ };
+// All other msg properties (topic, headers, etc.) are preserved</pre>
+
+  <h3>Status Indicators</h3>
+  <table>
+    <tr><th style="text-align:left">State</th><th style="text-align:left">Visual</th><th style="text-align:left">Duration</th><th style="text-align:left">Meaning</th></tr>
+    <tr><td>Ready (idle)</td><td>Green dot + "Ready to log!"</td><td>Persistent</td><td>Configured correctly, waiting for input</td></tr>
+    <tr><td>Success</td><td>Green ring + "Log registered successfully"</td><td>3 seconds</td><td>Sent to HAIC backend OK</td></tr>
+    <tr><td>Invalid data</td><td>Red dot + "Invalid input log data!"</td><td>3 seconds</td><td>Missing session_id or validation failed</td></tr>
+    <tr><td>Incomplete setup</td><td>Red ring + "Incomplete logger node setup!"</td><td>Persistent</td><td>Missing model, action, or application config</td></tr>
+    <tr><td>No environment</td><td>Error logged (no status shown)</td><td>Persistent</td><td>No ai-environment-config in this flow</td></tr>
+  </table>
+
+  <h3>Backend API Call</h3>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">POST /api/v1/logs/register
+Body: { session_id, user_id, ai_model_version, app_version, start_time, end_time, ... }</pre>
+
+  <h3>Data Validation</h3>
+  <p>All log data is validated against the HAIC LogSchema (Zod) before sending. Required fields are automatically defaulted if not provided: <code>user_id → "unknown"</code>, <code>app_version → "1.0.0"</code>, timestamps → current time.</p>
+
+  <h3>Wiring Pattern</h3>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function / websocket] → [haic-logger] → [debug / switch / downstream]</pre>
+
+  <h3>Use Cases</h3>
+  <ul>
+    <li><strong>Logging agent interactions:</strong> Capture each human-AI interaction event with full metadata for benchmarking analysis</li>
+    <li><strong>Multi-model logging:</strong> Deploy multiple logger nodes in the same flow, each targeting a different model/affordance (e.g., one for "MLE/review", another for "NSAI/explain")</li>
+    <li><strong>Conditional routing:</strong> Wire logger output to downstream logic — messages pass through even on validation failures for custom error handling</li>
+  </ul>
+
+  <h3>Important Notes</h3>
+  <ul>
+    <li>The logger automatically resolves the HAIC API config from flow context — no manual wiring needed.</li>
+    <li>If an application is not specified, it falls back to the default set on the flow's ai-environment-config node. If neither exists, setup fails with a red ring status.</li>
+    <li>Messages always pass through after processing (success or failure), enabling downstream error handling.</li>
+  </ul>
 </script>
