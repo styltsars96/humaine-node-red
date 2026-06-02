@@ -1,66 +1,135 @@
 <script type="text/html" data-help-name="ai-environment-config">
   <h3>Description</h3>
-  <p>Selects and manages the AI workflow environment for a flow. Fetches agent/environment metadata from the HAIC backend and makes it available to other nodes (especially <code>haic-logger</code>) via flow context.</p>
+  <p>Selects and manages the AI workflow environment for a flow. On deploy, fetches environment
+  metadata (agents, affordances, application configs) from the HAIC backend and stores it in
+  flow context. All <code>haic-logger</code> nodes in the same flow use this context to populate
+  their dropdowns and resolve the correct API target.</p>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>An <code>haic-config</code> node must exist and be deployed before this node can be configured.</li>
+    <li>The target environment must already be registered in the HAIC backend via
+      <code>POST /api/v1/envs</code> with agents and affordances defined.</li>
+  </ul>
 
   <h3>Usage Steps</h3>
   <ol>
-    <li><strong>Add</strong> this config node to your flow (top panel → HumAIne)</li>
-    <li><strong>Select a HAIC Server Config</strong> — pick an existing <code>haic-config</code> node. Deploy the flow first if needed.</li>
-    <li><strong>Pick an AI Process Environment</strong> from the dropdown (populated live from the HAIC backend)</li>
-    <li><strong>(Optional) Set a Default Application Config</strong> — this becomes the fallback for all logger nodes in this flow that don't specify one individually</li>
-    <li><strong>Deploy</strong> — the node fetches environment metadata and stores it in flow context automatically</li>
+    <li><strong>Add</strong> this node to your flow (palette → HumAIne)</li>
+    <li><strong>Select a HAIC Server Config</strong> — pick an existing <code>haic-config</code> node.
+      Deploy the flow first if the dropdown is empty.</li>
+    <li><strong>Deploy</strong> once — the node connects to the HAIC backend.</li>
+    <li><strong>Pick an AI Process Environment</strong> — the dropdown is now populated from
+      <code>GET /api/v1/envs</code>. Select the environment that matches your pilot.</li>
+    <li><strong>(Optional) Set a Default Application Config</strong> — fallback evaluation configuration ID
+      for all <code>haic-logger</code> nodes in this flow that do not specify one individually.</li>
+    <li><strong>Deploy again</strong> — environment metadata is cached in flow context and
+      <code>haic-logger</code> dropdowns will populate.</li>
   </ol>
 
   <h3>Configuration Fields</h3>
   <table>
-    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
-    <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display name shown in the editor</td></tr>
-    <tr><td>HAIC Server Config</td><td>Yes</td><td>—</td><td>Reference to an <code>haic-config</code> config node. Required before other fields work.</td></tr>
-    <tr><td>AI Process Environment</td><td>No</td><td>—</td><td>Select from environments fetched live via <code>GET /api/v1/envs</code>. Must be created in the HAIC backend first.</td></tr>
-    <tr><td>Default Application Config</td><td>No (optional)</td><td><code>""</code></td><td>Fallback application for logger nodes. If empty, each logger must specify its own application.</td></tr>
+    <tr>
+      <th style="text-align:left">Field</th>
+      <th style="text-align:left">Required</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>No</td>
+      <td>Display name shown in the editor canvas.</td>
+    </tr>
+    <tr>
+      <td>HAIC Server Config</td>
+      <td>Yes</td>
+      <td>Reference to an <code>haic-config</code> node. Must be deployed before this field activates.</td>
+    </tr>
+    <tr>
+      <td>AI Process Environment</td>
+      <td>No</td>
+      <td>Environment ID selected from <code>GET /api/v1/envs</code>. Must exist in the HAIC backend.
+        The environment definition must include agents with their affordances for the
+        <code>haic-logger</code> dropdowns to populate correctly.</td>
+    </tr>
+    <tr>
+      <td>Default Application Config</td>
+      <td>No</td>
+      <td>Fallback evaluation configuration ID (numeric, from <code>GET /api/v1/configuration/list/</code>).
+        If set, all <code>haic-logger</code> nodes in this flow use it unless they override it individually.</td>
+    </tr>
   </table>
 
   <h3>Input / Output</h3>
-  <p>This node has both input and output ports (1 in, 1 out).</p>
-  
-  <p><strong>On startup:</strong> Automatically fetches environment metadata and application configs. No message needed.</p>
-  
-  <p><strong>On receiving an input message:</strong> Refreshes all data from the HAIC backend and sends it through:</p>
+  <p><strong>On deploy (automatic):</strong> Fetches environment metadata from the HAIC backend and
+  writes it to flow context. No trigger message required.</p>
+
+  <p><strong>On receiving an input message (manual refresh):</strong> Re-fetches all data and
+  passes through:</p>
   <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
-    env: { sim_id, environment, agents, objects, script },
-    blocks: { meta, blocks },
-    appConfigsList: [...]  // application configurations
+    env: {
+        env: {
+            sim_id:      "smart_cities_apps",   // environment identifier
+            environment: { id, class, attributes },
+            agents: [
+                { id: "citizen",    model: "human", affordances: ["application_created"], label: "...", attributes: {...} },
+                { id: "ai_screener",model: "ai",    affordances: ["ai_evaluated"], label: "...", attributes: {...} },
+                { id: "operator",   model: "human", affordances: ["operator_verified"], label: "...", attributes: {...} }
+            ],
+            objects: [...],
+            script:  [...]
+        },
+        blocks: { meta, blocks }
+    },
+    appConfigsList: [
+        { id: 22, application_name: "Smart City — Application Screening", ... }
+    ]
 };</pre>
 
   <h3>Flow Context Keys Set by This Node</h3>
   <table>
-    <tr><th style="text-align:left">Key</th><th style="text-align:left">Type</th><th style="text-align:left">Used By</th></tr>
-    <tr><td><code>HumAIne_HAIC_ENVIRONMENT</code></td><td><code>{ haicApiNodeId, haicEnvironmentNodeId }</code></td><td><code>haic-logger</code>, runtime lookups</td></tr>
-    <tr><td><code>HumAIne_AI_PROCESS_ENVIRONMENT</code></td><td><code>HumAIneEnvironmentData</code></td><td><code>haic-logger</code> model/action dropdowns, editor endpoints</td></tr>
-    <tr><td><code>HumAIne_APP_CONFIGS</code></td><td><code>Record&lt;number, EvaluationConfigSchema&gt;</code></td><td><code>haic-logger</code> application dropdowns</td></tr>
+    <tr>
+      <th style="text-align:left">Key</th>
+      <th style="text-align:left">Content</th>
+      <th style="text-align:left">Used by</th>
+    </tr>
+    <tr>
+      <td><code>HumAIne_HAIC_ENVIRONMENT</code></td>
+      <td><code>{ haicApiNodeId, haicEnvironmentNodeId }</code></td>
+      <td><code>haic-logger</code> — locates HAIC API config and env node at runtime</td>
+    </tr>
+    <tr>
+      <td><code>HumAIne_AI_PROCESS_ENVIRONMENT</code></td>
+      <td><code>{ env: { sim_id, environment, agents, objects, script }, blocks: { meta, blocks } }</code></td>
+      <td><code>haic-logger</code> — populates Model/Agent and Action/Affordance dropdowns</td>
+    </tr>
+    <tr>
+      <td><code>HumAIne_APP_CONFIGS</code></td>
+      <td><code>Record&lt;number, EvaluationConfigSchema&gt;</code></td>
+      <td><code>haic-logger</code> — populates Application (Evaluation Config) dropdown</td>
+    </tr>
   </table>
 
   <h3>Status Indicators</h3>
   <table>
     <tr><th style="text-align:left">State</th><th style="text-align:left">Visual</th><th style="text-align:left">Meaning</th></tr>
     <tr><td>Ready (idle)</td><td>Green dot + "AI Process Environment: {id}"</td><td>Environment data loaded, node is operational</td></tr>
-    <tr><td>Just updated</td><td>Green dot + "JUST UPDATED"</td><td>Data refreshed via input trigger</td></tr>
-    <tr><td>No HAIC server set</td><td>Red ring (in editor)</td><td>Select a <code>haic-config</code> first</td></tr>
-    <tr><td>Duplicate config in flow</td><td>Red ring + "DUPLICATE CONFIG"</td><td>Only one ai-environment-config allowed per flow!</td></tr>
-    <tr><td>No AI Environment ID selected</td><td>Green dot (in editor)</td><td>Pick an environment from the dropdown</td></tr>
-    <tr><td>API fetch error</td><td>Red ring + error text</td><td>Failed to fetch data from HAIC backend</td></tr>
+    <tr><td>Just updated</td><td>Green dot + "JUST UPDATED {id} Environment for this flow!"</td><td>Data refreshed via input trigger</td></tr>
+    <tr><td>No HAIC server set</td><td>Red message in editor form</td><td>Select a <code>haic-config</code> first</td></tr>
+    <tr><td>Duplicate config in flow</td><td>Red ring + "DUPLICATE CONFIG IN THE FLOW! REMOVE!"</td><td>Only one ai-environment-config allowed per flow!</td></tr>
+    <tr><td>No AI Environment ID selected</td><td>Red dot + "No AI Environment ID is selected yet!"</td><td>Pick an environment from the dropdown</td></tr>
+    <tr><td>API fetch error</td><td>Red ring + "Failed to fetch env metadata for {id}"</td><td>Failed to fetch data from HAIC backend</td></tr>
   </table>
 
   <h3>Important Notes</h3>
   <ul>
-    <li><strong>Only one per flow.</strong> Adding a second will cause an error and refuse to start.</li>
-    <li>The environment dropdown is populated from the HAIC API — environments must exist in the backend first.</li>
-    <li>On node close, all flow context data is cleaned up (set to <code>undefined</code>).</li>
+    <li><strong>One per flow only.</strong> Adding a second node causes an error at runtime (on node initialization). The second node will show a red ring status and log an error.</li>
+    <li>The environment must be registered in the HAIC backend with the correct structure before
+      this node can use it. Each agent in the environment must include <code>{id, class, model, affordances[], label, attributes}</code> — otherwise agent dropdowns will be empty.</li>
+    <li>On node removal or flow shutdown, all flow context keys are cleared.</li>
   </ul>
 
   <h3>Use Cases</h3>
   <ul>
     <li><strong>Flow initialization:</strong> Place at the start of a flow to establish which AI environment it operates against</li>
-    <li><strong>Dynamic refresh:</strong> Wire an inject node (cron or manual trigger) into this node to refresh metadata without redeploying</li>
+    <li><strong>Dynamic refresh:</strong> Wire an inject node into this node to refresh environment metadata without redeploying (useful when agents or configs are added to the HAIC backend mid-session).</li>
   </ul>
 </script>

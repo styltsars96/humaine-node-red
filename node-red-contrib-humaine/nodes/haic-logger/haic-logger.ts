@@ -25,7 +25,7 @@ type PayloadWithLogData = {
     performance_infrastructure?: any;
     performance_logs?: any;
     ai_model_data?: any;
-    decisions?: any;
+    decisions?: any; // TODO: THIS NEEDS TO HAVE ACTION AND AFFORDANCE! BASED ON GFRAGI's output
 };
 
 const nodeInit: NodeInitializer = (RED): void => {

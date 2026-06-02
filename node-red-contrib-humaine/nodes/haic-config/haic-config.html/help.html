@@ -1,6 +1,9 @@
 <script type="text/html" data-help-name="haic-config">
   <h3>Description</h3>
-  <p>Configuration node for connecting to the HumAIne AI Collaboration (HAIC) Benchmark Suite backend. Provides authentication and endpoint settings consumed by other nodes in your flow.</p>
+  <p>Configuration node for connecting to the HumAIne HAIC Benchmark Suite backend.
+  Provides authentication and endpoint settings consumed by <code>ai-environment-config</code>
+  and <code>haic-logger</code> nodes. This is a config node — it has no input/output ports
+  and is referenced by other nodes, not wired.</p>
 
   <h3>Usage Steps</h3>
   <ol>
@@ -14,13 +17,48 @@
 
   <h3>Configuration Fields</h3>
   <table>
-    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
-    <tr><td>Name</td><td>Yes (for identification)</td><td>—</td><td>Display name shown in the editor and dropdowns</td></tr>
-    <tr><td>Base URL</td><td>No</td><td><code>https://benchmark.humaine-horizon.eu/</code></td><td>HAIC backend API base URL. Trailing slashes are auto-removed.</td></tr>
-    <tr><td>Token</td><td>Recommended</td><td>—</td><td>API authentication token (stored securely in Node-RED credentials)</td></tr>
-    <tr><td>Username / Password</td><td>Conditional</td><td>—</td><td>Alternative to token-based auth. Password stored securely.</td></tr>
-    <tr><td>With Credentials</td><td>No</td><td><code>false</code></td><td>Include cookies/auth headers in HTTP requests</td></tr>
-    <tr><td>Headers</td><td>No</td><td><code>""</code></td><td>Custom headers as JSON string: <code>{"Header-Name": "value"}</code>. All keys and values must be strings.</td></tr>
+    <tr>
+      <th style="text-align:left">Field</th>
+      <th style="text-align:left">Required</th>
+      <th style="text-align:left">Default</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>Yes (for identification)</td>
+      <td>—</td>
+      <td>Display name shown in the editor and in referencing node dropdowns</td>
+    </tr>
+    <tr>
+      <td>Base URL</td>
+      <td>No</td>
+      <td><code>https://benchmark.humaine-horizon.eu/</code></td>
+      <td>HAIC backend API base URL. Trailing slashes are stripped automatically.</td>
+    </tr>
+    <tr>
+      <td>Token</td>
+      <td>Recommended</td>
+      <td>—</td>
+      <td>Bearer token for API authentication. Stored encrypted by Node-RED and never exposed in <code>flows.json</code>.</td>
+    </tr>
+    <tr>
+      <td>Username / Password</td>
+      <td>Conditional</td>
+      <td>—</td>
+      <td>Alternative to token-based auth. Password is stored encrypted.</td>
+    </tr>
+    <tr>
+      <td>With Credentials</td>
+      <td>No</td>
+      <td><code>false</code></td>
+      <td>Include cookies and auth headers in cross-origin HTTP requests.</td>
+    </tr>
+    <tr>
+      <td>Headers</td>
+      <td>No</td>
+      <td><code>""</code></td>
+      <td>Additional HTTP headers as a JSON string, e.g. <code>{"X-Pilot-Tag": "smart_cities"}</code>. All keys and values must be strings. Stored as plain text (not encrypted by Node-RED).</td>
+    </tr>
   </table>
 
   <h3>How It Works</h3>
@@ -34,7 +72,7 @@
 
   <h3>Notes</h3>
   <ul>
-    <li>Credentials are stored encrypted by Node-RED — never exposed in flows.json</li>
+    <li>Only the <code>Token</code> and <code>Password</code> fields are stored encrypted by Node-RED and never exposed in flows.json. Other fields (Base URL, Username, Headers) are stored as plain text.</li>
     <li>This is a config node (no input/output ports) — it is referenced, not wired</li>
   </ul>
 </script>

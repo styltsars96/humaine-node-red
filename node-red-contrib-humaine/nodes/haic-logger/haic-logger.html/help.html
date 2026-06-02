@@ -1,81 +1,260 @@
 <script type="text/html" data-help-name="haic-logger">
   <h3>Description</h3>
-  <p>Captures Human-AI interaction events, validates them against the HAIC LogSchema, and registers them with the HAIC Benchmark Suite backend. Passes messages through after logging.</p>
+  <p>Captures Human-AI interaction events, validates them against the HAIC
+  <code>LogSchema</code>, and registers them with the HAIC Benchmark Suite via
+  <code>POST /api/v1/logs/register?configuration_id={id}</code>.
+  The message passes through after logging regardless of success or failure.</p>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>An <code>ai-environment-config</code> node must be present and deployed in this flow.</li>
+    <li>The target environment must be registered in the HAIC backend with agents and affordances
+      matching the Model/Agent and Action/Affordance selections below.</li>
+    <li>An evaluation configuration (configuration_id) must exist in the HAIC backend
+      (<code>POST /api/v1/configuration/new</code> or pre-existing).</li>
+  </ul>
 
   <h3>Usage Steps</h3>
   <ol>
-    <li><strong>Add an <code>ai-environment-config</code> node first</strong> in this flow (this logger needs it to find the HAIC API)</li>
-    <li><strong>Add this <code>haic-logger</code> node</strong> from the palette (top panel → HumAIne)</li>
-    <li><strong>Select a Model / Agent</strong> — pick from agents defined in your flow's environment. Dropdown populated live.</li>
-    <li><strong>Select an Action / Affordance</strong> — auto-filtered based on the chosen model (shows only that agent's affordances)</li>
-    <li><strong>(Optional) Select an Application Config</strong> — if empty, falls back to the default set on the flow's <code>ai-environment-config</code> node</li>
-    <li><strong>(Optional) Set Session ID JSON Path</strong> — defaults to <code>$payload.session_id</code>, customize for your message structure</li>
-    <li><strong>Wire input messages</strong> with at least a session_id in the payload. Deploy and send data!</li>
+    <li><strong>Add an <code>ai-environment-config</code> node</strong> to this flow and deploy it first.</li>
+    <li><strong>Add this <code>haic-logger</code> node</strong> from the palette (HumAIne section).</li>
+    <li><strong>Select Model / Agent</strong> — agents defined in the flow's environment. Populated live from the HAIC backend.</li>
+    <li><strong>Select Action / Affordance</strong> — auto-filtered to show only affordances belonging to the selected agent.</li>
+    <li><strong>(Optional) Select Application Config</strong> — the numeric evaluation configuration ID.
+      Falls back to the default set on <code>ai-environment-config</code> if not specified here.</li>
+    <li><strong>(Optional) Set Session ID JSON Path</strong> — path to extract <code>session_id</code>
+      from <code>msg</code>. Default: <code>$payload.session_id</code> (reads <code>msg.payload.session_id</code>).</li>
+    <li><strong>Wire input</strong> — send <code>msg.payload</code> as a <code>LogSchema</code> object (see below). Deploy.</li>
   </ol>
 
   <h3>Configuration Fields</h3>
   <table>
-    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
-    <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display name shown in the editor and palette label</td></tr>
-    <tr><td>Model / Agent</td><td>Yes</td><td>—</td><td>AI agent/model from your flow's environment. Populated dynamically.</td></tr>
-    <tr><td>Action / Affordance</td><td>Yes</td><td>—</td><td>Available actions for the selected model. Auto-filtered when you change the model.</td></tr>
-    <tr><td>Application (Evaluation Config)</td><td>No</td><td>Fallback from flow</td><td>Target application config ID. Falls back to <code>defaultApplication</code> on the flow's ai-environment-config node.</td></tr>
-    <tr><td>Session ID JSON Path</td><td>No</td><td><code>$payload.session_id</code></td><td>Path to extract session_id from incoming messages. Supports dot/bracket notation (e.g., <code>$session_id</code>, <code>$payload.data.session_id</code>)</td></tr>
+    <tr>
+      <th style="text-align:left">Field</th>
+      <th style="text-align:left">Required</th>
+      <th style="text-align:left">Default</th>
+      <th style="text-align:left">Description</th>
+    </tr>
+    <tr>
+      <td>Name</td>
+      <td>No</td>
+      <td><code>""</code></td>
+      <td>Display label in the editor canvas.</td>
+    </tr>
+    <tr>
+      <td>Model / Agent</td>
+      <td>Yes</td>
+      <td>—</td>
+      <td>Agent ID from the flow's environment (e.g. <code>operator</code>, <code>ai_screener</code>).
+        Populated dynamically from <code>HumAIne_AI_PROCESS_ENVIRONMENT</code> flow context.</td>
+    </tr>
+    <tr>
+      <td>Action / Affordance</td>
+      <td>Yes</td>
+      <td>—</td>
+      <td>Action name from the selected agent's affordances (e.g. <code>operator_verified</code>,
+        <code>ai_evaluated</code>). Auto-filtered when Model changes.</td>
+    </tr>
+    <tr>
+      <td>Application (Evaluation Config)</td>
+      <td>No</td>
+      <td>From <code>ai-environment-config</code></td>
+      <td>Numeric evaluation configuration ID. Used as <code>?configuration_id={id}</code>
+        in the API call. Falls back to <code>defaultApplication</code> on the flow's
+        <code>ai-environment-config</code> node if not set here.</td>
+    </tr>
+    <tr>
+      <td>Session ID JSON Path</td>
+      <td>No</td>
+      <td><code>$payload.session_id</code></td>
+      <td>Path to extract <code>session_id</code> from <code>msg</code>.
+        <code>$</code> denotes the root <code>msg</code> object.
+        Examples: <code>$payload.session_id</code> → <code>msg.payload.session_id</code>,
+        <code>$session_id</code> → <code>msg.session_id</code>,
+        <code>$payload.data.id</code> → <code>msg.payload.data.id</code>.</td>
+    </tr>
   </table>
 
-  <h3>Input Message Format</h3>
-  <p>Expected <code>msg.payload</code> structure:</p>
+  <h3>Input — LogSchema (<code>msg.payload</code>)</h3>
+  <p>The node sends <code>msg.payload</code> directly to the HAIC API as a
+  <code>LogSchema</code> object. The fields below match the backend schema exactly.</p>
+
+  <p><strong>Top-level fields:</strong></p>
   <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
-    session_id: "abc-123",           // Required — extracted via JSON path
-    user_id: "user-42",              // Optional, defaults to "unknown"
-    ai_model_version: "v2.1",        // Optional
-    app_version: "1.0.0",            // Optional, defaults to "1.0.0"
-    start_time: "2025-01-01T00:00Z", // Optional ISO datetime, defaults to now
-    end_time: "2025-01-01T00:05Z",   // Optional ISO datetime, defaults to now
-    interaction_data: {...},         // Any — raw interaction data
-    retrain_events: [...],           // Array of retrain events
-    performance_infrastructure: {},  // Infrastructure metrics
-    performance_logs: [...],         // Performance log entries
-    ai_model_data: {...},            // AI model metadata
-    decisions: [...]                 // Decision records
+    // ── Required (defaults applied automatically if missing) ─────────
+    session_id:       "APP_000006",           // string — unique per session/interaction
+    user_id:          "sc_pilot",             // string — anonymised user identifier (default: "unknown")
+    app_version:      "apps_v1.0.0",          // string — application version (default: "1.0.0")
+    ai_model_version: "IBM-2026-02",          // string — AI model version (nullable)
+    start_time:       "2026-01-26T22:43:14Z", // ISO 8601 datetime — session start (default: current time)
+    end_time:         "2026-02-02T08:00:00Z", // ISO 8601 datetime — session end (default: current time)
+    decisions:        [ /* Decision[] — see below — optional */ ],
+
+    // ── Optional ──────────────────────────────────────────────────────────
+    ai_model_data:    { ai_model_name, training_data, inference_time_seconds, ... },
+    performance_logs: { processing_time_seconds, resource_utilization, ... },
+    performance_infrastructure: { hardware_specifications, software_stack, ... },
+    retrain_events:   [ /* RetrainEvent[] */ ]
 };</pre>
 
-  <h3>Output Message</h3>
-  <p>The same message is passed through with <code>msg.payload</code> replaced by the validated log data:</p>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = { /* normalized LogSchema object */ };
-// All other msg properties (topic, headers, etc.) are preserved</pre>
+  <h3>The <code>decisions[]</code> Array — Decision Schema</h3>
+  <p>Each element of <code>decisions</code> represents one Human-AI interaction event.
+  This is the primary data used for metric computation (Tr, F, EL, HCL, D).</p>
 
-  <h3>Status Indicators</h3>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">{
+    // ── Required ──────────────────────────────────────────────────
+    t:                 14.0,                // number — elapsed seconds since session start
+                                            // (monotonic within a session)
+
+    // ── Strongly recommended ──────────────────────────────────────
+    actor_type:       "human",             // "human" | "ai" | "system"
+                                            // used by HCL, per-agent stats
+    agent:            "operator",          // agent/human identifier (matches env agent id)
+    action:           "operator_verified", // event name (matches affordance in env)
+
+    // ── Timing — provide the one applicable to this actor ─────────
+    duration_s:        67.5,               // number ≥ 0 — human review time (seconds)
+                                            // required for EL and HCL computation
+    latency_ms:        13924,              // number ≥ 0 — AI response latency (milliseconds)
+                                            // required for AI events (ai_evaluated)
+
+    // ── Quality ───────────────────────────────────────────────────
+    correct:           true,               // boolean — decision quality label
+                                            // required for Tr computation
+                                            // derive from AI vs operator agreement rules
+
+    // ── Probabilistic outputs (optional) ──────────────────────────
+    probs:            { "Accepted": 0.3, "Rejected": 0.7 },
+                                            // primary agent's probability distribution
+    surrogate_probs:  { "Accepted": 0.8, "Rejected": 0.2 },
+                                            // surrogate model's distribution (for S metric)
+    surrogate_action: "Accepted",          // fallback if surrogate_probs not available
+
+    // ── Classification ────────────────────────────────────────────
+    event_type:       "error"              // optional tag, e.g. "error" marks failure events
+}</pre>
+
+  <p><strong>Smart Cities example — three events per citizen application:</strong></p>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">decisions: [
+    // Event 1: citizen submits (no timing required)
+    { t: 0.0,  actor_type: "human",  agent: "citizen",
+      action: "application_created" },
+
+    // Event 2: AI evaluates (latency_ms required)
+    { t: 1.0,  actor_type: "ai",     agent: "ai_screener",
+      action: "ai_evaluated",   latency_ms: 13924 },
+
+    // Event 3: operator reviews (duration_s + correct required)
+    { t: 67.5, actor_type: "human",  agent: "operator",
+      action: "operator_verified", duration_s: 67.5, correct: true }
+]</pre>
+
+  <h3>Session ID JSON Path Notation</h3>
+  <p>The path uses <code>$</code> as the root of <code>msg</code>:</p>
   <table>
-    <tr><th style="text-align:left">State</th><th style="text-align:left">Visual</th><th style="text-align:left">Duration</th><th style="text-align:left">Meaning</th></tr>
-    <tr><td>Ready (idle)</td><td>Green dot + "Ready to log!"</td><td>Persistent</td><td>Configured correctly, waiting for input</td></tr>
-    <tr><td>Success</td><td>Green ring + "Log registered successfully"</td><td>3 seconds</td><td>Sent to HAIC backend OK</td></tr>
-    <tr><td>Invalid data</td><td>Red dot + "Invalid input log data!"</td><td>3 seconds</td><td>Missing session_id or validation failed</td></tr>
-    <tr><td>Incomplete setup</td><td>Red ring + "Incomplete logger node setup!"</td><td>Persistent</td><td>Missing model, action, or application config</td></tr>
-    <tr><td>No environment</td><td>Error logged (no status shown)</td><td>Persistent</td><td>No ai-environment-config in this flow</td></tr>
+    <tr><th style="text-align:left">Path</th><th style="text-align:left">Resolves to</th></tr>
+    <tr><td><code>$payload.session_id</code></td><td><code>msg.payload.session_id</code> (default)</td></tr>
+    <tr><td><code>$session_id</code></td><td><code>msg.session_id</code></td></tr>
+    <tr><td><code>$payload.data.id</code></td><td><code>msg.payload.data.id</code></td></tr>
   </table>
 
   <h3>Backend API Call</h3>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">POST /api/v1/logs/register
-Body: { session_id, user_id, ai_model_version, app_version, start_time, end_time, ... }</pre>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">POST /api/v1/logs/register?configuration_id={id}
+Content-Type: application/json
+Body: { session_id, user_id, app_version, start_time, end_time,
+        ai_model_version, decisions[], ... }</pre>
+  <p>The <code>configuration_id</code> query parameter is resolved from the Application
+  (Evaluation Config) field or from the default on <code>ai-environment-config</code>.</p>
 
-  <h3>Data Validation</h3>
-  <p>All log data is validated against the HAIC LogSchema (Zod) before sending. Required fields are automatically defaulted if not provided: <code>user_id → "unknown"</code>, <code>app_version → "1.0.0"</code>, timestamps → current time.</p>
+  <h3>Output Message</h3>
+  <p><code>msg.payload</code> is replaced by the normalised <code>LogSchema</code> object
+  sent to the backend. All other <code>msg</code> properties are preserved and passed through.</p>
+
+  <h3>Status Indicators</h3>
+  <table>
+    <tr>
+      <th style="text-align:left">Visual</th>
+      <th style="text-align:left">Duration</th>
+      <th style="text-align:left">Meaning</th>
+    </tr>
+    <tr>
+      <td>Green dot — "Ready to log!"</td>
+      <td>Persistent</td>
+      <td>Configured correctly, waiting for input messages.</td>
+    </tr>
+    <tr>
+      <td>Green ring — "Log registered successfully"</td>
+      <td>3 seconds</td>
+      <td>Session log accepted by the HAIC backend.</td>
+    </tr>
+    <tr>
+      <td>Red dot — "Invalid input log data!"</td>
+      <td>3 seconds</td>
+      <td>Missing <code>session_id</code> or schema validation failed.</td>
+    </tr>
+    <tr>
+      <td>Red ring — "Incomplete logger node setup!"</td>
+      <td>Persistent</td>
+      <td>Model, Action, or Application Config not selected. Open the node and complete setup. A detailed error is logged to the Node-RED debug output.</td>
+    </tr>
+    <tr>
+      <td>Red dot — "No AI Environment setup in this flow!"</td>
+      <td>Persistent</td>
+      <td>No <code>ai-environment-config</code> found in this flow. Add and deploy one first.</td>
+    </tr>
+  </table>
+
+  <h3>Editor Error Messages</h3>
+  <p>These messages appear in the node's configuration panel in the Node-RED editor, not on the node's status bar:</p>
+  <table>
+    <tr>
+      <th style="text-align:left">Message</th>
+      <th style="text-align:left">When</th>
+      <th style="text-align:left">Action</th>
+    </tr>
+    <tr>
+      <td><code>Model definition {x} not found in environment!</code></td>
+      <td>Selecting a Model whose ID does not exist in the flow's registered environment</td>
+      <td>Re-register the environment via <code>POST /api/v1/envs</code> with the correct agent structure, or pick a different model.</td>
+    </tr>
+    <tr>
+      <td><code>HumAIne HAIC APP CONFIGS are NOT SET!</code></td>
+      <td>No application configurations available from the HAIC backend</td>
+      <td>Ensure the <code>ai-environment-config</code> node is deployed and can reach the backend. Check the Node-RED debug output for API errors.</td>
+    </tr>
+    <tr>
+      <td><code>AI Process Environment is NOT SET!</code></td>
+      <td>No environment metadata loaded in flow context</td>
+      <td>Deploy the <code>ai-environment-config</code> node first, then reopen this node's configuration.</td>
+    </tr>
+    <tr>
+      <td><code>Model {x} has no affordances!</code></td>
+      <td>Selecting a model with an empty affordances list</td>
+      <td>The registered environment does not define any affordances for this agent. Update the environment registration.</td>
+    </tr>
+  </table>
 
   <h3>Wiring Pattern</h3>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function / websocket] → [haic-logger] → [debug / switch / downstream]</pre>
-
-  <h3>Use Cases</h3>
-  <ul>
-    <li><strong>Logging agent interactions:</strong> Capture each human-AI interaction event with full metadata for benchmarking analysis</li>
-    <li><strong>Multi-model logging:</strong> Deploy multiple logger nodes in the same flow, each targeting a different model/affordance (e.g., one for "MLE/review", another for "NSAI/explain")</li>
-    <li><strong>Conditional routing:</strong> Wire logger output to downstream logic — messages pass through even on validation failures for custom error handling</li>
-  </ul>
+  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function / http in / amqp-in]
+    → [function: build LogSchema payload]
+        → [haic-logger]
+            → [debug / downstream logic]</pre>
 
   <h3>Important Notes</h3>
   <ul>
-    <li>The logger automatically resolves the HAIC API config from flow context — no manual wiring needed.</li>
-    <li>If an application is not specified, it falls back to the default set on the flow's ai-environment-config node. If neither exists, setup fails with a red ring status.</li>
-    <li>Messages always pass through after processing (success or failure), enabling downstream error handling.</li>
+    <li><strong><code>decisions[]</code> is the core metric input (optional).</strong> Metrics EL, Tr, F, HCL,
+      and D are all derived from the <code>duration_s</code>, <code>latency_ms</code>, and
+      <code>correct</code> fields within decisions. Missing these fields means the corresponding
+      metrics cannot be computed. The <code>decisions</code> array itself is optional — if omitted, it defaults to <code>null</code>.</li>
+    <li><strong>actor_type="system" events</strong> are sent to the backend as-is. The backend may exclude them from metric computation, but this node does not filter them.</li>
+    <li><strong>The <code>correct</code> field must be derived</strong> before logging for
+      Tr computation. It is not computed by the backend from raw payloads. Use a function node
+      upstream to apply the environment's trust derivation rules
+      (e.g. <em>AI=Rejected + op=Fixed&amp;accepted → correct=true</em>).</li>
+    <li><strong>One logger node per actor/action pair</strong> is the recommended pattern.
+      A flow handling three event types needs three logger nodes, each configured for
+      one (Model, Action) combination.</li>
+    <li>Messages always pass through after processing — wire the output to downstream
+      nodes for error handling or chaining.</li>
   </ul>
 </script>
