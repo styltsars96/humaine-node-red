@@ -5,7 +5,7 @@
     "private": true,
     "dependencies": {
         "@flowfuse/node-red-dashboard": "~1.30.2",
-        "@greyorange/node-red-contrib-amqp": "^2.6.0",
+        "@meowwolf/node-red-contrib-amqp": "^2.4.2",
         "@node-red-contrib-themes/theme-collection": "^4.1.1",
         "@reggae_ulli/node-red-contrib-minio-all-fix": "~0.0.4",
         "@types/node-fetch": "^3.0.2",

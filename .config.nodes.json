@@ -732,8 +732,8 @@
             }
         }
     },
-    "@greyorange/node-red-contrib-amqp": {
-        "name": "@greyorange/node-red-contrib-amqp",
+    "@meowwolf/node-red-contrib-amqp": {
+        "name": "@meowwolf/node-red-contrib-amqp",
         "version": "2.6.0",
         "local": true,
         "user": true,
@@ -746,8 +746,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "@greyorange/node-red-contrib-amqp",
-                "file": "/data/node_modules/@greyorange/node-red-contrib-amqp/build/src/nodes/amqp-in.js"
+                "module": "@meowwolf/node-red-contrib-amqp",
+                "file": "/data/node_modules/@meowwolf/node-red-contrib-amqp/build/src/nodes/amqp-in.js"
             },
             "amqp-out": {
                 "name": "amqp-out",
@@ -757,8 +757,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "@greyorange/node-red-contrib-amqp",
-                "file": "/data/node_modules/@greyorange/node-red-contrib-amqp/build/src/nodes/amqp-out.js"
+                "module": "@meowwolf/node-red-contrib-amqp",
+                "file": "/data/node_modules/@meowwolf/node-red-contrib-amqp/build/src/nodes/amqp-out.js"
             },
             "amqp-broker": {
                 "name": "amqp-broker",
@@ -768,8 +768,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "@greyorange/node-red-contrib-amqp",
-                "file": "/data/node_modules/@greyorange/node-red-contrib-amqp/build/src/nodes/amqp-broker.js"
+                "module": "@meowwolf/node-red-contrib-amqp",
+                "file": "/data/node_modules/@meowwolf/node-red-contrib-amqp/build/src/nodes/amqp-broker.js"
             },
             "amqp-in-manual-ack": {
                 "name": "amqp-in-manual-ack",
@@ -779,8 +779,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "@greyorange/node-red-contrib-amqp",
-                "file": "/data/node_modules/@greyorange/node-red-contrib-amqp/build/src/nodes/amqp-in-manual-ack.js"
+                "module": "@meowwolf/node-red-contrib-amqp",
+                "file": "/data/node_modules/@meowwolf/node-red-contrib-amqp/build/src/nodes/amqp-in-manual-ack.js"
             }
         }
     },

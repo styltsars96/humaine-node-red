@@ -86,7 +86,7 @@ TypeScript scaffolding template for creating new custom Node-RED nodes. Contents
 - **human_ai_benchmark_suite** (local, legacy): TS API client for the HAIC Benchmark Suite FastAPI backend
 - **kubeflow_pipelines_api** (local, legacy): TS API client for KubeFlow Pipelines
 - **node-red-contrib-humaine** (local, active): Custom nodes + HAIC API client
-- @greyorange/node-red-contrib-amqp: RabbitMQ integration
+- @meowwolf/node-red-contrib-amqp: RabbitMQ integration
 - @reggae_ulli/node-red-contrib-minio-all-fix: MinIO S3 storage
 - @flowfuse/node-red-dashboard: Node-RED dashboard
 

@@ -6395,7 +6395,7 @@
                 "71c59e9884927dfb"
             ]
         ],
-        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+        "icon": "@meowwolf/node-red-contrib-amqp/snaggy.svg"
     },
     {
         "id": "5d2b58f3f6221a77",
@@ -6407,7 +6407,7 @@
         "x": 600,
         "y": 160,
         "wires": [],
-        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+        "icon": "@meowwolf/node-red-contrib-amqp/snaggy.svg"
     },
     {
         "id": "1b35175838d6381f",
@@ -6423,7 +6423,7 @@
                 "d83d441.dd8d3b8"
             ]
         ],
-        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+        "icon": "@meowwolf/node-red-contrib-amqp/snaggy.svg"
     },
     {
         "id": "0762bd3dea133aad",
@@ -6435,7 +6435,7 @@
         "x": 780,
         "y": 320,
         "wires": [],
-        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+        "icon": "@meowwolf/node-red-contrib-amqp/snaggy.svg"
     },
     {
         "id": "470f5409d770659c",
@@ -6451,7 +6451,7 @@
                 "5cb7ad1e.150274"
             ]
         ],
-        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+        "icon": "@meowwolf/node-red-contrib-amqp/snaggy.svg"
     },
     {
         "id": "3ce357657da4939c",
@@ -6463,7 +6463,7 @@
         "x": 710,
         "y": 580,
         "wires": [],
-        "icon": "@greyorange/node-red-contrib-amqp/snaggy.svg"
+        "icon": "@meowwolf/node-red-contrib-amqp/snaggy.svg"
     },
     {
         "id": "655b54b579bb98f1",
