@@ -80,7 +80,7 @@
   <code>LogSchema</code> object. The fields below match the backend schema exactly.</p>
 
   <p><strong>Top-level fields:</strong></p>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
     // ── Required (defaults applied automatically if missing) ─────────
     session_id:       "APP_000006",           // string — unique per session/interaction
     user_id:          "sc_pilot",             // string — anonymised user identifier (default: "unknown")
@@ -101,7 +101,7 @@
   <p>Each element of <code>decisions</code> represents one Human-AI interaction event.
   This is the primary data used for metric computation (Tr, F, EL, HCL, D).</p>
 
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">{
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">{
     // ── Required ──────────────────────────────────────────────────
     t:                 14.0,                // number — elapsed seconds since session start
                                             // (monotonic within a session)
@@ -135,7 +135,7 @@
 }</pre>
 
   <p><strong>Smart Cities example — three events per citizen application:</strong></p>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">decisions: [
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">decisions: [
     // Event 1: citizen submits (no timing required)
     { t: 0.0,  actor_type: "human",  agent: "citizen",
       action: "application_created" },
@@ -159,7 +159,7 @@
   </table>
 
   <h3>Backend API Call</h3>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">POST /api/v1/logs/register?configuration_id={id}
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">POST /api/v1/logs/register?configuration_id={id}
 Content-Type: application/json
 Body: { session_id, user_id, app_version, start_time, end_time,
         ai_model_version, decisions[], ... }</pre>
@@ -235,7 +235,7 @@ Body: { session_id, user_id, app_version, start_time, end_time,
   </table>
 
   <h3>Wiring Pattern</h3>
-  <pre style="background:#f5f5f5;padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function / http in / amqp-in]
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function / http in / amqp-in]
     → [function: build LogSchema payload]
         → [haic-logger]
             → [debug / downstream logic]</pre>

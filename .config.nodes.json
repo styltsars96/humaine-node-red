@@ -734,7 +734,7 @@
     },
     "@meowwolf/node-red-contrib-amqp": {
         "name": "@meowwolf/node-red-contrib-amqp",
-        "version": "2.6.0",
+        "version": "2.4.2",
         "local": true,
         "user": true,
         "nodes": {
