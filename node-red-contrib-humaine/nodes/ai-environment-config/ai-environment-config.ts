@@ -133,8 +133,58 @@ const refreshAppConfigs = async (
     };
 };
 
+// Ensure the AI Process Environment is present in flow context, refreshing it
+// on demand if needed. Single-flight: concurrent callers (e.g. an editor fetch
+// arriving while the startup refresh is still running) await the SAME in-flight
+// refresh instead of racing it or firing a duplicate request. If a previous
+// refresh failed (context still empty, promise cleared), the next call retries.
+const ensureEnvData = async (
+    node: AiEnvironmentConfigNode,
+    openApi: OpenAPIConfig,
+): Promise<void> => {
+    const flowContext = node.context().flow;
+    const existing = flowContext.get("HumAIne_AI_PROCESS_ENVIRONMENT");
+
+    // If data is already set OR a refresh is in-flight, return (awaiting the
+    // promise only when it's active so concurrent callers share the same work).
+    if (existing || node.envRefreshPromise) {
+        if (node.envRefreshPromise) await node.envRefreshPromise;
+        return;
+    }
+
+    node.envRefreshPromise = refreshHumAIneEnv(node, openApi).finally(
+        () => {
+            node.envRefreshPromise = undefined;
+        },
+    );
+    await node.envRefreshPromise;
+};
+
+// Same single-flight guarantee as ensureEnvData, for the App Configs context.
+const ensureAppConfigs = async (
+    node: AiEnvironmentConfigNode,
+    openApi: OpenAPIConfig,
+): Promise<void> => {
+    const flowContext = node.context().flow;
+    const existing = flowContext.get("HumAIne_APP_CONFIGS");
+
+    if (existing || node.appConfigsRefreshPromise) {
+        if (node.appConfigsRefreshPromise) await node.appConfigsRefreshPromise;
+        return;
+    }
+
+    node.appConfigsRefreshPromise = refreshAppConfigs(
+        node,
+        openApi,
+    ).finally(() => {
+        node.appConfigsRefreshPromise = undefined;
+    });
+    await node.appConfigsRefreshPromise;
+};
+
 const fetchHaicLoggerSelectionOptions = async (
     node: AiEnvironmentConfigNode,
+    openApi: OpenAPIConfig,
     selected_model: string | null = null,
 ): Promise<IntraNodeMsg<HaicLoggerSelectionOptions>> => {
     let errorMsg: string = "";
@@ -144,6 +194,16 @@ const fetchHaicLoggerSelectionOptions = async (
         actions: [],
     };
     const flowContext = node.context().flow;
+
+    // Make sure the flow context the editor relies on is populated before we
+    // read it. On a slow/remote backend the startup refresh may still be
+    // in-flight (or have failed) when the editor first fetches options; awaiting
+    // the shared refresh here closes that race. Both refreshes swallow their own
+    // errors, so a failure simply leaves the context unset and surfaces below.
+    await Promise.all([
+        ensureEnvData(node, openApi),
+        ensureAppConfigs(node, openApi),
+    ]);
 
     const appConfigs = flowContext.get("HumAIne_APP_CONFIGS") as
         | AppConfigContextData
@@ -165,7 +225,10 @@ const fetchHaicLoggerSelectionOptions = async (
     if (!aiEnv) {
         errorMsg += " AI Process Environment is NOT SET! ";
     } else {
-        const aiModels = aiEnv.env.agents;
+        // Defensive access: `aiEnv` or its `.env` can be absent when a previous
+        // refresh failed and context was left empty, or on a slow remote HAIC
+        // server where the data shape hasn't arrived yet.
+        const aiModels = aiEnv?.env?.agents ?? [];
 
         payload.models = aiModels.map((modelEntry) => {
             return {
@@ -184,10 +247,14 @@ const fetchHaicLoggerSelectionOptions = async (
         } else {
             const modelDef = aiModels.find((item) => item.id == selected_model);
             if (modelDef) {
-                if (modelDef.affordances.length === 0) {
+                // `.affordances` may be absent on some HAIC server responses.
+                const affordances = Array.isArray(modelDef.affordances)
+                    ? modelDef.affordances
+                    : [];
+                if (affordances.length === 0) {
                     errorMsg += ` Model ${selected_model} has no affordances!`;
                 } else {
-                    payload.actions = modelDef.affordances.map((affordance) => {
+                    payload.actions = affordances.map((affordance) => {
                         return { id: affordance, text: affordance };
                     });
                 }
@@ -307,12 +374,14 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
         };
         flowContext.set("HumAIne_HAIC_ENVIRONMENT", humaineHaicEnvironment);
 
-        // Save AI environment into the flow context, for usage by other nodes
-        refreshHumAIneEnv(node, haic_config_node.OpenAPI).catch((error) => {
+        // Save AI environment into the flow context, for usage by other nodes.
+        // Routed through ensureEnvData so the in-flight promise is shared with
+        // any editor fetch that arrives before this startup refresh completes.
+        ensureEnvData(node, haic_config_node.OpenAPI).catch((error) => {
             node.error("Failed to fetch AI configuration on startup: " + error);
         });
-        // Save application configs in the flow context, for usage by other nodes
-        refreshAppConfigs(node, haic_config_node.OpenAPI).catch((error) => {
+        // Save application configs in the flow context, for usage by other nodes.
+        ensureAppConfigs(node, haic_config_node.OpenAPI).catch((error) => {
             node.error(
                 "Failed to fetch HAIC App configs list on startup: " + error,
             );
@@ -350,7 +419,10 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             `/node-red-contrib-humaine/flows/${localFlowId}/haic-logger/selection_options`,
             RED.auth.needsPermission("nodes.read"),
             async function (req, res) {
-                const result = await fetchHaicLoggerSelectionOptions(node);
+                const result = await fetchHaicLoggerSelectionOptions(
+                    node,
+                    haic_config_node.OpenAPI,
+                );
                 res.json(result);
             },
         );
@@ -361,6 +433,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 const selectedModel = req.body.selectedModel ?? "";
                 const result = await fetchHaicLoggerSelectionOptions(
                     node,
+                    haic_config_node.OpenAPI,
                     selectedModel,
                 );
                 res.json(result);
