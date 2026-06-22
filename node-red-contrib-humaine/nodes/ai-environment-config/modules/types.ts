@@ -7,4 +7,9 @@ export interface AiEnvironmentConfigNodeDef
 export interface AiEnvironmentConfigNode extends Node {
     aiEnvironmentId: string;
     defaultApplication?: string;
+    // In-flight refresh promises used for single-flight de-duplication between
+    // the startup refresh and on-demand editor fetches (see ensureEnvData /
+    // ensureAppConfigs). Undefined when no refresh is currently running.
+    envRefreshPromise?: Promise<unknown>;
+    appConfigsRefreshPromise?: Promise<unknown>;
 }

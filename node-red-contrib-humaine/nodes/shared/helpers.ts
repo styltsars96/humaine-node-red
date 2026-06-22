@@ -76,11 +76,52 @@ export const populateSelectWithOptions = (
     element: HTMLSelectElement,
     options: SelectionOptions,
     preselectedValue?: string,
+    // When true (default), a saved selection that is missing from the fetched
+    // options is preserved as a synthetic "unavailable" entry rather than
+    // silently discarded. Pass false where a stale selection should NOT be kept
+    // (e.g. dependent dropdowns after the parent selection changes).
+    preserveMissingPreselection: boolean = true,
 ) => {
     element.innerHTML = "";
 
-    // If only one option exists, auto-select it (ignore placeholder)
-    if (options.length === 1) {
+    const preselectionInOptions =
+        !!preselectedValue &&
+        options.some((opt) => opt.id === preselectedValue);
+
+    // The saved value is no longer offered by the backend. Keep it visible and
+    // selected (clearly marked) so opening the editor does not wipe a valid
+    // configuration just because the options list came back incomplete.
+    const preserveMissing =
+        !!preselectedValue &&
+        !preselectionInOptions &&
+        preserveMissingPreselection;
+    if (preserveMissing) {
+        const missingOption = document.createElement("option");
+        missingOption.value = preselectedValue as string;
+        missingOption.textContent = `${preselectedValue} (unavailable)`;
+        element.appendChild(missingOption);
+    }
+
+    // Handle zero options case: keep a preserved selection if we have one,
+    // otherwise show a disabled "No available options" placeholder so the
+    // control is never left blank.
+    if (options.length === 0) {
+        if (preserveMissing) {
+            element.value = preselectedValue as string;
+        } else {
+            const noOptionsOption = document.createElement("option");
+            noOptionsOption.value = "";
+            noOptionsOption.textContent = "No available options";
+            noOptionsOption.disabled = true;
+            noOptionsOption.selected = true;
+            element.appendChild(noOptionsOption);
+        }
+        return;
+    }
+
+    // If only one option exists and there is no selection to honor, auto-select
+    // it (ignore placeholder).
+    if (options.length === 1 && !preselectionInOptions && !preserveMissing) {
         const opt = options[0];
         const optionEl = document.createElement("option");
         optionEl.value = opt.id;
@@ -90,22 +131,9 @@ export const populateSelectWithOptions = (
         return;
     }
 
-    // Handle zero options case: show "No available options"
-    if (options.length === 0) {
-        const noOptionsOption = document.createElement("option");
-        noOptionsOption.value = "";
-        noOptionsOption.textContent = "No available options";
-        noOptionsOption.disabled = true;
-        noOptionsOption.selected = true;
-        element.appendChild(noOptionsOption);
-        return;
-    }
-
-    // For ≥2 options: show placeholder unless preselected value is valid
-    const hasValidPreselection =
-        preselectedValue && options.some((opt) => opt.id === preselectedValue);
-
-    if (!hasValidPreselection) {
+    // For ≥2 options: show a placeholder only when there is no selection to
+    // honor (neither a valid preselection nor a preserved unavailable one).
+    if (!preselectionInOptions && !preserveMissing) {
         const placeholderOption = document.createElement("option");
         placeholderOption.value = "";
         placeholderOption.textContent = "Select an option";
@@ -121,8 +149,8 @@ export const populateSelectWithOptions = (
         element.appendChild(optionEl);
     });
 
-    if (hasValidPreselection && preselectedValue) {
-        element.value = preselectedValue;
+    if (preselectionInOptions || preserveMissing) {
+        element.value = preselectedValue as string;
     }
 };
 
