@@ -1,3 +1,3 @@
 export interface AccessEvaluationResultsOptions {
-  // node options
+    application?: string;
 }

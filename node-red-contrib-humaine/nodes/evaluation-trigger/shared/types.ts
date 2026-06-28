@@ -1,3 +1,3 @@
 export interface EvaluationTriggerOptions {
-  // node options
+    application?: string;
 }

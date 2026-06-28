@@ -3,5 +3,6 @@ import { EvaluationTriggerOptions } from "../shared/types";
 
 export interface EvaluationTriggerNodeDef extends NodeDef, EvaluationTriggerOptions {}
 
-// export interface EvaluationTriggerNode extends Node {}
-export type EvaluationTriggerNode = Node;
+export interface EvaluationTriggerNode extends Node {
+    application?: string;
+}

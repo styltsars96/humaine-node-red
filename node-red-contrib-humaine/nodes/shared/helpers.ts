@@ -154,6 +154,73 @@ export const populateSelectWithOptions = (
     }
 };
 
+type EvaluationAppConfig = {
+    id?: number | string | null;
+    application_name?: string | null;
+};
+
+export const EVALUATION_DYNAMIC_ONLY_OPTION_TEXT =
+    "ONLY Dynamic / Wired-in value";
+
+const getEvaluationAppConfigId = (
+    config: EvaluationAppConfig,
+    fallbackId: string,
+): string => String(config.id ?? fallbackId);
+
+const getEvaluationAppConfigText = (id: string, name?: string | null): string =>
+    `${name || id} (${id})`;
+
+export const buildEvaluationApplicationOptions = (
+    appConfigs: EvaluationAppConfig[],
+    defaultApplication?: string,
+    selectedApplication?: string,
+): { options: SelectionOptions; selectedValue: string } => {
+    const appOptions = appConfigs.map((config, index) => {
+        const id = getEvaluationAppConfigId(config, String(index));
+        return {
+            id,
+            text: getEvaluationAppConfigText(id, config.application_name),
+        };
+    });
+
+    const defaultOption = appOptions.find(
+        (option) => option.id === defaultApplication,
+    );
+
+    return {
+        options: [
+            {
+                id: "",
+                text: defaultOption
+                    ? defaultOption.text
+                    : EVALUATION_DYNAMIC_ONLY_OPTION_TEXT,
+            },
+            ...appOptions,
+        ],
+        selectedValue: selectedApplication || "",
+    };
+};
+
+export const resolveEvaluationConfigId = (
+    payload: Record<string, unknown>,
+    nodeApplication?: string,
+    defaultApplication?: string,
+): number => {
+    if (typeof payload.configId === "number") return payload.configId;
+
+    const configuredConfigId = nodeApplication || defaultApplication || "";
+    if (!configuredConfigId) {
+        throw new Error("configId is required");
+    }
+
+    const parsedConfigId = Number(configuredConfigId);
+    if (!Number.isFinite(parsedConfigId)) {
+        throw new Error("configId is required");
+    }
+
+    return parsedConfigId;
+};
+
 export const showErrorStatus = (
     node: Node,
     errorMsg: string,

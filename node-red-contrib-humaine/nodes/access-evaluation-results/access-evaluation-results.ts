@@ -3,6 +3,7 @@ import { AccessEvaluationResultsNode, AccessEvaluationResultsNodeDef } from "./m
 import { HAICFlowEnvironmentData } from "../shared/types";
 import { HaicConfigNode } from "../haic-config/modules/types";
 import { ResultsService } from "../../haic_client/services/ResultsService";
+import { resolveEvaluationConfigId } from "../shared/helpers";
 
 const nodeInit: NodeInitializer = (RED): void => {
     function AccessEvaluationResultsNodeConstructor(
@@ -12,6 +13,7 @@ const nodeInit: NodeInitializer = (RED): void => {
         RED.nodes.createNode(this, config);
 
         const node = this;
+        node.application = config.application;
         const flowContext = node.context().flow;
         const haicEnvironment = flowContext.get("HumAIne_HAIC_ENVIRONMENT") as
             | HAICFlowEnvironmentData
@@ -26,30 +28,40 @@ const nodeInit: NodeInitializer = (RED): void => {
 
         node.on("input", async function (msg, send, done) {
             try {
-                const payload: Record<string, any> = msg.payload || {};
-                if (typeof payload.configId !== "number") throw new Error("configId is required");
-                const operation = payload.operation || "getAll";
-                delete payload.operation;
+                const payload =
+                    msg.payload && typeof msg.payload === "object"
+                        ? (msg.payload as Record<string, unknown>)
+                        : {};
+                const configId = resolveEvaluationConfigId(
+                    payload,
+                    config.application,
+                    flowContext.get("HumAIne_DEFAULT_APPLICATION") as string | undefined,
+                );
+                const operation =
+                    typeof payload.operation === "string"
+                        ? payload.operation
+                        : "getAll";
 
-                let result: any;
+                let result: unknown;
                 switch (operation) {
                     case "getAll":
-                        result = await ResultsService.getEvaluationResultsApiV1ResultsConfigurationIdGet(payload.configId, openAPI);
+                        result = await ResultsService.getEvaluationResultsApiV1ResultsConfigurationIdGet(configId, openAPI);
                         break;
                     case "getOne":
                         if (typeof payload.resultId !== "number") throw new Error("resultId is required for getOne");
-                        result = await ResultsService.getEvaluationResultApiV1ResultsConfigurationIdResultIdGet(payload.configId, payload.resultId, openAPI);
+                        result = await ResultsService.getEvaluationResultApiV1ResultsConfigurationIdResultIdGet(configId, payload.resultId, openAPI);
                         break;
                     case "getGroup":
-                        if (!payload.groupName) throw new Error("groupName is required for getGroup");
-                        result = await ResultsService.getEvaluationResultsByGroupApiV1ResultsConfigurationIdGroupGroupNameGet(payload.configId, payload.groupName, openAPI);
+                        if (typeof payload.groupName !== "string") throw new Error("groupName is required for getGroup");
+                        result = await ResultsService.getEvaluationResultsByGroupApiV1ResultsConfigurationIdGroupGroupNameGet(configId, payload.groupName, openAPI);
                         break;
                     default: throw new Error("Unknown operation: " + operation);
                 }
                 send([{ payload: result }]);
                 if (done) done();
-            } catch (err: any) {
-                const errorMsg = "Error in access-evaluation-results node: " + err.message;
+            } catch (err: unknown) {
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                const errorMsg = "Error in access-evaluation-results node: " + errorMessage;
                 send([{ payload: err, error: errorMsg }]);
                 if (done) done(null);
             }

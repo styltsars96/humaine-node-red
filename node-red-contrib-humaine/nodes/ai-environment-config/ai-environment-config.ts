@@ -386,6 +386,8 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 "Failed to fetch HAIC App configs list on startup: " + error,
             );
         });
+        // Save defaultApplication into flow context so other nodes can read it at editor time.
+        flowContext.set("HumAIne_DEFAULT_APPLICATION", node.defaultApplication || "");
 
         node.on("input", async function (msg) {
             if (!node.aiEnvironmentId) {
@@ -439,6 +441,22 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
                 res.json(result);
             },
         );
+        // Endpoint for the Editor side of evaluation nodes — returns app configs + defaultApplication so they can populate their dropdowns.
+        RED.httpAdmin.get(
+            `/node-red-contrib-humaine/flows/${localFlowId}/evaluation/application_list_refresh`,
+            RED.auth.needsPermission("nodes.read"),
+            async function (req, res) {
+                const result = await refreshAppConfigs(
+                    node,
+                    haic_config_node.OpenAPI,
+                );
+                res.json({
+                    appConfigsList: result.appConfigsList,
+                    defaultApplication: node.defaultApplication || "",
+                    errorMsg: result.errorMsg,
+                });
+            },
+        );
         // NOTE: If other nodes need some internal usage endpoint for setups on the frontend/editor, add them here
 
         node.on("close", function () {
@@ -446,6 +464,7 @@ const nodeInit: NodeInitializer = (RED: NodeAPI): void => {
             flowContext.set("HumAIne_HAIC_ENVIRONMENT", undefined);
             flowContext.set("HumAIne_AI_PROCESS_ENVIRONMENT", undefined);
             flowContext.set("HumAIne_APP_CONFIGS", undefined);
+            flowContext.set("HumAIne_DEFAULT_APPLICATION", undefined);
         });
     }
 

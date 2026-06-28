@@ -7,7 +7,7 @@
   <ol type="A">
     <li><strong>Wired-in value</strong> — if a message arrives with <code>msg.payload.configId</code>, that takes priority.</li>
     <li><strong>Node's Application field</strong> — the value selected in the node's dropdown (see below).</li>
-    <li><strong>Fallback to default</strong> — if both are empty, uses the <code>defaultApplication</code> set on the flow's <code>ai-environment-config</code>.</li>
+    <li><strong>Fallback to default</strong> — if both are empty, uses the <code>defaultApplication</code> set on the flow's <code>ai-environment-config</code>. If that default is empty, the dropdown's default option is <strong>ONLY Dynamic / Wired-in value</strong> and <code>msg.payload.configId</code> is required.</li>
   </ol>
 
   <h3>Prerequisites</h3>
@@ -22,7 +22,7 @@
     <li><strong>Add an <code>ai-environment-config</code> node</strong> to this flow and deploy it first.</li>
     <li><strong>Add a <code>haic-config</code> config node</strong> with your API credentials.</li>
     <li><strong>Add this <code>access-evaluation-results</code> node</strong> from the palette (HumAIne section).</li>
-    <li><strong>Select an Application</strong> — choose which evaluation configuration to use. Populated dynamically from available configurations; "Use Default" selects the default set on <code>ai-environment-config</code>.</li>
+    <li><strong>Select an Application</strong> — choose which evaluation configuration to use. Populated dynamically from available configurations. The first option is either the default selected on <code>ai-environment-config</code> or <strong>ONLY Dynamic / Wired-in value</strong> when no default exists.</li>
     <li><strong>(Optional) Wire input</strong> — send a message with <code>msg.payload.configId</code> and optionally an <code>operation</code>. Deploy.</li>
   </ol>
 
@@ -30,16 +30,16 @@
   <table>
     <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
     <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display label in the editor canvas.</td></tr>
-    <tr><td>Application (Evaluation Config)</td><td>No</td><td>From <code>ai-environment-config</code></td><td>Select which evaluation configuration to use. Populated dynamically from available configurations; "Use Default" selects the default set on <code>ai-environment-config</code>.</td></tr>
+    <tr><td>Application (Evaluation Config)</td><td>No</td><td>Default app or dynamic-only</td><td>Select which evaluation configuration to use. Populated dynamically from available configurations. The blank/default option means either the default selected on <code>ai-environment-config</code>, or <strong>ONLY Dynamic / Wired-in value</strong> when no default exists.</td></tr>
   </table>
 
   <h3>Input — msg.payload by Operation</h3>
-  <p>The node reads <code>msg.payload.operation</code> to determine which result operation to perform. If a wired-in message provides <code>configId</code>, it overrides the node's Application field:</p>
+  <p>The node reads <code>msg.payload.operation</code> to determine which result operation to perform. If a wired-in message provides <code>configId</code>, it overrides the node's Application field and any default from <code>ai-environment-config</code>:</p>
 
   <h4><b>operation: "getAll"</b></h4>
   <p>Returns all evaluation results for the configuration.</p>
   <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
-    configId: 34,           // number — optional override; falls back to node's Application field
+    configId: 34,           // number — optional override; required when no node/default application is selected
     operation: "getAll"     // optional; defaults to "getAll" if omitted
 };</pre>
 
@@ -83,7 +83,7 @@
   <p>These messages appear in the node's configuration panel:</p>
   <table>
     <tr><th style="text-align:left">Message</th><th style="text-align:left">When</th></tr>
-    <tr><td><code>No AI Environment setup! Set an AI Environment config in the flow first.</code></td><td>No <code>ai-environment-config</code> found in flow context</td></tr>
+    <tr><td><code>Failed to get application configurations from current flow in Node-RED runtime: ...</code></td><td>The editor could not refresh the Application dropdown from the flow's <code>ai-environment-config</code></td></tr>
   </table>
 
   <h3>Wiring Pattern</h3>
@@ -92,7 +92,7 @@
 
   <h3>Important Notes</h3>
   <ul>
-    <li><strong>The <code>operation</code> field is consumed and removed from the payload.</strong> After processing, only <code>configId</code>, <code>resultId</code>, or <code>groupName</code> (as applicable) remain in the payload before being sent to the API. The operation value itself does not appear in the output message.</li>
+    <li><strong>The <code>operation</code> field is read but not emitted.</strong> The node sends the API response as <code>msg.payload</code>; the input payload is not passed through.</li>
     <li><strong>Evaluation results are only available after an evaluation has run.</strong> Use <code>evaluation-trigger</code> to initiate a run, then poll with this node using <code>operation: "getAll"</code>.</li>
     <li><strong>The OpenAPI client is fetched dynamically from flow context.</strong> If the environment changes between messages, a new lookup occurs each time — ensure your <code>haic-config</code> is deployed before this node can resolve it.</li>
   </ul>

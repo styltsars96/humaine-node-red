@@ -1,3 +1,3 @@
 export interface AccessEvaluationLogsOptions {
-  // node options
+    application?: string;
 }

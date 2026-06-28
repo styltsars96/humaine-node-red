@@ -3,5 +3,6 @@ import { AccessEvaluationLogsOptions } from "../shared/types";
 
 export interface AccessEvaluationLogsNodeDef extends NodeDef, AccessEvaluationLogsOptions {}
 
-// export interface AccessEvaluationLogsNode extends Node {}
-export type AccessEvaluationLogsNode = Node;
+export interface AccessEvaluationLogsNode extends Node {
+    application?: string;
+}

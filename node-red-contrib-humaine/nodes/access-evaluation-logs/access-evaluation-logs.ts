@@ -3,6 +3,7 @@ import { AccessEvaluationLogsNode, AccessEvaluationLogsNodeDef } from "./modules
 import { HAICFlowEnvironmentData } from "../shared/types";
 import { HaicConfigNode } from "../haic-config/modules/types";
 import { LogsService } from "../../haic_client/services/LogsService";
+import { resolveEvaluationConfigId } from "../shared/helpers";
 
 const nodeInit: NodeInitializer = (RED): void => {
     function AccessEvaluationLogsNodeConstructor(
@@ -12,6 +13,7 @@ const nodeInit: NodeInitializer = (RED): void => {
         RED.nodes.createNode(this, config);
 
         const node = this;
+        node.application = config.application;
         const flowContext = node.context().flow;
         const haicEnvironment = flowContext.get("HumAIne_HAIC_ENVIRONMENT") as
             | HAICFlowEnvironmentData
@@ -26,27 +28,37 @@ const nodeInit: NodeInitializer = (RED): void => {
 
         node.on("input", async function (msg, send, done) {
             try {
-                const payload: Record<string, any> = msg.payload || {};
-                if (typeof payload.configId !== "number") throw new Error("configId is required");
-                const operation = payload.operation || "getAll";
-                delete payload.operation;
+                const payload =
+                    msg.payload && typeof msg.payload === "object"
+                        ? (msg.payload as Record<string, unknown>)
+                        : {};
+                const configId = resolveEvaluationConfigId(
+                    payload,
+                    config.application,
+                    flowContext.get("HumAIne_DEFAULT_APPLICATION") as string | undefined,
+                );
+                const operation =
+                    typeof payload.operation === "string"
+                        ? payload.operation
+                        : "getAll";
 
-                let result: any;
+                let result: unknown;
                 switch (operation) {
                     case "getAll":
-                        result = await LogsService.listLogsApiV1LogsConfigIdGet(payload.configId, openAPI);
+                        result = await LogsService.listLogsApiV1LogsConfigIdGet(configId, openAPI);
                         break;
                     case "getOne":
                     case "downloadLink":
-                        if (!payload.logName) throw new Error("logName is required for getOne/downloadLink");
-                        result = await LogsService.getDownloadUrlApiV1LogsDownloadConfigIdGet(payload.configId, payload.logName, openAPI);
+                        if (typeof payload.logName !== "string") throw new Error("logName is required for getOne/downloadLink");
+                        result = await LogsService.getDownloadUrlApiV1LogsDownloadConfigIdGet(configId, payload.logName, openAPI);
                         break;
                     default: throw new Error("Unknown operation: " + operation);
                 }
                 send([{ payload: result }]);
                 if (done) done();
-            } catch (err: any) {
-                const errorMsg = "Error in access-evaluation-logs node: " + err.message;
+            } catch (err: unknown) {
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                const errorMsg = "Error in access-evaluation-logs node: " + errorMessage;
                 send([{ payload: err, error: errorMsg }]);
                 if (done) done(null);
             }

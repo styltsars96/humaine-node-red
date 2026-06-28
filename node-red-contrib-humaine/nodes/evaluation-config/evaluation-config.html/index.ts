@@ -14,7 +14,7 @@ RED.nodes.registerType<EvaluationConfigEditorNodeProperties>(
         inputs: 1,
         outputs: 1,
         icon: "haic.svg",
-        paletteLabel: "Evaluation Config",
+        paletteLabel: "Manage Evaluation Configs",
         label: function () {
             return this.name || "Evaluation Config";
         },

@@ -343,298 +343,6 @@
         "icon": "node-red-contrib-custom-icons/kfp.svg"
     },
     {
-        "id": "3e0b79a15665c98a",
-        "type": "subflow",
-        "name": "Evaluation Config",
-        "info": "",
-        "category": "HumAIne",
-        "in": [
-            {
-                "x": 50,
-                "y": 30,
-                "wires": [
-                    {
-                        "id": "b1cef624b55abbab"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 790,
-                "y": 40,
-                "wires": [
-                    {
-                        "id": "5bcab7b645aac34b",
-                        "port": 0
-                    },
-                    {
-                        "id": "64122fae851b3b9d",
-                        "port": 0
-                    },
-                    {
-                        "id": "9b0fd5516c30d3a9",
-                        "port": 0
-                    },
-                    {
-                        "id": "319b24f25a13aae4",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 730,
-                "y": 500,
-                "wires": [
-                    {
-                        "id": "beba1ef4e85ce308",
-                        "port": 0
-                    },
-                    {
-                        "id": "5bcab7b645aac34b",
-                        "port": 1
-                    },
-                    {
-                        "id": "64122fae851b3b9d",
-                        "port": 1
-                    },
-                    {
-                        "id": "9b0fd5516c30d3a9",
-                        "port": 1
-                    },
-                    {
-                        "id": "319b24f25a13aae4",
-                        "port": 1
-                    }
-                ]
-            }
-        ],
-        "env": [],
-        "meta": {
-            "subflow": {
-                "name": "(subflow) Evaluation Config"
-            }
-        },
-        "color": "#58A69F",
-        "inputLabels": [
-            "Evaluation Config"
-        ],
-        "outputLabels": [
-            "Result",
-            "Error"
-        ],
-        "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
-    },
-    {
-        "id": "3cc374149e5165e4",
-        "type": "subflow",
-        "name": "Access Evaluation Logs",
-        "info": "",
-        "category": "HumAIne",
-        "in": [
-            {
-                "x": 50,
-                "y": 30,
-                "wires": [
-                    {
-                        "id": "1a5ad94df07dc5df"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 720,
-                "y": 40,
-                "wires": [
-                    {
-                        "id": "3245c173b6b43c11",
-                        "port": 0
-                    },
-                    {
-                        "id": "5a4f41dbed4849f0",
-                        "port": 0
-                    },
-                    {
-                        "id": "1da381363f11d75a",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 730,
-                "y": 240,
-                "wires": [
-                    {
-                        "id": "3245c173b6b43c11",
-                        "port": 1
-                    },
-                    {
-                        "id": "5a4f41dbed4849f0",
-                        "port": 1
-                    },
-                    {
-                        "id": "25aaed62b080310c",
-                        "port": 0
-                    },
-                    {
-                        "id": "1da381363f11d75a",
-                        "port": 1
-                    }
-                ]
-            }
-        ],
-        "env": [],
-        "meta": {
-            "subflow": {
-                "name": "(subflow) Access Evaluation Logs"
-            }
-        },
-        "color": "#58A69F",
-        "inputLabels": [
-            "Request Logs"
-        ],
-        "outputLabels": [
-            "Evaluation Logs",
-            "Error"
-        ],
-        "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
-    },
-    {
-        "id": "ee62c2e2054b032c",
-        "type": "subflow",
-        "name": "Evaluation Trigger",
-        "info": "",
-        "category": "HumAIne",
-        "in": [
-            {
-                "x": 60,
-                "y": 40,
-                "wires": [
-                    {
-                        "id": "2e839ba2c015b9e1"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 750,
-                "y": 40,
-                "wires": [
-                    {
-                        "id": "5f1f4fb85e5e103c",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 730,
-                "y": 200,
-                "wires": [
-                    {
-                        "id": "5f1f4fb85e5e103c",
-                        "port": 1
-                    },
-                    {
-                        "id": "0ab49d21e11e7a18",
-                        "port": 0
-                    }
-                ]
-            }
-        ],
-        "env": [],
-        "meta": {
-            "subflow": {
-                "name": "(subflow) Evaluation Trigger"
-            }
-        },
-        "color": "#58A69F",
-        "inputLabels": [
-            "Evaluation Trigger"
-        ],
-        "outputLabels": [
-            "Evaluation Trigger Status",
-            "Error"
-        ],
-        "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
-    },
-    {
-        "id": "e260c7f298a6dd52",
-        "type": "subflow",
-        "name": "Access Evaluation Results",
-        "info": "",
-        "category": "HumAIne",
-        "in": [
-            {
-                "x": 50,
-                "y": 30,
-                "wires": [
-                    {
-                        "id": "ad916748a4eee90d"
-                    }
-                ]
-            }
-        ],
-        "out": [
-            {
-                "x": 790,
-                "y": 20,
-                "wires": [
-                    {
-                        "id": "f0bbc6d24216e546",
-                        "port": 0
-                    },
-                    {
-                        "id": "0e0e78a40b9f418e",
-                        "port": 0
-                    },
-                    {
-                        "id": "94cb54ca2c86be7b",
-                        "port": 0
-                    }
-                ]
-            },
-            {
-                "x": 790,
-                "y": 360,
-                "wires": [
-                    {
-                        "id": "f0bbc6d24216e546",
-                        "port": 1
-                    },
-                    {
-                        "id": "38ae7ff54893fb9c",
-                        "port": 0
-                    },
-                    {
-                        "id": "0e0e78a40b9f418e",
-                        "port": 1
-                    },
-                    {
-                        "id": "94cb54ca2c86be7b",
-                        "port": 1
-                    }
-                ]
-            }
-        ],
-        "env": [],
-        "meta": {
-            "subflow": {
-                "name": "(subflow) Access Evaluation Results"
-            }
-        },
-        "color": "#58A69F",
-        "inputLabels": [
-            "Request Evaluation Results"
-        ],
-        "outputLabels": [
-            "Evaluation Results",
-            "Error"
-        ],
-        "icon": "node-red-contrib-custom-icons/haic_icon_small.svg"
-    },
-    {
         "id": "223eaaa2f11c7912",
         "type": "group",
         "z": "68962323fb8f5a64",
@@ -676,7 +384,6 @@
             "color": "#f8f8f2"
         },
         "nodes": [
-            "2de684d0e27ef56a",
             "9e9506c4449f684c",
             "c388c41fbbe082ec",
             "cfdb49476ed86cac",
@@ -703,7 +410,6 @@
             "color": "#f8f8f2"
         },
         "nodes": [
-            "4706f440553adaed",
             "ab463566f2505cd6",
             "7599a8fb56641b12",
             "c57411dbe5e643e9",
@@ -732,7 +438,6 @@
             "ce744c27a71719a0",
             "0169dd1cd313a5a4",
             "921225f785e5bb80",
-            "05bd6b813664ab9a",
             "e7251a062f18afbc",
             "9c64745033e8202a",
             "9a1094c1e22dcfcd",
@@ -762,7 +467,6 @@
         "nodes": [
             "81fd642a6de9b53a",
             "3daf399eaa62f216",
-            "437de6a7c1290ddf",
             "bb1515a0cd403abd",
             "ab6e39fc77b3b80d",
             "fa95874bdb401418",
@@ -862,7 +566,6 @@
             "label": true
         },
         "nodes": [
-            "384bca9bd4e2c0ef",
             "1b2c3fb326eacf7a",
             "238207fab5042de9",
             "4f3846a242d4c3d6",
@@ -916,7 +619,6 @@
             "771a75721f657f61",
             "02add78393ec173b",
             "4254d5ab4316e406",
-            "6000379fd8666a5f",
             "aa89188694021c95",
             "3aaf807f0394be74",
             "210636bcacc2e9f8",
@@ -1320,883 +1022,6 @@
         ]
     },
     {
-        "id": "64122fae851b3b9d",
-        "type": "function",
-        "z": "3e0b79a15665c98a",
-        "name": "Get Evaluation Config",
-        "func": "const configClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Configuration; // Common step\n//Client functions\nconst getConfig = configClient.getConfigurationApiV1ConfigurationConfigurationIdGet;\n\nconst ERROR_MSG = \"Failed to get Evaluation Config\";\n\ndelete msg.payload.operation;\nlet response = null;\n\ntry {\n    response = await getConfig(msg.payload.id);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    if (err.response.data) {\n        msg.payload = err.response.data;\n    }\n    msg.payload.status = err.response.status;\n    return [null, msg];\n\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 440,
-        "y": 280,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "b1cef624b55abbab",
-        "type": "object-validation",
-        "z": "3e0b79a15665c98a",
-        "name": "Operation",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "operation",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "operation",
-                "validator": "inclusion",
-                "value": "[\"get\",\"create\",\"update\",\"delete\"]",
-                "error": "",
-                "typeValue": "json"
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 100,
-        "y": 140,
-        "wires": [
-            [
-                "1a3eb92eec722f02"
-            ]
-        ]
-    },
-    {
-        "id": "beba1ef4e85ce308",
-        "type": "catch",
-        "z": "3e0b79a15665c98a",
-        "name": "",
-        "scope": null,
-        "uncaught": false,
-        "x": 160,
-        "y": 500,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "6315a5a5248b24d3",
-        "type": "object-validation",
-        "z": "3e0b79a15665c98a",
-        "name": "New",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [],
-        "additionalProperties": "true",
-        "x": 270,
-        "y": 240,
-        "wires": [
-            [
-                "5bcab7b645aac34b"
-            ]
-        ]
-    },
-    {
-        "id": "5e373f76b62a75f6",
-        "type": "object-validation",
-        "z": "3e0b79a15665c98a",
-        "name": "Delete",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "id",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "id",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            },
-            {
-                "property": "id",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 250,
-        "y": 360,
-        "wires": [
-            [
-                "319b24f25a13aae4"
-            ]
-        ]
-    },
-    {
-        "id": "bf975aa3bf827299",
-        "type": "object-validation",
-        "z": "3e0b79a15665c98a",
-        "name": "Update",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "configurationId",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "configurationId",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            },
-            {
-                "property": "configurationId",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 240,
-        "y": 320,
-        "wires": [
-            [
-                "9b0fd5516c30d3a9"
-            ]
-        ]
-    },
-    {
-        "id": "4614722afba4d170",
-        "type": "object-validation",
-        "z": "3e0b79a15665c98a",
-        "name": "Get",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "id",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "id",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            },
-            {
-                "property": "id",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 270,
-        "y": 280,
-        "wires": [
-            [
-                "64122fae851b3b9d"
-            ]
-        ]
-    },
-    {
-        "id": "1a3eb92eec722f02",
-        "type": "switch",
-        "z": "3e0b79a15665c98a",
-        "name": "",
-        "property": "payload.operation",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "create",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "get",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "update",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "delete",
-                "vt": "str"
-            }
-        ],
-        "checkall": "false",
-        "repair": false,
-        "outputs": 4,
-        "x": 90,
-        "y": 300,
-        "wires": [
-            [
-                "6315a5a5248b24d3"
-            ],
-            [
-                "4614722afba4d170"
-            ],
-            [
-                "bf975aa3bf827299"
-            ],
-            [
-                "5e373f76b62a75f6"
-            ]
-        ]
-    },
-    {
-        "id": "5bcab7b645aac34b",
-        "type": "function",
-        "z": "3e0b79a15665c98a",
-        "name": "New Evaluation Config",
-        "func": "const configClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Configuration; // Common step\n//Client functions\n// Fragiadakis f-ed up the REST semantics here hahaha... POST should be for update, PUT for new, not what it is now.\nconst createConfig = configClient.createConfigurationApiV1ConfigurationNewPost;\n\nconst ERROR_MSG = \"Failed to create new evaluation config\";\n\ndelete msg.payload.operation;\nlet response = null;\n\ntry {\n    response = await createConfig(msg.payload);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    if (err.response.data) {\n        msg.payload = err.response.data;\n    }\n    msg.payload.status = err.response.status;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 440,
-        "y": 240,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "9b0fd5516c30d3a9",
-        "type": "function",
-        "z": "3e0b79a15665c98a",
-        "name": "Update Evaluation Config",
-        "func": "const configClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Configuration; // Common step\n//Client functions\n// Fragiadakis f-ed up the REST semantics here hahaha... POST should be for update, PUT for new, not what it is now.\nconst updateConfig = configClient.updateConfigurationApiV1ConfigurationUpdateConfigurationIdPut;\n\nconst ERROR_MSG = \"Failed to update Evaluation Config\";\n\ndelete msg.payload.operation;\n\nconst configurationId = msg.payload.configurationId;\ndelete msg.payload.configurationId;\nlet response = null;\n\ntry {\n    response = await updateConfig(msg.payload, configurationId);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    if (err.response.data) {\n        msg.payload = err.response.data;\n    }\n    msg.payload.status = err.response.status;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 430,
-        "y": 320,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "319b24f25a13aae4",
-        "type": "function",
-        "z": "3e0b79a15665c98a",
-        "name": "Delete Evaluation Config",
-        "func": "const configClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Configuration; // Common step\n//Client functions\nconst deleteConfig = configClient.deleteConfigurationApiV1ConfigurationDeleteConfigurationIdDelete;\n\nconst ERROR_MSG = \"Failed to delete Evaluation Config\";\n\ndelete msg.payload.operation;\nlet response = null;\n\ntry {\n    response = await deleteConfig(msg.payload.id);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    if (err.response.data) {\n        msg.payload = err.response.data;\n    }\n    msg.payload.status = err.response.status;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 430,
-        "y": 360,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "3245c173b6b43c11",
-        "type": "function",
-        "z": "3cc374149e5165e4",
-        "name": "Get Specific Evaluation Log Entry",
-        "func": "const logClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Logs; // Common step\n//Client Function\nconst getLog = logClient.downloadLogLogsDownloadConfigIdLogNameGet;\n\nconst ERROR_MSG = \"Failed to get specific log\";\n\nlet response = null;\n\ntry {\n    response = await getLog(msg.payload.configId, msg.payload.logName);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 420,
-        "y": 80,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "5a4f41dbed4849f0",
-        "type": "function",
-        "z": "3cc374149e5165e4",
-        "name": "Get Log Entries",
-        "func": "const logClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Logs; // Common step\n//Client Function\nconst getLogs = logClient.listLogsLogsConfigIdGet;\n\nconst ERROR_MSG = \"Failed to get the logs for a configuration ID\";\n\nlet response = null;\n\ntry {\n    response = await getLogs(msg.payload.configId);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 460,
-        "y": 220,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "1a5ad94df07dc5df",
-        "type": "object-validation",
-        "z": "3cc374149e5165e4",
-        "name": "Operation",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "operation",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "configId",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "operation",
-                "validator": "inclusion",
-                "value": "[\"getOne\",\"getAll\",\"downloadLink\"]",
-                "error": "",
-                "typeValue": "json"
-            },
-            {
-                "property": "configId",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            },
-            {
-                "property": "configId",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 100,
-        "y": 220,
-        "wires": [
-            [
-                "abce6c4aad2211b8"
-            ]
-        ]
-    },
-    {
-        "id": "abce6c4aad2211b8",
-        "type": "switch",
-        "z": "3cc374149e5165e4",
-        "name": "",
-        "property": "payload.operation",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "getOne",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "getAll",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "downloadLink",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 3,
-        "x": 230,
-        "y": 220,
-        "wires": [
-            [],
-            [
-                "5a4f41dbed4849f0"
-            ],
-            [
-                "1e8826b017cfef4f"
-            ]
-        ]
-    },
-    {
-        "id": "ea21d034d6c431cc",
-        "type": "object-validation",
-        "z": "3cc374149e5165e4",
-        "name": "getOne",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "logName",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "logName",
-                "validator": "type",
-                "value": "string",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 200,
-        "y": 80,
-        "wires": [
-            [
-                "3245c173b6b43c11"
-            ]
-        ]
-    },
-    {
-        "id": "25aaed62b080310c",
-        "type": "catch",
-        "z": "3cc374149e5165e4",
-        "name": "",
-        "scope": null,
-        "uncaught": false,
-        "x": 540,
-        "y": 460,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "86b933608973f8d9",
-        "type": "comment",
-        "z": "3cc374149e5165e4",
-        "name": "ISSUE \"GET ONE\" OPERATION IS NON-EXISTENT ON API SIDE",
-        "info": "THERE IS ONLY A DOWNLOAD LINK, THERE IS NO \"GET THE LOG PRINTED OUT\", THERE IS ONLY A LIST OF LOGS FOR A CONFIG",
-        "x": 320,
-        "y": 140,
-        "wires": []
-    },
-    {
-        "id": "1e8826b017cfef4f",
-        "type": "object-validation",
-        "z": "3cc374149e5165e4",
-        "name": "Download Link",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "logName",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "logName",
-                "validator": "type",
-                "value": "string",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 180,
-        "y": 320,
-        "wires": [
-            [
-                "1da381363f11d75a"
-            ]
-        ]
-    },
-    {
-        "id": "1da381363f11d75a",
-        "type": "function",
-        "z": "3cc374149e5165e4",
-        "name": "Get Specific Evaluation Log Entry",
-        "func": "const logClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Logs; // Common step\n//Client Function\nconst getLog = logClient.downloadLogLogsDownloadConfigIdLogNameGet;\n\nconst ERROR_MSG = \"Failed to get specific log\";\n\nlet response = null;\n\ntry {\n    response = await getLog(msg.payload.configId, msg.payload.logName);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}.`;\n    msg.error_response = err.response;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 420,
-        "y": 320,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "5f1f4fb85e5e103c",
-        "type": "function",
-        "z": "ee62c2e2054b032c",
-        "name": "Trigger Evaluation Process",
-        "func": "const evalClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Evaluation; // Common step\n//Client Function\nconst triggerEval = evalClient.evaluateConfigApiV1EvaluateConfigurationIdPost;\n\nconst ERROR_MSG = \"Failed to trigger Evaluation log\";\n\nlet response = null;\n\ntry {\n    response = await triggerEval(msg.payload.configId);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}`;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\nconst {\n    Configuration,\n    ConfigurationApi\n} = humanAiBenchmarkSuite;\n\nconst isEmpty = (obj) => {\n    for (const prop in obj) {\n        if (Object.hasOwn(obj, prop)) {\n            return false;\n        }\n    }\n    return true;\n};\n\nconst delay = (time) => {\n    return new Promise(res => {\n        setTimeout(res, time);\n    })\n};\n\nconst retryWithDelay = async (fn, retries = 3, interval = 100) => {\n    try {\n        return await fn();\n    } catch (err) {\n        if (retries <= 0) throw err;\n        await delay(interval);\n        return retryWithDelay(fn, retries - 1, interval);\n    }\n};",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 440,
-        "y": 120,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "2e839ba2c015b9e1",
-        "type": "object-validation",
-        "z": "ee62c2e2054b032c",
-        "name": " configId",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "configId",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "configId",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            },
-            {
-                "property": "configId",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 200,
-        "y": 80,
-        "wires": [
-            [
-                "5f1f4fb85e5e103c"
-            ]
-        ]
-    },
-    {
-        "id": "0ab49d21e11e7a18",
-        "type": "catch",
-        "z": "ee62c2e2054b032c",
-        "name": "",
-        "scope": null,
-        "uncaught": false,
-        "x": 460,
-        "y": 200,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "f0bbc6d24216e546",
-        "type": "function",
-        "z": "e260c7f298a6dd52",
-        "name": "Access Evaluation Results for Config ID",
-        "func": "const resultsClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Results; // Common step\n//Client Function\nconst getResults = resultsClient.getEvaluationResultsApiV1ResultsConfigurationIdGet;\n\nconst ERROR_MSG = \"Failed to get results for config ID\";\n\nlet response = null;\n\ntry {\n    response = await getResults(msg.payload.configId);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}`;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\n// const RETRIES_NUM = 3;\n// const RETRIES_INTERVAL = 1000;\n\n// const {\n//     Configuration,\n//     ResultsApi\n// } = humanAiBenchmarkSuite;\n\n// const isEmpty = (obj) => {\n//     for (const prop in obj) {\n//         if (Object.hasOwn(obj, prop)) {\n//             return false;\n//         }\n//     }\n//     return true;\n// };\n\n// const delay = (time) => {\n//     return new Promise(res => {\n//         setTimeout(res, time);\n//     })\n// };\n\n// const retryWithDelay = async (fn, retries = 3, interval = 100) => {\n//     try {\n//         return await fn();\n//     } catch (err) {\n//         if (retries <= 0) throw err;\n//         await delay(interval);\n//         return retryWithDelay(fn, retries - 1, interval);\n//     }\n// };\n\n\n// const CONFIG_ERROR_MSG = \"No valid HAIC Api Client Configuration found!\";\n\n// const getConfig = () => {\n//     // Try to get the configuration from flow context\n//     let config = flow.get(\"$parent.HaicApiClientConfiguration\");\n\n//     if (!config) {\n//         // If not found in flow, try global context\n//         config = global.get(\"HaicApiClientConfiguration\");\n//     }\n\n//     if (!config) {\n\n//         // If not found in either, throw an error and halt the flow\n//         node.error(CONFIG_ERROR_MSG, msg);\n//         node.send([null, {\n//             error: CONFIG_ERROR_MSG\n//         }]);\n//         return null; // Explicitly halt further processing\n//     }\n\n//     return config;\n// }\n\n// const getClient = () => {\n//     const config = getConfig();\n\n//     if (!config) return null;\n\n//     return new ResultsApi(config);\n// }\n// context.set(\"getClient\", getClient);\n",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 480,
-        "y": 120,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "38ae7ff54893fb9c",
-        "type": "catch",
-        "z": "e260c7f298a6dd52",
-        "name": "",
-        "scope": null,
-        "uncaught": false,
-        "x": 640,
-        "y": 400,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "0e0e78a40b9f418e",
-        "type": "function",
-        "z": "e260c7f298a6dd52",
-        "name": "Access Specific Evaluation Result",
-        "func": "const resultsClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Results; // Common step\n//Client Function\nconst getResult = resultsClient.getEvaluationResultApiV1ResultsConfigurationIdResultIdGet;\n\nconst ERROR_MSG = \"Failed to get results for config ID\";\n\nlet response = null;\n\ntry {\n    response = await getResult(msg.payload.configId, msg.payload.resultId);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}`;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\n// const RETRIES_NUM = 3;\n// const RETRIES_INTERVAL = 1000;\n\n// const {\n//     Configuration,\n//     ResultsApi\n// } = humanAiBenchmarkSuite;\n\n// const isEmpty = (obj) => {\n//     for (const prop in obj) {\n//         if (Object.hasOwn(obj, prop)) {\n//             return false;\n//         }\n//     }\n//     return true;\n// };\n\n// const delay = (time) => {\n//     return new Promise(res => {\n//         setTimeout(res, time);\n//     })\n// };\n\n// const retryWithDelay = async (fn, retries = 3, interval = 100) => {\n//     try {\n//         return await fn();\n//     } catch (err) {\n//         if (retries <= 0) throw err;\n//         await delay(interval);\n//         return retryWithDelay(fn, retries - 1, interval);\n//     }\n// };\n\n\n// const CONFIG_ERROR_MSG = \"No valid HAIC Api Client Configuration found!\";\n\n// const getConfig = () => {\n//     // Try to get the configuration from flow context\n//     let config = flow.get(\"$parent.HaicApiClientConfiguration\");\n\n//     if (!config) {\n//         // If not found in flow, try global context\n//         config = global.get(\"HaicApiClientConfiguration\");\n//     }\n\n//     if (!config) {\n\n//         // If not found in either, throw an error and halt the flow\n//         node.error(CONFIG_ERROR_MSG, msg);\n//         node.send([null, {\n//             error: CONFIG_ERROR_MSG\n//         }]);\n//         return null; // Explicitly halt further processing\n//     }\n\n//     return config;\n// }\n\n// const getClient = () => {\n//     const config = getConfig();\n\n//     if (!config) return null;\n\n//     return new ResultsApi(config);\n// }\n// context.set(\"getClient\", getClient);\n",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 500,
-        "y": 180,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "94cb54ca2c86be7b",
-        "type": "function",
-        "z": "e260c7f298a6dd52",
-        "name": "Access Evaluation Results for Config ID",
-        "func": "const resultsClient = global.get(\"globalUtilFunctions\").getHaicFunctions(flow, global, node).Results; // Common step\n//Client Function\nconst getResultsGroup = resultsClient.getEvaluationResultsByGroupApiV1ResultsConfigurationIdGroupGroupNameGet;\n\nconst ERROR_MSG = \"Failed to get specific evaluation results group\";\n\nlet response = null;\n\ntry {\n    response = await getResultsGroup(msg.payload.configId, msg.payload.groupName);\n    // TODO: Handle all kinds of responses\n    msg.payload = response;\n    return [msg, null];\n} catch (err) {\n    msg.error = `${ERROR_MSG}: ${err}`;\n    return [null, msg];\n}",
-        "outputs": 2,
-        "timeout": 0,
-        "noerr": 0,
-        "initialize": "// Code added here will be run once\n// whenever the node is started.\n// const RETRIES_NUM = 3;\n// const RETRIES_INTERVAL = 1000;\n\n// const {\n//     Configuration,\n//     ResultsApi\n// } = humanAiBenchmarkSuite;\n\n// const isEmpty = (obj) => {\n//     for (const prop in obj) {\n//         if (Object.hasOwn(obj, prop)) {\n//             return false;\n//         }\n//     }\n//     return true;\n// };\n\n// const delay = (time) => {\n//     return new Promise(res => {\n//         setTimeout(res, time);\n//     })\n// };\n\n// const retryWithDelay = async (fn, retries = 3, interval = 100) => {\n//     try {\n//         return await fn();\n//     } catch (err) {\n//         if (retries <= 0) throw err;\n//         await delay(interval);\n//         return retryWithDelay(fn, retries - 1, interval);\n//     }\n// };\n\n\n// const CONFIG_ERROR_MSG = \"No valid HAIC Api Client Configuration found!\";\n\n// const getConfig = () => {\n//     // Try to get the configuration from flow context\n//     let config = flow.get(\"$parent.HaicApiClientConfiguration\");\n\n//     if (!config) {\n//         // If not found in flow, try global context\n//         config = global.get(\"HaicApiClientConfiguration\");\n//     }\n\n//     if (!config) {\n\n//         // If not found in either, throw an error and halt the flow\n//         node.error(CONFIG_ERROR_MSG, msg);\n//         node.send([null, {\n//             error: CONFIG_ERROR_MSG\n//         }]);\n//         return null; // Explicitly halt further processing\n//     }\n\n//     return config;\n// }\n\n// const getClient = () => {\n//     const config = getConfig();\n\n//     if (!config) return null;\n\n//     return new ResultsApi(config);\n// }\n// context.set(\"getClient\", getClient);\n",
-        "finalize": "",
-        "libs": [
-            {
-                "var": "humanAiBenchmarkSuite",
-                "module": "human_ai_benchmark_suite"
-            }
-        ],
-        "x": 480,
-        "y": 240,
-        "wires": [
-            [],
-            []
-        ]
-    },
-    {
-        "id": "ad916748a4eee90d",
-        "type": "object-validation",
-        "z": "e260c7f298a6dd52",
-        "name": " configId",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "operation",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "operation",
-                "validator": "inclusion",
-                "value": "[\"getAll\", \"getOne\", \"getGroup\"]",
-                "error": "",
-                "typeValue": "json"
-            },
-            {
-                "property": "configId",
-                "validator": "required",
-                "value": "",
-                "error": "",
-                "typeValue": "str"
-            },
-            {
-                "property": "configId",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            },
-            {
-                "property": "configId",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 160,
-        "y": 40,
-        "wires": [
-            [
-                "768493f779114b6e"
-            ]
-        ]
-    },
-    {
-        "id": "768493f779114b6e",
-        "type": "switch",
-        "z": "e260c7f298a6dd52",
-        "name": "",
-        "property": "payload.operation",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "getAll",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "getOne",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "getGroup",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 3,
-        "x": 110,
-        "y": 180,
-        "wires": [
-            [
-                "f0bbc6d24216e546"
-            ],
-            [
-                "e7563723e90a1c27"
-            ],
-            [
-                "b693907b46a2c063"
-            ]
-        ]
-    },
-    {
-        "id": "e7563723e90a1c27",
-        "type": "object-validation",
-        "z": "e260c7f298a6dd52",
-        "name": "resultId",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "resultId",
-                "validator": "minimum_number",
-                "value": "0",
-                "error": "",
-                "typeValue": "num"
-            },
-            {
-                "property": "resultId",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 280,
-        "y": 180,
-        "wires": [
-            [
-                "0e0e78a40b9f418e"
-            ]
-        ]
-    },
-    {
-        "id": "b693907b46a2c063",
-        "type": "object-validation",
-        "z": "e260c7f298a6dd52",
-        "name": "groupName",
-        "data": "payload",
-        "dataType": "msg",
-        "constraints": [
-            {
-                "property": "groupName",
-                "validator": "type",
-                "value": "integer",
-                "error": ""
-            }
-        ],
-        "additionalProperties": "true",
-        "x": 230,
-        "y": 240,
-        "wires": [
-            [
-                "94cb54ca2c86be7b"
-            ]
-        ]
-    },
-    {
         "id": "b2d6d748be934985",
         "type": "inject",
         "z": "529d431d13d83865",
@@ -2248,7 +1073,7 @@
         "name": "AI Env Config",
         "haic_server": "13892724a379a5ca",
         "aiEnvironmentId": "NS_ENV",
-        "defaultApplication": "",
+        "defaultApplication": "34",
         "x": 320,
         "y": 120,
         "wires": [
@@ -2318,6 +1143,216 @@
         "statusType": "auto",
         "x": 700,
         "y": 220,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000001",
+        "type": "evaluation-config",
+        "z": "529d431d13d83865",
+        "name": "",
+        "x": 650,
+        "y": 480,
+        "wires": [
+            [
+                "dbg1"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000002",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Config Create",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"operation\":\"create\",\"application_name\":\"demo-app\"}",
+        "payloadType": "json",
+        "x": 300,
+        "y": 480,
+        "wires": [
+            [
+                "abc0000000000001"
+            ]
+        ]
+    },
+    {
+        "id": "dbg1",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Config Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000003",
+        "type": "access-evaluation-logs",
+        "z": "529d431d13d83865",
+        "name": "",
+        "application": "",
+        "x": 650,
+        "y": 540,
+        "wires": [
+            [
+                "dbg2"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000004",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Logs GetAll",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "",
+        "topic": "",
+        "payload": "{\"operation\":\"getAll\"}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 540,
+        "wires": [
+            [
+                "abc0000000000003"
+            ]
+        ]
+    },
+    {
+        "id": "dbg2",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Logs Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000005",
+        "type": "evaluation-trigger",
+        "z": "529d431d13d83865",
+        "name": "",
+        "x": 650,
+        "y": 600,
+        "wires": [
+            [
+                "dbg3"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000006",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"configId\":1}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "abc0000000000005"
+            ]
+        ]
+    },
+    {
+        "id": "dbg3",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Trigger Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000007",
+        "type": "access-evaluation-results",
+        "z": "529d431d13d83865",
+        "name": "",
+        "x": 650,
+        "y": 660,
+        "wires": [
+            [
+                "dbg4"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000008",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Results GetAll",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"operation\":\"getAll\",\"configId\":1}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 660,
+        "wires": [
+            [
+                "abc0000000000007"
+            ]
+        ]
+    },
+    {
+        "id": "dbg4",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Results Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 660,
         "wires": []
     },
     {
@@ -2535,24 +1570,6 @@
         "wires": []
     },
     {
-        "id": "384bca9bd4e2c0ef",
-        "type": "subflow:3e0b79a15665c98a",
-        "z": "9db4af518e108976",
-        "g": "53afbf356bbf6601",
-        "name": "",
-        "x": 770,
-        "y": 480,
-        "wires": [
-            [
-                "4f3846a242d4c3d6",
-                "0214858918135093"
-            ],
-            [
-                "238207fab5042de9"
-            ]
-        ]
-    },
-    {
         "id": "1b2c3fb326eacf7a",
         "type": "function",
         "z": "9db4af518e108976",
@@ -2568,9 +1585,7 @@
         "x": 690,
         "y": 440,
         "wires": [
-            [
-                "384bca9bd4e2c0ef"
-            ]
+            []
         ]
     },
     {
@@ -2907,26 +1922,7 @@
         "x": 910,
         "y": 80,
         "wires": [
-            [
-                "6000379fd8666a5f"
-            ]
-        ]
-    },
-    {
-        "id": "6000379fd8666a5f",
-        "type": "subflow:ee62c2e2054b032c",
-        "z": "9db4af518e108976",
-        "g": "efe3a5d0f511520f",
-        "name": "",
-        "x": 770,
-        "y": 140,
-        "wires": [
-            [
-                "aa89188694021c95"
-            ],
-            [
-                "3aaf807f0394be74"
-            ]
+            []
         ]
     },
     {
@@ -3066,26 +2062,7 @@
         "x": 310,
         "y": 300,
         "wires": [
-            [
-                "d8b8d134790fcc86"
-            ]
-        ]
-    },
-    {
-        "id": "d8b8d134790fcc86",
-        "type": "subflow:3e0b79a15665c98a",
-        "z": "3f025920437f7905",
-        "name": "",
-        "x": 550,
-        "y": 300,
-        "wires": [
-            [
-                "79861fc8ba4d35a0",
-                "548572b61b01ba84"
-            ],
-            [
-                "6eb1cea41e534e9e"
-            ]
+            []
         ]
     },
     {
@@ -3204,25 +2181,7 @@
         "x": 280,
         "y": 480,
         "wires": [
-            [
-                "bb8d8e3c93033918"
-            ]
-        ]
-    },
-    {
-        "id": "bb8d8e3c93033918",
-        "type": "subflow:ee62c2e2054b032c",
-        "z": "3f025920437f7905",
-        "name": "",
-        "x": 510,
-        "y": 480,
-        "wires": [
-            [
-                "e5d5871e033a236e"
-            ],
-            [
-                "f34c2af2de0a46a1"
-            ]
+            []
         ]
     },
     {
@@ -3240,9 +2199,7 @@
         "x": 850,
         "y": 500,
         "wires": [
-            [
-                "4b58f8cefa56a306"
-            ]
+            []
         ]
     },
     {
@@ -3291,22 +2248,6 @@
         "wires": []
     },
     {
-        "id": "de0960e0207b8c65",
-        "type": "subflow:3cc374149e5165e4",
-        "z": "3f025920437f7905",
-        "name": "",
-        "x": 520,
-        "y": 400,
-        "wires": [
-            [
-                "538c98c93dc4ec4e"
-            ],
-            [
-                "56502e1af53b33e3"
-            ]
-        ]
-    },
-    {
         "id": "b6375845c5da5c22",
         "type": "function",
         "z": "3f025920437f7905",
@@ -3321,9 +2262,7 @@
         "x": 300,
         "y": 400,
         "wires": [
-            [
-                "de0960e0207b8c65"
-            ]
+            []
         ]
     },
     {
@@ -3379,22 +2318,6 @@
         "x": 790,
         "y": 180,
         "wires": []
-    },
-    {
-        "id": "4b58f8cefa56a306",
-        "type": "subflow:e260c7f298a6dd52",
-        "z": "3f025920437f7905",
-        "name": "",
-        "x": 210,
-        "y": 660,
-        "wires": [
-            [
-                "72822ea23e2002d7"
-            ],
-            [
-                "35885cb058ac622f"
-            ]
-        ]
     },
     {
         "id": "35885cb058ac622f",
@@ -4843,70 +3766,6 @@
         "wires": []
     },
     {
-        "id": "4a9bd975d294233f",
-        "type": "subflow:3e0b79a15665c98a",
-        "z": "e3fd273272a37452",
-        "name": "",
-        "x": 350,
-        "y": 300,
-        "wires": [
-            [
-                "4f9508974cc57ab0"
-            ],
-            [
-                "b1b3bcc50045e682"
-            ]
-        ]
-    },
-    {
-        "id": "9847aacf9490cd37",
-        "type": "subflow:3cc374149e5165e4",
-        "z": "e3fd273272a37452",
-        "name": "",
-        "x": 350,
-        "y": 420,
-        "wires": [
-            [
-                "4f9508974cc57ab0"
-            ],
-            [
-                "294ed2eefb9409b9"
-            ]
-        ]
-    },
-    {
-        "id": "63d61224e9862716",
-        "type": "subflow:ee62c2e2054b032c",
-        "z": "e3fd273272a37452",
-        "name": "",
-        "x": 350,
-        "y": 480,
-        "wires": [
-            [
-                "4f9508974cc57ab0"
-            ],
-            [
-                "e9b33afe7666ef1a"
-            ]
-        ]
-    },
-    {
-        "id": "0b343bc58e251d6d",
-        "type": "subflow:e260c7f298a6dd52",
-        "z": "e3fd273272a37452",
-        "name": "",
-        "x": 360,
-        "y": 560,
-        "wires": [
-            [
-                "4f9508974cc57ab0"
-            ],
-            [
-                "3c89df2ec0ffabcf"
-            ]
-        ]
-    },
-    {
         "id": "3c89df2ec0ffabcf",
         "type": "debug",
         "z": "e3fd273272a37452",
@@ -5031,9 +3890,7 @@
         "x": 150,
         "y": 180,
         "wires": [
-            [
-                "4a9bd975d294233f"
-            ]
+            []
         ]
     },
     {
@@ -5087,9 +3944,7 @@
         "x": 140,
         "y": 420,
         "wires": [
-            [
-                "9847aacf9490cd37"
-            ]
+            []
         ]
     },
     {
@@ -5116,9 +3971,7 @@
         "x": 140,
         "y": 480,
         "wires": [
-            [
-                "63d61224e9862716"
-            ]
+            []
         ]
     },
     {
@@ -5145,9 +3998,7 @@
         "x": 140,
         "y": 560,
         "wires": [
-            [
-                "0b343bc58e251d6d"
-            ]
+            []
         ]
     },
     {
@@ -5184,9 +4035,7 @@
         "x": 150,
         "y": 240,
         "wires": [
-            [
-                "4a9bd975d294233f"
-            ]
+            []
         ]
     },
     {
@@ -5213,27 +4062,7 @@
         "x": 110,
         "y": 300,
         "wires": [
-            [
-                "4a9bd975d294233f"
-            ]
-        ]
-    },
-    {
-        "id": "4706f440553adaed",
-        "type": "subflow:3e0b79a15665c98a",
-        "z": "68962323fb8f5a64",
-        "g": "bef08cda5cd6e15a",
-        "name": "",
-        "x": 570,
-        "y": 140,
-        "wires": [
-            [
-                "c57411dbe5e643e9",
-                "d9ccfc89f1b5d324"
-            ],
-            [
-                "7599a8fb56641b12"
-            ]
+            []
         ]
     },
     {
@@ -5252,9 +4081,7 @@
         "x": 490,
         "y": 100,
         "wires": [
-            [
-                "4706f440553adaed"
-            ]
+            []
         ]
     },
     {
@@ -5417,23 +4244,6 @@
         "wires": []
     },
     {
-        "id": "2de684d0e27ef56a",
-        "type": "subflow:ee62c2e2054b032c",
-        "z": "68962323fb8f5a64",
-        "g": "36f66f8eeab46bdf",
-        "name": "",
-        "x": 150,
-        "y": 700,
-        "wires": [
-            [
-                "cfdb49476ed86cac"
-            ],
-            [
-                "d219abc45d10bcc3"
-            ]
-        ]
-    },
-    {
         "id": "9e9506c4449f684c",
         "type": "http in",
         "z": "68962323fb8f5a64",
@@ -5467,9 +4277,7 @@
         "x": 290,
         "y": 640,
         "wires": [
-            [
-                "2de684d0e27ef56a"
-            ]
+            []
         ]
     },
     {
@@ -5580,23 +4388,6 @@
         "wires": []
     },
     {
-        "id": "05bd6b813664ab9a",
-        "type": "subflow:e260c7f298a6dd52",
-        "z": "68962323fb8f5a64",
-        "g": "9ce29d4ff9f9c13d",
-        "name": "",
-        "x": 580,
-        "y": 1140,
-        "wires": [
-            [
-                "e7251a062f18afbc"
-            ],
-            [
-                "9c64745033e8202a"
-            ]
-        ]
-    },
-    {
         "id": "e7251a062f18afbc",
         "type": "function",
         "z": "68962323fb8f5a64",
@@ -5690,9 +4481,7 @@
         "x": 330,
         "y": 1120,
         "wires": [
-            [
-                "05bd6b813664ab9a"
-            ]
+            []
         ]
     },
     {
@@ -5711,9 +4500,7 @@
         "x": 350,
         "y": 1180,
         "wires": [
-            [
-                "05bd6b813664ab9a"
-            ]
+            []
         ]
     },
     {
@@ -5732,9 +4519,7 @@
         "x": 350,
         "y": 1240,
         "wires": [
-            [
-                "05bd6b813664ab9a"
-            ]
+            []
         ]
     },
     {
@@ -5789,26 +4574,7 @@
         "x": 620,
         "y": 860,
         "wires": [
-            [
-                "437de6a7c1290ddf"
-            ]
-        ]
-    },
-    {
-        "id": "437de6a7c1290ddf",
-        "type": "subflow:e260c7f298a6dd52",
-        "z": "68962323fb8f5a64",
-        "g": "311e4ab1bcf49520",
-        "name": "",
-        "x": 180,
-        "y": 920,
-        "wires": [
-            [
-                "bb1515a0cd403abd"
-            ],
-            [
-                "ab6e39fc77b3b80d"
-            ]
+            []
         ]
     },
     {
@@ -7033,217 +5799,5 @@
                 "0afce7cb4261b9bb"
             ]
         ]
-    },
-    {
-        "id": "abc0000000000001",
-        "type": "evaluation-config",
-        "z": "529d431d13d83865",
-        "name": "",
-        "haic_server": "13892724a379a5ca",
-        "x": 650,
-        "y": 480,
-        "wires": [
-            [
-                "dbg1"
-            ]
-        ]
-    },
-    {
-        "id": "abc0000000000002",
-        "type": "inject",
-        "z": "529d431d13d83865",
-        "name": "Test Config Create",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "topic": "",
-        "payload": "{\"operation\":\"create\",\"application_name\":\"demo-app\"}",
-        "payloadType": "json",
-        "x": 300,
-        "y": 480,
-        "wires": [
-            [
-                "abc0000000000001"
-            ]
-        ]
-    },
-    {
-        "id": "dbg1",
-        "type": "debug",
-        "z": "529d431d13d83865",
-        "name": "Config Result",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 900,
-        "y": 480,
-        "wires": []
-    },
-    {
-        "id": "abc0000000000003",
-        "type": "access-evaluation-logs",
-        "z": "529d431d13d83865",
-        "name": "",
-        "haic_server": "13892724a379a5ca",
-        "x": 650,
-        "y": 540,
-        "wires": [
-            [
-                "dbg2"
-            ]
-        ]
-    },
-    {
-        "id": "abc0000000000004",
-        "type": "inject",
-        "z": "529d431d13d83865",
-        "name": "Test Logs GetAll",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "topic": "",
-        "payload": "{\"operation\":\"getAll\",\"configId\":1}",
-        "payloadType": "json",
-        "x": 340,
-        "y": 540,
-        "wires": [
-            [
-                "abc0000000000003"
-            ]
-        ]
-    },
-    {
-        "id": "dbg2",
-        "type": "debug",
-        "z": "529d431d13d83865",
-        "name": "Logs Result",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 900,
-        "y": 540,
-        "wires": []
-    },
-    {
-        "id": "abc0000000000005",
-        "type": "evaluation-trigger",
-        "z": "529d431d13d83865",
-        "name": "",
-        "haic_server": "13892724a379a5ca",
-        "x": 650,
-        "y": 600,
-        "wires": [
-            [
-                "dbg3"
-            ]
-        ]
-    },
-    {
-        "id": "abc0000000000006",
-        "type": "inject",
-        "z": "529d431d13d83865",
-        "name": "Test Trigger",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "topic": "",
-        "payload": "{\"configId\":1}",
-        "payloadType": "json",
-        "x": 340,
-        "y": 600,
-        "wires": [
-            [
-                "abc0000000000005"
-            ]
-        ]
-    },
-    {
-        "id": "dbg3",
-        "type": "debug",
-        "z": "529d431d13d83865",
-        "name": "Trigger Result",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 900,
-        "y": 600,
-        "wires": []
-    },
-    {
-        "id": "abc0000000000007",
-        "type": "access-evaluation-results",
-        "z": "529d431d13d83865",
-        "name": "",
-        "haic_server": "13892724a379a5ca",
-        "x": 650,
-        "y": 660,
-        "wires": [
-            [
-                "dbg4"
-            ]
-        ]
-    },
-    {
-        "id": "abc0000000000008",
-        "type": "inject",
-        "z": "529d431d13d83865",
-        "name": "Test Results GetAll",
-        "props": [
-            {
-                "p": "payload"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "topic": "",
-        "payload": "{\"operation\":\"getAll\",\"configId\":1}",
-        "payloadType": "json",
-        "x": 340,
-        "y": 660,
-        "wires": [
-            [
-                "abc0000000000007"
-            ]
-        ]
-    },
-    {
-        "id": "dbg4",
-        "type": "debug",
-        "z": "529d431d13d83865",
-        "name": "Results Result",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "x": 900,
-        "y": 660,
-        "wires": []
     }
 ]

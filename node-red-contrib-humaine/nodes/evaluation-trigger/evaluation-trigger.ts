@@ -3,6 +3,7 @@ import { EvaluationTriggerNode, EvaluationTriggerNodeDef } from "./modules/types
 import { HAICFlowEnvironmentData } from "../shared/types";
 import { HaicConfigNode } from "../haic-config/modules/types";
 import { EvaluationService } from "../../haic_client/services/EvaluationService";
+import { resolveEvaluationConfigId } from "../shared/helpers";
 
 const nodeInit: NodeInitializer = (RED): void => {
     function EvaluationTriggerNodeConstructor(
@@ -12,6 +13,7 @@ const nodeInit: NodeInitializer = (RED): void => {
         RED.nodes.createNode(this, config);
 
         const node = this;
+        node.application = config.application;
         const flowContext = node.context().flow;
         const haicEnvironment = flowContext.get("HumAIne_HAIC_ENVIRONMENT") as
             | HAICFlowEnvironmentData
@@ -26,12 +28,28 @@ const nodeInit: NodeInitializer = (RED): void => {
 
         node.on("input", async function (msg, send, done) {
             try {
-                const payload: Record<string, any> = msg.payload || {};
-                if (typeof payload.configId !== "number") throw new Error("configId is required");
-                send([{ payload: await EvaluationService.evaluateConfigApiV1EvaluateConfigurationIdPost(payload.configId, openAPI) }]);
+                const payload =
+                    msg.payload && typeof msg.payload === "object"
+                        ? (msg.payload as Record<string, unknown>)
+                        : {};
+                const configId = resolveEvaluationConfigId(
+                    payload,
+                    config.application,
+                    flowContext.get("HumAIne_DEFAULT_APPLICATION") as string | undefined,
+                );
+                send([
+                    {
+                        payload:
+                            await EvaluationService.evaluateConfigApiV1EvaluateConfigurationIdPost(
+                                configId,
+                                openAPI,
+                            ),
+                    },
+                ]);
                 if (done) done();
-            } catch (err: any) {
-                const errorMsg = "Error in evaluation-trigger node: " + err.message;
+            } catch (err: unknown) {
+                const errorMessage = err instanceof Error ? err.message : String(err);
+                const errorMsg = "Error in evaluation-trigger node: " + errorMessage;
                 send([{ payload: err, error: errorMsg }]);
                 if (done) done(null);
             }
