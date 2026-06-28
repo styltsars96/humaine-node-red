@@ -1,14 +1,88 @@
-<h3>Evaluation Config Node</h3>
-<p>Performs CRUD operations on HAIC Evaluation Configurations.</p>
+<script type="text/html" data-help-name="evaluation-config">
+  <h3>Description</h3>
+  <p>Creates, retrieves, updates and deletes evaluation configurations in the HAIC Benchmark Suite backend. Evaluations define how AI models are evaluated (model name, type, metrics, status, etc.). The node performs CRUD operations via the HAIC API.</p>
 
-<h4>Operations</h4>
-<ul>
-    <li><b>get</b> - Retrieve a configuration by ID. Requires: payload.id</li>
-    <li><b>create</b> - Create a new evaluation config body. Payload becomes request body.</li>
-    <li><b>update</b> - Update an existing config. Requires: payload.configurationId</li>
-    <li><b>delete</b> - Delete a config by ID. Requires: payload.id</li>
-</ul>
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>An <code>ai-environment-config</code> node must be present and deployed in this flow.</li>
+    <li>The target environment must be registered in the HAIC backend with agents and affordances matching the Model/Agent and Action/Affordance selections below.</li>
+  </ul>
 
-<h4>Input Payload Examples</h4>
-<pre>{ "operation": "get", "id": 1 }</pre>
-<pre>{ "operation": "create" /*, ...config fields */}</pre>
+  <h3>Usage Steps</h3>
+  <ol>
+    <li><strong>Add an <code>ai-environment-config</code> node</strong> to this flow and deploy it first.</li>
+    <li><strong>Add this <code>evaluation-config</code> node</strong> from the palette (HumAIne section).</li>
+    <li><strong>Wire input</strong> — send <code>msg.payload</code> with an <code>operation</code> field and any required fields for that operation. Deploy.</li>
+  </ol>
+
+  <h3>Configuration Fields</h3>
+  <table>
+    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
+    <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display label in the editor canvas.</td></tr>
+  </table>
+
+  <h3>Input — msg.payload by Operation</h3>
+  <p>The node sends <code>msg.payload.operation</code> to determine which API call to make:</p>
+
+  <h4><b>operation: "get"</b></h4>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    operation: "get",
+    id: 34                          // number — configuration ID to retrieve
+};</pre>
+
+  <h4><b>operation: "create"</b></h4>
+  <p>Sends the full payload as the request body. All fields match the HAIC <code>EvaluationConfigSchema</code>.</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    operation: "create",
+    application_name: "dss_doctor_agreement",\n    ai_model_name: "gpt-4o-mini",\n    ai_model_type: "LLM",\n    metrics: ["Collaboration and Interaction","Trust and Safety"],\n    evaluation_date: "2025-05-15T15:35:47.992Z",\n    description: "Doctor agreement evaluation",\n    config_type: "generic",        // "specific" | "generic"\n    evaluation_status: "pending"   // pending | running | completed | failed
+};</pre>
+
+  <h4><b>operation: "update"</b></h4>
+  <p>Updates an existing configuration. The <code>configurationId</code> is extracted from the payload and removed before sending the body.</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    operation: "update",\n    configurationId: 34,\n    ai_model_name: "gpt-4o",        // fields to update\n    description: "Updated description"\n};</pre>
+
+  <h4><b>operation: "delete"</b></h4>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    operation: "delete",\n    id: 34                          // number — configuration ID to delete
+};</pre>
+
+  <h3>Backend API Calls</h3>
+  <table>
+    <tr><th style="text-align:left">Operation</th><th style="text-align:left">Method &amp; Endpoint</th></tr>
+    <tr><td>get</td><td><code>GET /api/v1/configuration/{id}</code></td></tr>
+    <tr><td>create</td><td><code>POST /api/v1/configuration/new</code></td></tr>
+    <tr><td>update</td><td><code>PUT /api/v1/configuration/update/{configurationId}</code></td></tr>
+    <tr><td>delete</td><td><code>DELETE /api/v1/configuration/delete/{id}</code></td></tr>
+  </table>
+
+  <h3>Output Message</h3>
+  <p><code>msg.payload</code> is replaced by the API response (the configuration object or result). All other <code>msg</code> properties are preserved and passed through.</p>
+
+  <h3>Status Indicators</h3>
+  <table>
+    <tr><th style="text-align:left">Visual</th><th style="text-align:left">Duration</th><th style="text-align:left">Meaning</th></tr>
+    <tr><td>Green dot — "Ready"</td><td>Persistent</td><td>Node is configured and waiting for input.</td></tr>
+    <tr><td>Green ring — "Operation complete"</td><td>2 seconds</td><td>The operation (get/create/update/delete) completed successfully.</td></tr>
+    <tr><td>Red dot — "Error in operation"</td><td>3 seconds</td><td>An error occurred during the operation. Check debug output.</td></tr>
+    <tr><td>Red ring — "No AI Environment setup!"</td><td>Persistent</td><td>No <code>ai-environment-config</code> found in this flow.</td></tr>
+  </table>
+
+  <h3>Editor Error Messages</h3>
+  <p>These messages appear in the node's configuration panel:</p>
+  <table>
+    <tr><th style="text-align:left">Message</th><th style="text-align:left">When</th></tr>
+    <tr><td><code>No AI Environment setup! Set an AI Environment config in the flow first.</code></td><td>No <code>ai-environment-config</code> found</td></tr>
+  </table>
+
+  <h3>Wiring Pattern</h3>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function] → [evaluation-config (operation=create|get|update|delete)]
+    → [debug]</pre>
+
+  <h3>Important Notes</h3>
+  <ul>
+    <li><strong>The <code>id</code> field is used by both <code>"get"</code> and <code>"delete"</code></strong>. Make sure you use <code>"configurationId"</code> for update operations, not <code>"id"</code>.</li>
+    <li><strong>Evaluation status values:</strong> <code>pending</code>, <code>running</code>, <code>completed</code>, <code>failed</code>. These are set by the backend after an evaluation runs.</li>
+    <li>The node passes through all properties in <code>msg</code> except those consumed during routing (e.g. <code>operation</code>). Wire to debug nodes or downstream logic for further processing.</li>
+  </ul>
+</script>

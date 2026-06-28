@@ -1,3 +1,99 @@
 <script type="text/html" data-help-name="access-evaluation-results">
-  <p>Node description goes here.</p>
+  <h3>Description</h3>
+  <p>Retrieves evaluation results from the HAIC Benchmark Suite backend. Supports multiple operations to list all results for a configuration, fetch a specific result by ID, or retrieve results grouped by category.</p>
+
+  <h3>Application Selection</h3>
+  <p>The node resolves the configuration (application) to use in this order:</p>
+  <ol type="A">
+    <li><strong>Wired-in value</strong> — if a message arrives with <code>msg.payload.configId</code>, that takes priority.</li>
+    <li><strong>Node's Application field</strong> — the value selected in the node's dropdown (see below).</li>
+    <li><strong>Fallback to default</strong> — if both are empty, uses the <code>defaultApplication</code> set on the flow's <code>ai-environment-config</code>.</li>
+  </ol>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>An <code>ai-environment-config</code> node must be present and deployed in this flow.</li>
+    <li>A valid <code>haic-config</code> config node must exist (referenced via the environment).</li>
+    <li>The evaluation configuration ID you use must correspond to an existing evaluation that has completed or is running.</li>
+  </ul>
+
+  <h3>Usage Steps</h3>
+  <ol>
+    <li><strong>Add an <code>ai-environment-config</code> node</strong> to this flow and deploy it first.</li>
+    <li><strong>Add a <code>haic-config</code> config node</strong> with your API credentials.</li>
+    <li><strong>Add this <code>access-evaluation-results</code> node</strong> from the palette (HumAIne section).</li>
+    <li><strong>Select an Application</strong> — choose which evaluation configuration to use. Populated dynamically from available configurations; "Use Default" selects the default set on <code>ai-environment-config</code>.</li>
+    <li><strong>(Optional) Wire input</strong> — send a message with <code>msg.payload.configId</code> and optionally an <code>operation</code>. Deploy.</li>
+  </ol>
+
+  <h3>Configuration Fields</h3>
+  <table>
+    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
+    <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display label in the editor canvas.</td></tr>
+    <tr><td>Application (Evaluation Config)</td><td>No</td><td>From <code>ai-environment-config</code></td><td>Select which evaluation configuration to use. Populated dynamically from available configurations; "Use Default" selects the default set on <code>ai-environment-config</code>.</td></tr>
+  </table>
+
+  <h3>Input — msg.payload by Operation</h3>
+  <p>The node reads <code>msg.payload.operation</code> to determine which result operation to perform. If a wired-in message provides <code>configId</code>, it overrides the node's Application field:</p>
+
+  <h4><b>operation: "getAll"</b></h4>
+  <p>Returns all evaluation results for the configuration.</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    configId: 34,           // number — optional override; falls back to node's Application field
+    operation: "getAll"     // optional; defaults to "getAll" if omitted
+};</pre>
+
+  <h4><b>operation: "getOne"</b></h4>
+  <p>Returns a specific evaluation result by its ID.</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    configId: 34,           // number — optional override
+    operation: "getOne",
+    resultId: 7             // number — required for getOne
+};</pre>
+
+  <h4><b>operation: "getGroup"</b></h4>
+  <p>Returns results grouped by a category name (e.g., metric group, model type).</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    configId: 34,           // number — optional override
+    operation: "getGroup",
+    groupName: "collaboration_metrics"   // string — required for getGroup
+};</pre>
+
+  <h3>Backend API Calls</h3>
+  <table>
+    <tr><th style="text-align:left">Operation</th><th style="text-align:left">Method &amp; Endpoint</th></tr>
+    <tr><td>getAll</td><td><code>GET /api/v1/results/{configId}</code></td></tr>
+    <tr><td>getOne</td><td><code>GET /api/v1/results/{configId}/{resultId}</code></td></tr>
+    <tr><td>getGroup</td><td><code>GET /api/v1/results/{configId}/group/{groupName}</code></td></tr>
+  </table>
+
+  <h3>Output Message</h3>
+  <p><code>msg.payload</code> is replaced by the API response. For <code>"getAll"</code>, this is a list of result objects; for <code>"getOne"</code>, it is a single result object; for <code>"getGroup"</code>, it is grouped results keyed by group name. All other <code>msg</code> properties are preserved and passed through.</p>
+
+  <h3>Status Indicators</h3>
+  <table>
+    <tr><th style="text-align:left">Visual</th><th style="text-align:left">Duration</th><th style="text-align:left">Meaning</th></tr>
+    <tr><td>Green dot — "Ready"</td><td>Persistent</td><td>Node is configured and waiting for input.</td></tr>
+    <tr><td>Green ring — "Operation complete"</td><td>2 seconds</td><td>The result operation completed successfully.</td></tr>
+    <tr><td>Red dot — "Error in access-evaluation-results node!"</td><td>3 seconds</td><td>An error occurred (missing configId/resultId/groupName, API failure). Check debug output.</td></tr>
+    <tr><td>Red ring — "No AI Environment setup!"</td><td>Persistent</td><td>No <code>ai-environment-config</code> found in this flow. Add and deploy one first.</td></tr>
+  </table>
+
+  <h3>Editor Error Messages</h3>
+  <p>These messages appear in the node's configuration panel:</p>
+  <table>
+    <tr><th style="text-align:left">Message</th><th style="text-align:left">When</th></tr>
+    <tr><td><code>No AI Environment setup! Set an AI Environment config in the flow first.</code></td><td>No <code>ai-environment-config</code> found in flow context</td></tr>
+  </table>
+
+  <h3>Wiring Pattern</h3>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function] → [access-evaluation-results (optional payload.configId + operation)]
+    → [debug / downstream logic]</pre>
+
+  <h3>Important Notes</h3>
+  <ul>
+    <li><strong>The <code>operation</code> field is consumed and removed from the payload.</strong> After processing, only <code>configId</code>, <code>resultId</code>, or <code>groupName</code> (as applicable) remain in the payload before being sent to the API. The operation value itself does not appear in the output message.</li>
+    <li><strong>Evaluation results are only available after an evaluation has run.</strong> Use <code>evaluation-trigger</code> to initiate a run, then poll with this node using <code>operation: "getAll"</code>.</li>
+    <li><strong>The OpenAPI client is fetched dynamically from flow context.</strong> If the environment changes between messages, a new lookup occurs each time — ensure your <code>haic-config</code> is deployed before this node can resolve it.</li>
+  </ul>
 </script>

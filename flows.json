@@ -410,7 +410,11 @@
             }
         ],
         "env": [],
-        "meta": {},
+        "meta": {
+            "subflow": {
+                "name": "(subflow) Evaluation Config"
+            }
+        },
         "color": "#58A69F",
         "inputLabels": [
             "Evaluation Config"
@@ -481,7 +485,11 @@
             }
         ],
         "env": [],
-        "meta": {},
+        "meta": {
+            "subflow": {
+                "name": "(subflow) Access Evaluation Logs"
+            }
+        },
         "color": "#58A69F",
         "inputLabels": [
             "Request Logs"
@@ -536,7 +544,11 @@
             }
         ],
         "env": [],
-        "meta": {},
+        "meta": {
+            "subflow": {
+                "name": "(subflow) Evaluation Trigger"
+            }
+        },
         "color": "#58A69F",
         "inputLabels": [
             "Evaluation Trigger"
@@ -607,7 +619,11 @@
             }
         ],
         "env": [],
-        "meta": {},
+        "meta": {
+            "subflow": {
+                "name": "(subflow) Access Evaluation Results"
+            }
+        },
         "color": "#58A69F",
         "inputLabels": [
             "Request Evaluation Results"

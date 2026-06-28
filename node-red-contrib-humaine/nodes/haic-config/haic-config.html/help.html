@@ -1,18 +1,22 @@
 <script type="text/html" data-help-name="haic-config">
   <h3>Description</h3>
-  <p>Configuration node for connecting to the HumAIne HAIC Benchmark Suite backend.
-  Provides authentication and endpoint settings consumed by <code>ai-environment-config</code>
-  and <code>haic-logger</code> nodes. This is a config node — it has no input/output ports
-  and is referenced by other nodes, not wired.</p>
+  <p>A shared configuration node that stores the HAIC Benchmark Suite API connection details — base URL, authentication (token or username/password), and optional custom headers. Other nodes in this flow reference it to obtain a prepared OpenAPI client object for making authenticated API calls.</p>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>An active HAIC Benchmark Suite backend accessible at the configured base URL.</li>
+    <li>A valid authentication token or username/password pair from the HAIC backend (obtainable via your identity provider).</li>
+  </ul>
 
   <h3>Usage Steps</h3>
   <ol>
-    <li><strong>Add</strong> this config node from the palette (top panel → Config)</li>
-    <li><strong>Name</strong> it descriptively (e.g., "Production HAIC", "Staging HAIC")</li>
-    <li><strong>Set Base URL</strong> to your HAIC backend endpoint (defaults to production: <code>https://benchmark.humaine-horizon.eu/</code>)</li>
-    <li><strong>Enter credentials</strong>: API Token and/or Username + Password</li>
-    <li><strong>(Optional) Add custom headers</strong> as a JSON object string, e.g. <code>{"X-Custom-Header": "value"}</code></li>
-    <li><strong>Deploy</strong> the flow — this node is now available for other nodes to reference</li>
+    <li><strong>Add this <code>haic-config</code> node</strong> to your flow and double-click to open the configuration dialog.</li>
+    <li><strong>Enter a name</strong> (optional) — used as an identifier when other nodes reference it.</li>
+    <li><strong>Set the Base URL</strong> — the root of the HAIC API endpoint (e.g. <code>https://benchmark.humaine-horizon.eu/</code>).</li>
+    <li><strong>Provide authentication credentials:</strong> either an <code>API Token</code> or a <code>Username + Password</code> pair.</li>
+    <li><strong>(Optional) Toggle "With Credentials"</strong> to include cookies in API requests.</li>
+    <li><strong>(Optional) Add custom headers</strong> as valid JSON — these are merged with the auth header on every request.</li>
+    <li><strong>Wire other nodes</strong> (e.g. <code>haic-logger</code>, <code>evaluation-config</code>) to reference this config by name in their editor panels.</li>
   </ol>
 
   <h3>Configuration Fields</h3>
@@ -25,54 +29,74 @@
     </tr>
     <tr>
       <td>Name</td>
-      <td>Yes (for identification)</td>
-      <td>—</td>
-      <td>Display name shown in the editor and in referencing node dropdowns</td>
+      <td>No*</td>
+      <td><code>""</code></td>
+      <td>Display label and config identifier. Other nodes reference this by name.</td>
     </tr>
     <tr>
       <td>Base URL</td>
-      <td>No</td>
-      <td><code>https://benchmark.humaine-horizon.eu/</code></td>
-      <td>HAIC backend API base URL. Trailing slashes are stripped automatically.</td>
+      <td>Yes</td>
+      <td><code>""</code></td>
+      <td>The HAIC API root (e.g. <code>https://benchmark.humaine-horizon.eu/</code>).</td>
     </tr>
     <tr>
       <td>Token</td>
-      <td>Recommended</td>
-      <td>—</td>
-      <td>Bearer token for API authentication. Stored encrypted by Node-RED and never exposed in <code>flows.json</code>.</td>
+      <td>No**</td>
+      <td><code>""</code></td>
+      <td>API token used for Bearer authentication. Stored as a secure credential.</td>
     </tr>
     <tr>
-      <td>Username / Password</td>
-      <td>Conditional</td>
-      <td>—</td>
-      <td>Alternative to token-based auth. Password is stored encrypted.</td>
+      <td>Username</td>
+      <td>No**</td>
+      <td><code>""</code></td>
+      <td>Username for basic auth when not using token-based auth.</td>
+    </tr>
+    <tr>
+      <td>Password</td>
+      <td>No**</td>
+      <td><code>""</code></td>
+      <td>Password for basic auth. Stored as a secure credential.</td>
     </tr>
     <tr>
       <td>With Credentials</td>
       <td>No</td>
-      <td><code>false</code></td>
-      <td>Include cookies and auth headers in cross-origin HTTP requests.</td>
+      <td>false</td>
+      <td>If checked, includes cookies in API requests (useful for session-based workflows).</td>
     </tr>
     <tr>
       <td>Headers</td>
       <td>No</td>
       <td><code>""</code></td>
-      <td>Additional HTTP headers as a JSON string, e.g. <code>{"X-Pilot-Tag": "smart_cities"}</code>. All keys and values must be strings. Stored as plain text (not encrypted by Node-RED).</td>
+      <td>Additional HTTP headers as valid JSON. Example: <code>{ "X-Custom-Header": "value" }</code>.</td>
     </tr>
   </table>
 
-  <h3>How It Works</h3>
-  <p>This node does not process messages. It only provides an <code>OpenAPI</code> configuration object (base URL, credentials, headers) that is consumed by <code>ai-environment-config</code> and <code>haic-logger</code> nodes.</p>
-
-  <h3>Use Cases</h3>
+  <h3>How Other Nodes Use This Config</h3>
+  <p>This config node publishes a <code>HumAIne_HAIC_ENVIRONMENT</code> object in the flow context containing:</p>
   <ul>
-    <li><strong>Single shared config:</strong> One node for all HAIC API calls across a flow</li>
-    <li><strong>Multiple environments:</strong> Create separate nodes (e.g., "Staging", "Production") and reference the appropriate one per flow</li>
+    <li><code>haicApiNodeId</code> — the ID of this config node, used by other nodes to look it up via <code>RED.nodes.getNode()</code>.</li>
+    <li>An initialized OpenAPI client object (<code>OpenAPI</code>) configured with your base URL and credentials.</li>
   </ul>
 
-  <h3>Notes</h3>
+  <h3>Status Indicators</h3>
+  <table>
+    <tr>
+      <th style="text-align:left">Visual</th>
+      <th style="text-align:left">Duration</th>
+      <th style="text-align:left">Meaning</th>
+    </tr>
+    <tr><td>Green dot — "Ready"</td><td>Persistent</td><td>The config node is loaded and the OpenAPI client has been initialized.</td></tr>
+  </table>
+
+  <h3>Wiring Pattern</h3>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[haic-config] ──────────────────→ [haic-logger] (references by name)
+                                    → [evaluation-config] (references by name)
+                                    → [access-evaluation-results] (via flow context)</pre>
+
+  <h3>Important Notes</h3>
   <ul>
-    <li>Only the <code>Token</code> and <code>Password</code> fields are stored encrypted by Node-RED and never exposed in flows.json. Other fields (Base URL, Username, Headers) are stored as plain text.</li>
-    <li>This is a config node (no input/output ports) — it is referenced, not wired</li>
+    <li><strong>This is a config node, not a regular node.</strong> It does not process messages — it provides configuration to other nodes in the same flow. Place it once and wire other nodes to reference it by name.</li>
+    <li><strong>Credentials are stored securely</strong> in Node-RED's credentials store (not visible as plaintext in flows.json). The token and password fields use the <code>*password*</code> type.</li>
+    <li><strong>The OpenAPI client is built once at node construction time.</strong> If you change the Base URL or headers, redeploy the flow to rebuild it.</li>
   </ul>
 </script>

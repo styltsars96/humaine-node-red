@@ -1,3 +1,98 @@
 <script type="text/html" data-help-name="access-evaluation-logs">
-  <p>Node description goes here.</p>
+  <h3>Description</h3>
+  <p>Retrieves evaluation logs from the HAIC Benchmark Suite backend. Supports multiple operations to list all logs for a configuration, fetch a specific log by name, or download a direct link to the log file.</p>
+
+  <h3>Application Selection</h3>
+  <p>The node resolves the configuration (application) to use in this order:</p>
+  <ol type="A">
+    <li><strong>Wired-in value</strong> — if a message arrives with <code>msg.payload.configId</code>, that takes priority.</li>
+    <li><strong>Node's Application field</strong> — the value selected in the node's dropdown (see below).</li>
+    <li><strong>Fallback to default</strong> — if both are empty, uses the <code>defaultApplication</code> set on the flow's <code>ai-environment-config</code>.</li>
+  </ol>
+
+  <h3>Prerequisites</h3>
+  <ul>
+    <li>An <code>ai-environment-config</code> node must be present and deployed in this flow.</li>
+    <li>A valid <code>haic-config</code> config node must exist (referenced via the environment).</li>
+    <li>The configuration ID you use must correspond to an existing evaluation with associated logs.</li>
+  </ul>
+
+  <h3>Usage Steps</h3>
+  <ol>
+    <li><strong>Add an <code>ai-environment-config</code> node</strong> to this flow and deploy it first.</li>
+    <li><strong>Add a <code>haic-config</code> config node</strong> with your API credentials.</li>
+    <li><strong>Add this <code>access-evaluation-logs</code> node</strong> from the palette (HumAIne section).</li>
+    <li><strong>Select an Application</strong> — choose which evaluation configuration to use. Populated dynamically from available configurations; "Use Default" selects the default set on <code>ai-environment-config</code>.</li>
+    <li><strong>(Optional) Wire input</strong> — send a message with <code>msg.payload.configId</code>, optionally an <code>operation</code>, and (for getOne/downloadLink) a <code>logName</code>. Deploy.</li>
+  </ol>
+
+  <h3>Configuration Fields</h3>
+  <table>
+    <tr><th style="text-align:left">Field</th><th style="text-align:left">Required</th><th style="text-align:left">Default</th><th style="text-align:left">Description</th></tr>
+    <tr><td>Name</td><td>No</td><td><code>""</code></td><td>Display label in the editor canvas.</td></tr>
+    <tr><td>Application (Evaluation Config)</td><td>No</td><td>From <code>ai-environment-config</code></td><td>Select which evaluation configuration to use. Populated dynamically from available configurations; "Use Default" selects the default set on <code>ai-environment-config</code>.</td></tr>
+  </table>
+
+  <h3>Input — msg.payload by Operation</h3>
+  <p>The node reads <code>msg.payload.operation</code> to determine which log operation to perform. If a wired-in message provides <code>configId</code>, it overrides the node's Application field:</p>
+
+  <h4><b>operation: "getAll"</b></h4>
+  <p>Returns all logs associated with the configuration.</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    configId: 34,           // number — optional override; falls back to node's Application field
+    operation: "getAll"     // optional; defaults to "getAll" if omitted
+};</pre>
+
+  <h4><b>operation: "getOne"</b></h4>
+  <p>Returns the download URL for a specific log file.</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    configId: 34,           // number — optional override
+    operation: "getOne",
+    logName: "session_001.log"   // string — name of the specific log file
+};</pre>
+
+  <h4><b>operation: "downloadLink"</b></h4>
+  <p>Returns a direct download link for a specific log file (same payload as getOne).</p>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">msg.payload = {
+    configId: 34,           // number — optional override
+    operation: "downloadLink",
+    logName: "session_001.log"   // string — name of the specific log file
+};</pre>
+
+  <h3>Backend API Calls</h3>
+  <table>
+    <tr><th style="text-align:left">Operation</th><th style="text-align:left">Method &amp; Endpoint</th></tr>
+    <tr><td>getAll</td><td><code>GET /api/v1/logs/{configId}</code></td></tr>
+    <tr><td>getOne / downloadLink</td><td><code>GET /api/v1/logs/download/{configId}/{logName}</code></td></tr>
+  </table>
+
+  <h3>Output Message</h3>
+  <p><code>msg.payload</code> is replaced by the API response. For <code>"getAll"</code>, this is a list of log entries; for <code>"getOne"</code>/<code>"downloadLink"</code>, it is the download URL object. All other <code>msg</code> properties are preserved and passed through.</p>
+
+  <h3>Status Indicators</h3>
+  <table>
+    <tr><th style="text-align:left">Visual</th><th style="text-align:left">Duration</th><th style="text-align:left">Meaning</th></tr>
+    <tr><td>Green dot — "Ready"</td><td>Persistent</td><td>Node is configured and waiting for input.</td></tr>
+    <tr><td>Green ring — "Operation complete"</td><td>2 seconds</td><td>The log operation completed successfully.</td></tr>
+    <tr><td>Red dot — "Error in access-evaluation-logs node!"</td><td>3 seconds</td><td>An error occurred (missing configId/logName, API failure). Check debug output.</td></tr>
+    <tr><td>Red ring — "No AI Environment setup!"</td><td>Persistent</td><td>No <code>ai-environment-config</code> found in this flow. Add and deploy one first.</td></tr>
+  </table>
+
+  <h3>Editor Error Messages</h3>
+  <p>These messages appear in the node's configuration panel:</p>
+  <table>
+    <tr><th style="text-align:left">Message</th><th style="text-align:left">When</th></tr>
+    <tr><td><code>No AI Environment setup! Set an AI Environment config in the flow first.</code></td><td>No <code>ai-environment-config</code> found in flow context</td></tr>
+  </table>
+
+  <h3>Wiring Pattern</h3>
+  <pre style="background:var(--red-ui-secondary-background, #f5f5f5);padding:8px;border-radius:4px;font-size:12px;overflow-x:auto">[inject / function] → [access-evaluation-logs (optional payload.configId + operation)]
+    → [debug / downstream logic]</pre>
+
+  <h3>Important Notes</h3>
+  <ul>
+    <li><strong>The <code>operation</code> field is consumed and removed from the payload.</strong> After processing, only <code>configId</code> (and <code>logName</code>) remain in the payload before being sent to the API. The operation value itself does not appear in the output message.</li>
+    <li><strong>"getOne" and "downloadLink" share the same backend call.</strong> They differ only in how downstream nodes interpret the response — both return a download URL object.</li>
+    <li>If you need to iterate over logs, wire to a function node that iterates the array and calls this node again with <code>operation: "getOne"</code> for each log name.</li>
+  </ul>
 </script>
