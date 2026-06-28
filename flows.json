@@ -2276,8 +2276,8 @@
         "z": "529d431d13d83865",
         "name": "",
         "application": "34",
-        "model": "MLE",
-        "affordance_action": "review",
+        "model": "NSAI",
+        "affordance_action": "train",
         "sessionIdJsonPath": "$payload.session_id",
         "x": 410,
         "y": 220,
@@ -7017,5 +7017,217 @@
                 "0afce7cb4261b9bb"
             ]
         ]
+    },
+    {
+        "id": "abc0000000000001",
+        "type": "evaluation-config",
+        "z": "529d431d13d83865",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "x": 650,
+        "y": 480,
+        "wires": [
+            [
+                "dbg1"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000002",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Config Create",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"operation\":\"create\",\"application_name\":\"demo-app\"}",
+        "payloadType": "json",
+        "x": 300,
+        "y": 480,
+        "wires": [
+            [
+                "abc0000000000001"
+            ]
+        ]
+    },
+    {
+        "id": "dbg1",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Config Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000003",
+        "type": "access-evaluation-logs",
+        "z": "529d431d13d83865",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "x": 650,
+        "y": 540,
+        "wires": [
+            [
+                "dbg2"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000004",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Logs GetAll",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"operation\":\"getAll\",\"configId\":1}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 540,
+        "wires": [
+            [
+                "abc0000000000003"
+            ]
+        ]
+    },
+    {
+        "id": "dbg2",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Logs Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000005",
+        "type": "evaluation-trigger",
+        "z": "529d431d13d83865",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "x": 650,
+        "y": 600,
+        "wires": [
+            [
+                "dbg3"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000006",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Trigger",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"configId\":1}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 600,
+        "wires": [
+            [
+                "abc0000000000005"
+            ]
+        ]
+    },
+    {
+        "id": "dbg3",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Trigger Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "abc0000000000007",
+        "type": "access-evaluation-results",
+        "z": "529d431d13d83865",
+        "name": "",
+        "haic_server": "13892724a379a5ca",
+        "x": 650,
+        "y": 660,
+        "wires": [
+            [
+                "dbg4"
+            ]
+        ]
+    },
+    {
+        "id": "abc0000000000008",
+        "type": "inject",
+        "z": "529d431d13d83865",
+        "name": "Test Results GetAll",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "topic": "",
+        "payload": "{\"operation\":\"getAll\",\"configId\":1}",
+        "payloadType": "json",
+        "x": 340,
+        "y": 660,
+        "wires": [
+            [
+                "abc0000000000007"
+            ]
+        ]
+    },
+    {
+        "id": "dbg4",
+        "type": "debug",
+        "z": "529d431d13d83865",
+        "name": "Results Result",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "x": 900,
+        "y": 660,
+        "wires": []
     }
 ]

@@ -1,0 +1,14 @@
+<h3>Evaluation Config Node</h3>
+<p>Performs CRUD operations on HAIC Evaluation Configurations.</p>
+
+<h4>Operations</h4>
+<ul>
+    <li><b>get</b> - Retrieve a configuration by ID. Requires: payload.id</li>
+    <li><b>create</b> - Create a new evaluation config body. Payload becomes request body.</li>
+    <li><b>update</b> - Update an existing config. Requires: payload.configurationId</li>
+    <li><b>delete</b> - Delete a config by ID. Requires: payload.id</li>
+</ul>
+
+<h4>Input Payload Examples</h4>
+<pre>{ "operation": "get", "id": 1 }</pre>
+<pre>{ "operation": "create" /*, ...config fields */}</pre>

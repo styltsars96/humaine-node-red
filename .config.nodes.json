@@ -1076,6 +1076,50 @@
                 "user": false,
                 "module": "node-red-contrib-humaine",
                 "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/haic-logger/haic-logger.js"
+            },
+            "evaluation-config": {
+                "name": "evaluation-config",
+                "types": [
+                    "evaluation-config"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/evaluation-config/evaluation-config.js"
+            },
+            "access-evaluation-logs": {
+                "name": "access-evaluation-logs",
+                "types": [
+                    "access-evaluation-logs"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/access-evaluation-logs/access-evaluation-logs.js"
+            },
+            "evaluation-trigger": {
+                "name": "evaluation-trigger",
+                "types": [
+                    "evaluation-trigger"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/evaluation-trigger/evaluation-trigger.js"
+            },
+            "access-evaluation-results": {
+                "name": "access-evaluation-results",
+                "types": [
+                    "access-evaluation-results"
+                ],
+                "enabled": true,
+                "local": true,
+                "user": false,
+                "module": "node-red-contrib-humaine",
+                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/access-evaluation-results/access-evaluation-results.js"
             }
         }
     }
