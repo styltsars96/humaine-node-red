@@ -1038,8 +1038,8 @@
             }
         }
     },
-    "node-red-contrib-humaine": {
-        "name": "node-red-contrib-humaine",
+    "@styltsars_hua/node-red-contrib-humaine": {
+        "name": "@styltsars_hua/node-red-contrib-humaine",
         "version": "1.0.0",
         "local": true,
         "user": true,
@@ -1052,8 +1052,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/haic-config/haic-config.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/haic-config/haic-config.js"
             },
             "ai-environment-config": {
                 "name": "ai-environment-config",
@@ -1063,8 +1063,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/ai-environment-config/ai-environment-config.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/ai-environment-config/ai-environment-config.js"
             },
             "haic-logger": {
                 "name": "haic-logger",
@@ -1074,8 +1074,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/haic-logger/haic-logger.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/haic-logger/haic-logger.js"
             },
             "evaluation-config": {
                 "name": "evaluation-config",
@@ -1085,8 +1085,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/evaluation-config/evaluation-config.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/evaluation-config/evaluation-config.js"
             },
             "access-evaluation-logs": {
                 "name": "access-evaluation-logs",
@@ -1096,8 +1096,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/access-evaluation-logs/access-evaluation-logs.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/access-evaluation-logs/access-evaluation-logs.js"
             },
             "evaluation-trigger": {
                 "name": "evaluation-trigger",
@@ -1107,8 +1107,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/evaluation-trigger/evaluation-trigger.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/evaluation-trigger/evaluation-trigger.js"
             },
             "access-evaluation-results": {
                 "name": "access-evaluation-results",
@@ -1118,8 +1118,8 @@
                 "enabled": true,
                 "local": true,
                 "user": false,
-                "module": "node-red-contrib-humaine",
-                "file": "/data/node_modules/node-red-contrib-humaine/dist/nodes/access-evaluation-results/access-evaluation-results.js"
+                "module": "@styltsars_hua/node-red-contrib-humaine",
+                "file": "/data/node_modules/@styltsars_hua/node-red-contrib-humaine/dist/nodes/access-evaluation-results/access-evaluation-results.js"
             }
         }
     }

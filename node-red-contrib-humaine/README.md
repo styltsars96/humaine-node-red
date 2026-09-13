@@ -1,4 +1,4 @@
-# node-red-contrib-humaine
+# @styltsars_hua/node-red-contrib-humaine
 
 Node-RED nodes for **HumAIne** — a Human-AI collaboration platform.
 
@@ -24,7 +24,7 @@ This package bundles the custom Node-RED nodes used by HumAIne:
 Install into your Node-RED user directory:
 
 ```bash
-npm install node-red-contrib-humaine --prefix ~/.node-red
+npm install @styltsars_hua/node-red-contrib-humaine --prefix ~/.node-red
 ```
 
 Then restart Node-RED. The nodes appear in the palette under the **HumAIne** group.
@@ -36,10 +36,10 @@ If you are installing a locally built copy instead of the published package:
 ```bash
 cd node-red-contrib-humaine
 npm run build          # produces dist/ (editor + runtime bundles)
-npm pack               # produces node-red-contrib-humaine-<version>.tgz
+npm pack               # produces styltsars_hua-node-red-contrib-humaine-<version>.tgz
 
 # from your Node-RED user directory:
-npm install ./node-red-contrib-humaine-<version>.tgz --prefix ~/.node-red
+npm install ./styltsars_hua-node-red-contrib-humaine-<version>.tgz --prefix ~/.node-red
 ```
 
 ## Development
