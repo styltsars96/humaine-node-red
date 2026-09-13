@@ -1,5 +1,5 @@
 {
-    "name": "node-red-contrib-humaine",
+    "name": "@styltsars_hua/node-red-contrib-humaine",
     "version": "1.0.0",
     "description": "Node-RED nodes for HumAIne",
     "keywords": [
