@@ -4,3 +4,10 @@
 !README.md
 !package.json
 !yarn.lock
+
+# Exclude dev-only artifacts from the published package.
+# The runtime nodes ship compiled JS + editor HTML bundles only.
+**/*.d.ts
+**/*.js.map
+**/__tests__/
+**/*.test.js

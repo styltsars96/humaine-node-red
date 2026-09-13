@@ -16,6 +16,7 @@
         "build:runtime": "tsc -p tsconfig.runtime.json",
         "build:runtime:watch": "tsc -p tsconfig.runtime.watch.json --watch --preserveWatchOutput",
         "build": "rm -rf dist && yarn copy && yarn build:editor && yarn build:runtime",
+        "prepack": "npm run build",
         "test": "jest --forceExit --detectOpenHandles --colors",
         "test:watch": "jest --forceExit --detectOpenHandles --watchAll",
         "dev": "rm -rf dist && yarn copy && concurrently --kill-others --names 'COPY,EDITOR,RUNTIME,TEST' --prefix '({name})' --prefix-colors 'yellow.bold,cyan.bold,greenBright.bold,magenta.bold' 'onchange -v \"src/**/*.png\" \"src/**/*.svg\" -- yarn copy' 'yarn build:editor:watch' 'yarn build:runtime:watch' 'sleep 10; yarn test:watch'",
@@ -38,7 +39,7 @@
         "icons": "icons"
     },
     "dependencies": {
-        "axios": "^0.21.1",
+        "axios": "^1.7.0",
         "zod": "^4.3.6"
     },
     "devDependencies": {
